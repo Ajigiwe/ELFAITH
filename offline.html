@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-zinc-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Offline — EL-FAITH MICROFINANCE</title>
+    <meta name="theme-color" content="#18181b">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #fafafa;
+            color: #18181b;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #e4e4e7;
+            border-radius: 0.75rem;
+            max-width: 24rem;
+            width: 100%;
+            padding: 1.75rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        .icon-circle {
+            width: 3rem;
+            height: 3rem;
+            background: #f4f4f5;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+            color: #71717a;
+        }
+        h1 { font-size: 1.125rem; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 0.35rem; }
+        p { font-size: 0.8125rem; color: #71717a; line-height: 1.4; margin-bottom: 1.5rem; }
+        .btn-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: background 0.15s ease;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary { background: #18181b; color: #ffffff; }
+        .btn-primary:hover { background: #27272a; }
+        .btn-secondary { background: #f4f4f5; color: #27272a; border: 1px solid #e4e4e7; }
+        .btn-secondary:hover { background: #e4e4e7; }
+        .brand { font-size: 0.6875rem; color: #a1a1aa; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 1.5rem; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon-circle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+                <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+                <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+                <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+                <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+                <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                <line x1="12" y1="20" x2="12.01" y2="20"></line>
+            </svg>
+        </div>
+        <h1>You are Currently Offline</h1>
+        <p>No active internet connection detected. You can still record loan collections locally on this device. Everything will sync when you are back online.</p>
+        
+        <div class="btn-group">
+            <a href="agent/collect.php" class="btn btn-primary">
+                Record Offline Collection
+            </a>
+            <a href="agent/offline_queue.php" class="btn btn-secondary">
+                View Offline Queue
+            </a>
+            <a href="agent/index.php" class="btn btn-secondary">
+                View Today's Route
+            </a>
+            <button onclick="window.location.reload()" class="btn btn-secondary" style="color: #71717a;">
+                Retry Connection
+            </button>
+        </div>
+
+        <div class="brand">
+            EL-FAITH MICROFINANCE &bull; FIELD PWA
+        </div>
+    </div>
+</body>
+</html>
+

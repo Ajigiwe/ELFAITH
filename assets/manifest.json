@@ -1,0 +1,56 @@
+{
+  "id": "/ELFAITH%20MICROFINANCE/",
+  "name": "EL-FAITH Microfinance",
+  "short_name": "EL-FAITH",
+  "description": "Field Loan Collection, Customer Tracking & Offline Ledger for EL-FAITH Microfinance",
+  "start_url": "../agent/index.php",
+  "scope": "../",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fafafa",
+  "theme_color": "#18181b",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Record Collection",
+      "short_name": "Collect",
+      "description": "Collect installment payment from borrower",
+      "url": "../agent/collect.php",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Today's Route",
+      "short_name": "Route",
+      "description": "View scheduled and overdue collections for today",
+      "url": "../agent/index.php",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Offline Queue",
+      "short_name": "Queue",
+      "description": "Inspect and sync offline collections",
+      "url": "../agent/offline_queue.php",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["finance", "business", "productivity"]
+}

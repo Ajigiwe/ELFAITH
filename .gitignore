@@ -1,0 +1,21 @@
+# EL-FAITH Microfinance - Git Ignore Rules
+
+# Exclude live/generated database backup dumps (keep security wrappers)
+backups/*.sql
+
+# Environment & Secrets
+.env
+*.local.php
+
+# Logs & Temporary Files
+*.log
+*.tmp
+*.temp
+*.bak
+
+# OS & Editor Artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
