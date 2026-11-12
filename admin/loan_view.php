@@ -59,12 +59,12 @@ include __DIR__ . '/../includes/header.php';
 
 <div class="space-y-6">
     <!-- Print-only Brand Header -->
-    <div class="print-only pb-4 border-b border-zinc-300 mb-4">
+    <div class="print-only pb-4 border-b border-purple-200 mb-4">
         <div class="flex items-center gap-3">
             <?= renderCompanyLogo('print') ?>
             <div>
-                <h1 class="text-base font-bold uppercase text-zinc-900"><?= htmlspecialchars(COMPANY_NAME) ?> — Loan Facility Statement</h1>
-                <p class="text-xs text-zinc-600"><?= htmlspecialchars(BRANCH_NAME) ?> &bull; <?= htmlspecialchars(BRANCH_REGION) ?> &bull; Generated <?= date('d M Y, h:i A') ?></p>
+                <h1 class="text-base font-bold uppercase text-slate-900"><?= htmlspecialchars(COMPANY_NAME) ?> — Loan Facility Statement</h1>
+                <p class="text-xs text-slate-600"><?= htmlspecialchars(BRANCH_NAME) ?> &bull; <?= htmlspecialchars(BRANCH_REGION) ?> &bull; Generated <?= date('d M Y, h:i A') ?></p>
             </div>
         </div>
     </div>
@@ -73,72 +73,72 @@ include __DIR__ . '/../includes/header.php';
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
             <div class="flex items-center gap-2">
-                <span class="font-mono text-xs font-semibold text-zinc-900 bg-zinc-100 px-2 py-0.5 rounded uppercase">
+                <span class="font-mono text-xs font-semibold text-slate-900 bg-purple-50 px-2 py-0.5 rounded uppercase">
                     <?= htmlspecialchars($loan['loan_code']) ?>
                 </span>
-                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase <?= $loan['status'] === 'active' ? 'bg-zinc-100 text-zinc-800' : ($loan['status'] === 'overdue' ? 'bg-zinc-200 text-zinc-900 font-semibold' : 'bg-zinc-100 text-zinc-500') ?>">
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase <?= $loan['status'] === 'active' ? 'bg-purple-50 text-slate-800' : ($loan['status'] === 'overdue' ? 'bg-slate-200 text-slate-900 font-semibold' : 'bg-purple-50 text-slate-500') ?>">
                     <?= htmlspecialchars($loan['status']) ?>
                 </span>
             </div>
-            <h1 class="text-lg font-bold text-zinc-900 tracking-tight mt-1"><?= htmlspecialchars($loan['customer_name']) ?></h1>
-            <p class="text-xs text-zinc-400">
-                Borrower: <a href="<?= BASE_URL ?>/admin/customer_view.php?id=<?= $loan['customer_id'] ?>" class="text-zinc-700 font-medium hover:underline"><?= htmlspecialchars($loan['customer_code']) ?></a> 
+            <h1 class="text-lg font-bold text-slate-900 tracking-tight mt-1"><?= htmlspecialchars($loan['customer_name']) ?></h1>
+            <p class="text-xs text-slate-400">
+                Borrower: <a href="<?= BASE_URL ?>/admin/customer_view.php?id=<?= $loan['customer_id'] ?>" class="text-slate-700 font-medium hover:underline"><?= htmlspecialchars($loan['customer_code']) ?></a> 
                 &bull; Agent: <?= htmlspecialchars($loan['agent_name'] ?? 'Unassigned') ?>
             </p>
         </div>
         <div class="flex items-center gap-2">
-            <a href="<?= BASE_URL ?>/agent/collect.php?loan_id=<?= $loan['id'] ?>&customer_id=<?= $loan['customer_id'] ?>" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs rounded-lg transition">
+            <a href="<?= BASE_URL ?>/agent/collect.php?loan_id=<?= $loan['id'] ?>&customer_id=<?= $loan['customer_id'] ?>" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition">
                 <i data-lucide="plus" class="w-3.5 h-3.5"></i> Collect Payment
             </a>
-            <a href="<?= BASE_URL ?>/admin/loans.php" class="inline-flex items-center gap-1 text-xs text-zinc-600 bg-white border border-zinc-200 px-2.5 py-1.5 rounded-lg hover:bg-zinc-50">
+            <a href="<?= BASE_URL ?>/admin/loans.php" class="inline-flex items-center gap-1 text-xs text-slate-600 bg-white border border-slate-200 px-2.5 py-1.5 rounded-lg hover:bg-slate-50">
                 <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> All Loans
             </a>
         </div>
     </div>
 
     <!-- Loan Financial Summary Card (Minimal) -->
-    <div class="bg-white rounded-xl border border-zinc-200 p-5 space-y-4">
+    <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-4">
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
             <div>
-                <span class="text-zinc-400 block text-[10px] uppercase">Principal Facility</span>
-                <span class="text-lg font-bold text-zinc-900"><?= formatMoney((int)$loan['principal_pesewas']) ?></span>
-                <span class="text-[10px] text-zinc-400 block"><?= $loan['interest_rate'] ?>% <?= ucfirst($loan['interest_method']) ?></span>
+                <span class="text-slate-400 block text-[10px] uppercase">Principal Facility</span>
+                <span class="text-lg font-bold text-slate-900"><?= formatMoney((int)$loan['principal_pesewas']) ?></span>
+                <span class="text-[10px] text-slate-400 block"><?= $loan['interest_rate'] ?>% <?= ucfirst($loan['interest_method']) ?></span>
             </div>
             <div>
-                <span class="text-zinc-400 block text-[10px] uppercase">Total Payable</span>
-                <span class="text-lg font-bold text-zinc-900"><?= formatMoney((int)$loan['total_payable_pesewas']) ?></span>
-                <span class="text-[10px] text-zinc-400 block">Interest: <?= formatMoney((int)$loan['interest_pesewas']) ?></span>
+                <span class="text-slate-400 block text-[10px] uppercase">Total Payable</span>
+                <span class="text-lg font-bold text-slate-900"><?= formatMoney((int)$loan['total_payable_pesewas']) ?></span>
+                <span class="text-[10px] text-slate-400 block">Interest: <?= formatMoney((int)$loan['interest_pesewas']) ?></span>
             </div>
             <div>
-                <span class="text-zinc-400 block text-[10px] uppercase">Total Paid</span>
-                <span class="text-lg font-bold text-zinc-900"><?= formatMoney((int)$loan['total_paid_pesewas']) ?></span>
-                <span class="text-[10px] text-zinc-400 block"><?= $pctPaid ?>% Realized</span>
+                <span class="text-slate-400 block text-[10px] uppercase">Total Paid</span>
+                <span class="text-lg font-bold text-slate-900"><?= formatMoney((int)$loan['total_paid_pesewas']) ?></span>
+                <span class="text-[10px] text-slate-400 block"><?= $pctPaid ?>% Realized</span>
             </div>
             <div>
-                <span class="text-zinc-400 block text-[10px] uppercase">Remaining Balance</span>
-                <span class="text-lg font-bold text-zinc-900"><?= formatMoney((int)$loan['remaining_balance_pesewas']) ?></span>
-                <span class="text-[10px] text-zinc-400 block"><?= count($schedule) ?> installments</span>
+                <span class="text-slate-400 block text-[10px] uppercase">Remaining Balance</span>
+                <span class="text-lg font-bold text-slate-900"><?= formatMoney((int)$loan['remaining_balance_pesewas']) ?></span>
+                <span class="text-[10px] text-slate-400 block"><?= count($schedule) ?> installments</span>
             </div>
         </div>
 
         <!-- Progress Bar (Minimal) -->
         <div class="pt-2">
-            <div class="w-full bg-zinc-100 rounded-full h-1.5 overflow-hidden">
-                <div class="bg-zinc-900 h-1.5 rounded-full" style="width: <?= min(100, $pctPaid) ?>%"></div>
+            <div class="w-full bg-purple-50 rounded-full h-1.5 overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-purple-600 h-1.5 rounded-full" style="width: <?= min(100, $pctPaid) ?>%"></div>
             </div>
         </div>
     </div>
 
     <!-- Repayment Schedule Amortization Table -->
-    <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden">
-        <div class="px-5 py-3 border-b border-zinc-100 flex items-center justify-between">
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-700">Amortization Schedule (<?= count($schedule) ?> Installments)</h2>
-            <span class="text-xs text-zinc-400">Daily breakdown</span>
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-900">Amortization Schedule (<?= count($schedule) ?> Installments)</h2>
+            <span class="text-xs text-slate-400">Daily breakdown</span>
         </div>
 
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
-                <thead class="bg-zinc-50 text-zinc-400 uppercase font-medium text-[10px] tracking-wider border-b border-zinc-100">
+                <thead class="bg-slate-50 text-slate-400 uppercase font-medium text-[10px] tracking-wider border-b border-slate-100">
                     <tr>
                         <th class="py-2.5 px-4 font-normal">#</th>
                         <th class="py-2.5 px-4 font-normal">Due Date</th>
@@ -149,45 +149,45 @@ include __DIR__ . '/../includes/header.php';
                         <th class="py-2.5 px-4 font-normal">Status</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-zinc-100">
+                <tbody class="divide-y divide-slate-100">
                     <?php foreach ($schedule as $row): ?>
                         <?php 
                             $isOverdue = ($row['status'] !== 'paid' && strtotime($row['due_date']) < strtotime(date('Y-m-d')));
                         ?>
-                        <tr class="hover:bg-zinc-50/50 transition">
-                            <td class="py-2.5 px-4 font-mono text-zinc-400 text-[11px]">
+                        <tr class="hover:bg-purple-50/30 transition">
+                            <td class="py-2.5 px-4 font-mono text-slate-400 text-[11px]">
                                 <?= $row['installment_number'] ?>
                             </td>
-                            <td class="py-2.5 px-4 font-mono text-zinc-700">
+                            <td class="py-2.5 px-4 font-mono text-slate-700">
                                 <?= formatDate($row['due_date']) ?>
                             </td>
-                            <td class="py-2.5 px-4 text-right text-zinc-500">
+                            <td class="py-2.5 px-4 text-right text-slate-500">
                                 <?= formatMoney((int)$row['principal_portion_pesewas']) ?>
                             </td>
-                            <td class="py-2.5 px-4 text-right text-zinc-500">
+                            <td class="py-2.5 px-4 text-right text-slate-500">
                                 <?= formatMoney((int)$row['interest_portion_pesewas']) ?>
                             </td>
-                            <td class="py-2.5 px-4 text-right font-medium text-zinc-900">
+                            <td class="py-2.5 px-4 text-right font-medium text-slate-900">
                                 <?= formatMoney((int)$row['expected_amount_pesewas']) ?>
                             </td>
-                            <td class="py-2.5 px-4 text-right font-semibold text-zinc-900">
+                            <td class="py-2.5 px-4 text-right font-semibold text-slate-900">
                                 <?= formatMoney((int)$row['paid_amount_pesewas']) ?>
                             </td>
                             <td class="py-2.5 px-4">
                                 <?php if ($row['status'] === 'paid'): ?>
-                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase bg-zinc-100 text-zinc-800">
+                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase bg-purple-50 text-slate-800">
                                         Paid
                                     </span>
                                 <?php elseif ($isOverdue): ?>
-                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase bg-zinc-200 text-zinc-900">
+                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase bg-slate-200 text-slate-900">
                                         Overdue
                                     </span>
                                 <?php elseif ($row['status'] === 'partially_paid'): ?>
-                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase bg-zinc-100 text-zinc-700">
+                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase bg-purple-50 text-slate-700">
                                         Partial
                                     </span>
                                 <?php else: ?>
-                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-normal uppercase text-zinc-400">
+                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-normal uppercase text-slate-400">
                                         Pending
                                     </span>
                                 <?php endif; ?>
@@ -200,19 +200,19 @@ include __DIR__ . '/../includes/header.php';
     </div>
 
     <!-- Payments Ledger Table -->
-    <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden">
-        <div class="px-5 py-3 border-b border-zinc-100 flex items-center justify-between">
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-700">Payments Recorded (<?= count($payments) ?>)</h2>
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-900">Payments Recorded (<?= count($payments) ?>)</h2>
         </div>
 
         <?php if (empty($payments)): ?>
-            <div class="p-8 text-center text-zinc-400 text-xs">
+            <div class="p-8 text-center text-slate-400 text-xs">
                 No repayments have been recorded for this facility yet.
             </div>
         <?php else: ?>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs">
-                    <thead class="bg-zinc-50 text-zinc-400 uppercase font-medium text-[10px] tracking-wider border-b border-zinc-100">
+                    <thead class="bg-slate-50 text-slate-400 uppercase font-medium text-[10px] tracking-wider border-b border-slate-100">
                         <tr>
                             <th class="py-2.5 px-4 font-normal">Date Time</th>
                             <th class="py-2.5 px-4 font-normal">Receipt #</th>
@@ -223,31 +223,31 @@ include __DIR__ . '/../includes/header.php';
                             <th class="py-2.5 px-4 text-center font-normal">Receipt</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-zinc-100">
+                    <tbody class="divide-y divide-slate-100">
                         <?php foreach ($payments as $p): ?>
-                            <tr class="hover:bg-zinc-50/50 transition">
-                                <td class="py-2.5 px-4 text-zinc-500 text-[11px]">
+                            <tr class="hover:bg-purple-50/30 transition">
+                                <td class="py-2.5 px-4 text-slate-500 text-[11px]">
                                     <?= date('d M Y, h:i A', strtotime($p['collection_timestamp'])) ?>
                                 </td>
-                                <td class="py-2.5 px-4 font-mono font-medium text-zinc-900">
+                                <td class="py-2.5 px-4 font-mono font-medium text-slate-900">
                                     <?= htmlspecialchars($p['receipt_number']) ?>
                                 </td>
-                                <td class="py-2.5 px-4 text-zinc-700">
+                                <td class="py-2.5 px-4 text-slate-700">
                                     <?= htmlspecialchars($p['agent_name']) ?>
                                 </td>
-                                <td class="py-2.5 px-4 uppercase text-[10px] font-medium text-zinc-500">
+                                <td class="py-2.5 px-4 uppercase text-[10px] font-medium text-slate-500">
                                     <?= htmlspecialchars($p['payment_method']) ?>
                                 </td>
-                                <td class="py-2.5 px-4 text-right font-semibold text-zinc-900">
+                                <td class="py-2.5 px-4 text-right font-semibold text-slate-900">
                                     <?= formatMoney((int)$p['amount_pesewas']) ?>
                                 </td>
                                 <td class="py-2.5 px-4">
-                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase <?= $p['status'] === 'recorded' ? 'bg-zinc-100 text-zinc-800' : 'bg-zinc-200 text-zinc-500 line-through' ?>">
+                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase <?= $p['status'] === 'recorded' ? 'bg-purple-50 text-slate-800' : 'bg-slate-200 text-slate-500 line-through' ?>">
                                         <?= htmlspecialchars($p['status']) ?>
                                     </span>
                                 </td>
                                 <td class="py-2.5 px-4 text-center">
-                                    <a href="<?= BASE_URL ?>/receipt.php?id=<?= $p['id'] ?>" class="text-zinc-600 hover:text-zinc-900 underline text-xs">
+                                    <a href="<?= BASE_URL ?>/receipt.php?id=<?= $p['id'] ?>" class="text-slate-600 hover:text-slate-900 underline text-xs">
                                         View
                                     </a>
                                 </td>

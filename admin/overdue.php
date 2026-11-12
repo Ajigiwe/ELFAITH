@@ -65,73 +65,73 @@ include __DIR__ . '/../includes/header.php';
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-lg font-bold text-zinc-900 tracking-tight">Overdue Tracking & PAR</h1>
-            <p class="text-xs text-zinc-400 mt-0.5">Aging analysis & defaulter recovery monitoring</p>
+            <h1 class="text-lg font-bold text-slate-900 tracking-tight">Overdue Tracking & PAR</h1>
+            <p class="text-xs text-slate-400 mt-0.5">Aging analysis & defaulter recovery monitoring</p>
         </div>
     </div>
 
     <!-- Aging Analysis Cards (Minimal) -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <!-- 1 - 7 Days -->
-        <div class="bg-white rounded-xl border border-zinc-200 p-4 space-y-2">
-            <div class="flex items-center justify-between text-[11px] font-medium text-zinc-400 uppercase tracking-wider">
+        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-2">
+            <div class="flex items-center justify-between text-[11px] font-medium text-slate-400 uppercase tracking-wider">
                 <span>1 — 7 Days</span>
-                <span class="text-zinc-500 font-normal"><?= (int)$aging['count_1_7'] ?> items</span>
+                <span class="text-slate-500 font-normal"><?= (int)$aging['count_1_7'] ?> items</span>
             </div>
-            <div class="text-2xl font-bold text-zinc-900 tracking-tight">
+            <div class="text-2xl font-bold text-slate-900 tracking-tight">
                 <?= formatMoney((int)$aging['bucket_1_7']) ?>
             </div>
-            <div class="text-[11px] text-zinc-400 pt-2 border-t border-zinc-100">
+            <div class="text-[11px] text-slate-400 pt-2 border-t border-slate-100">
                 Early warning bucket
             </div>
         </div>
 
         <!-- 8 - 30 Days -->
-        <div class="bg-white rounded-xl border border-zinc-200 p-4 space-y-2">
-            <div class="flex items-center justify-between text-[11px] font-medium text-zinc-400 uppercase tracking-wider">
+        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-2">
+            <div class="flex items-center justify-between text-[11px] font-medium text-slate-400 uppercase tracking-wider">
                 <span>8 — 30 Days</span>
-                <span class="text-zinc-500 font-normal"><?= (int)$aging['count_8_30'] ?> items</span>
+                <span class="text-slate-500 font-normal"><?= (int)$aging['count_8_30'] ?> items</span>
             </div>
-            <div class="text-2xl font-bold text-zinc-900 tracking-tight">
+            <div class="text-2xl font-bold text-slate-900 tracking-tight">
                 <?= formatMoney((int)$aging['bucket_8_30']) ?>
             </div>
-            <div class="text-[11px] text-zinc-400 pt-2 border-t border-zinc-100">
+            <div class="text-[11px] text-slate-400 pt-2 border-t border-slate-100">
                 Moderate risk exposure
             </div>
         </div>
 
         <!-- 30+ Days (PAR) -->
-        <div class="bg-white rounded-xl border border-zinc-200 p-4 space-y-2">
-            <div class="flex items-center justify-between text-[11px] font-medium text-zinc-400 uppercase tracking-wider">
+        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-2">
+            <div class="flex items-center justify-between text-[11px] font-medium text-slate-400 uppercase tracking-wider">
                 <span>30+ Days (PAR 30+)</span>
-                <span class="text-zinc-900 font-semibold"><?= (int)$aging['count_30_plus'] ?> items</span>
+                <span class="text-slate-900 font-semibold"><?= (int)$aging['count_30_plus'] ?> items</span>
             </div>
-            <div class="text-2xl font-bold text-zinc-900 tracking-tight">
+            <div class="text-2xl font-bold text-slate-900 tracking-tight">
                 <?= formatMoney((int)$aging['bucket_30_plus']) ?>
             </div>
-            <div class="text-[11px] text-zinc-400 pt-2 border-t border-zinc-100">
+            <div class="text-[11px] text-slate-400 pt-2 border-t border-slate-100">
                 High default risk
             </div>
         </div>
     </div>
 
     <!-- Overdue Installments Detail List -->
-    <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden">
-        <div class="px-5 py-3 border-b border-zinc-100 flex items-center justify-between">
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-700">Delinquent Installments (<?= count($overdueList) ?>)</h2>
-            <a href="<?= BASE_URL ?>/admin/reports.php?type=defaulters" class="text-xs text-zinc-500 hover:text-zinc-900 font-medium">
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-900">Delinquent Installments (<?= count($overdueList) ?>)</h2>
+            <a href="<?= BASE_URL ?>/admin/reports.php?type=defaulters" class="text-xs text-slate-500 hover:text-slate-900 font-medium">
                 Print Defaulters Report &rarr;
             </a>
         </div>
 
         <?php if (empty($overdueList)): ?>
-            <div class="p-8 text-center text-zinc-400 text-xs">
+            <div class="p-8 text-center text-slate-400 text-xs">
                 Zero delinquent installments. Portfolio is completely current.
             </div>
         <?php else: ?>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs">
-                    <thead class="bg-zinc-50 text-zinc-400 uppercase font-medium text-[10px] tracking-wider border-b border-zinc-100">
+                    <thead class="bg-slate-50 text-slate-400 uppercase font-medium text-[10px] tracking-wider border-b border-slate-100">
                         <tr>
                             <th class="py-2.5 px-4 font-normal">Borrower</th>
                             <th class="py-2.5 px-4 font-normal">Loan Code</th>
@@ -143,43 +143,43 @@ include __DIR__ . '/../includes/header.php';
                             <th class="py-2.5 px-4 text-center font-normal">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-zinc-100">
+                    <tbody class="divide-y divide-slate-100">
                         <?php foreach ($overdueList as $od): ?>
-                            <tr class="hover:bg-zinc-50/50 transition">
+                            <tr class="hover:bg-purple-50/30 transition">
                                 <td class="py-3 px-4">
-                                    <a href="<?= BASE_URL ?>/admin/customer_view.php?id=<?= $od['customer_id'] ?>" class="font-medium text-zinc-900 hover:underline block">
+                                    <a href="<?= BASE_URL ?>/admin/customer_view.php?id=<?= $od['customer_id'] ?>" class="font-medium text-slate-900 hover:underline block">
                                         <?= htmlspecialchars($od['full_name']) ?>
                                     </a>
-                                    <span class="text-[11px] font-mono text-zinc-400"><?= htmlspecialchars($od['phone']) ?></span>
+                                    <span class="text-[11px] font-mono text-slate-400"><?= htmlspecialchars($od['phone']) ?></span>
                                 </td>
-                                <td class="py-3 px-4 font-mono font-medium text-zinc-900">
+                                <td class="py-3 px-4 font-mono font-medium text-slate-900">
                                     <?= htmlspecialchars($od['loan_code']) ?>
-                                    <span class="text-[10px] text-zinc-400 block">Inst #<?= $od['installment_number'] ?></span>
+                                    <span class="text-[10px] text-slate-400 block">Inst #<?= $od['installment_number'] ?></span>
                                 </td>
-                                <td class="py-3 px-4 font-mono text-zinc-700">
+                                <td class="py-3 px-4 font-mono text-slate-700">
                                     <?= formatDate($od['due_date']) ?>
                                 </td>
                                 <td class="py-3 px-4">
-                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium uppercase <?= $od['days_overdue'] > 30 ? 'bg-zinc-200 text-zinc-900 font-bold' : 'bg-zinc-100 text-zinc-700' ?>">
+                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium uppercase <?= $od['days_overdue'] > 30 ? 'bg-slate-200 text-slate-900 font-bold' : 'bg-purple-50 text-slate-700' ?>">
                                         <?= $od['days_overdue'] ?> days
                                     </span>
                                 </td>
                                 <td class="py-3 px-4 text-right">
-                                    <span class="font-bold text-zinc-900 block"><?= formatMoney((int)$od['overdue_pesewas']) ?></span>
-                                    <span class="text-[10px] text-zinc-400">Total: <?= formatMoney((int)$od['remaining_balance_pesewas']) ?></span>
+                                    <span class="font-bold text-slate-900 block"><?= formatMoney((int)$od['overdue_pesewas']) ?></span>
+                                    <span class="text-[10px] text-slate-400">Total: <?= formatMoney((int)$od['remaining_balance_pesewas']) ?></span>
                                 </td>
-                                <td class="py-3 px-4 text-zinc-700">
+                                <td class="py-3 px-4 text-slate-700">
                                     <?= htmlspecialchars($od['agent_name'] ?? 'Unassigned') ?>
                                 </td>
                                 <td class="py-3 px-4">
-                                    <span class="text-zinc-800 block"><?= htmlspecialchars($od['guarantor_name']) ?></span>
-                                    <a href="tel:<?= htmlspecialchars($od['guarantor_phone']) ?>" class="text-[11px] font-mono text-zinc-400 hover:text-zinc-900">
+                                    <span class="text-slate-800 block"><?= htmlspecialchars($od['guarantor_name']) ?></span>
+                                    <a href="tel:<?= htmlspecialchars($od['guarantor_phone']) ?>" class="text-[11px] font-mono text-slate-400 hover:text-slate-900">
                                         <?= htmlspecialchars($od['guarantor_phone']) ?>
                                     </a>
                                 </td>
                                 <td class="py-3 px-4 text-center">
                                     <a href="<?= BASE_URL ?>/agent/collect.php?loan_id=<?= $od['loan_id'] ?>&customer_id=<?= $od['customer_id'] ?>&amount=<?= pesewasToGHS((int)$od['overdue_pesewas']) ?>" 
-                                       class="px-2 py-1 bg-zinc-900 hover:bg-zinc-800 text-white rounded text-[11px] font-medium transition">
+                                       class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[11px] font-medium transition">
                                         Collect
                                     </a>
                                 </td>

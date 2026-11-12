@@ -46,15 +46,15 @@ include __DIR__ . '/../includes/header.php';
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-lg font-bold text-zinc-900 tracking-tight">My Collections</h1>
-            <p class="text-xs text-zinc-400">Daily collections log & cash summary</p>
+            <h1 class="text-lg font-bold text-slate-900 tracking-tight">My Collections</h1>
+            <p class="text-xs text-slate-400">Daily collections log & cash summary</p>
         </div>
         <div>
             <!-- Date Filter Form -->
             <form method="GET" class="flex items-center gap-2">
                 <input type="date" name="date" value="<?= htmlspecialchars($dateFilter) ?>" 
-                    class="px-2.5 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900">
-                <button type="submit" class="px-3 py-1.5 bg-zinc-900 text-white rounded-lg text-xs font-medium hover:bg-zinc-800 transition">
+                    class="px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                <button type="submit" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition">
                     Filter
                 </button>
             </form>
@@ -63,38 +63,38 @@ include __DIR__ . '/../includes/header.php';
 
     <!-- Summary Metrics -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-white rounded-xl border border-zinc-200 p-4 space-y-2">
-            <span class="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">Total Collected</span>
-            <div class="text-2xl font-bold text-zinc-900"><?= formatMoney((int)$summary['total_amount']) ?></div>
-            <span class="text-[11px] text-zinc-400 block"><?= (int)$summary['total_count'] ?> collections</span>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-2">
+            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Total Collected</span>
+            <div class="text-2xl font-bold text-slate-900"><?= formatMoney((int)$summary['total_amount']) ?></div>
+            <span class="text-[11px] text-slate-400 block"><?= (int)$summary['total_count'] ?> collections</span>
         </div>
-        <div class="bg-white rounded-xl border border-zinc-200 p-4 space-y-2">
-            <span class="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">Cash in Hand</span>
-            <div class="text-2xl font-bold text-zinc-900"><?= formatMoney((int)$summary['cash_amount']) ?></div>
-            <span class="text-[11px] text-zinc-400 block">Deliver to office</span>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-2">
+            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Cash in Hand</span>
+            <div class="text-2xl font-bold text-slate-900"><?= formatMoney((int)$summary['cash_amount']) ?></div>
+            <span class="text-[11px] text-slate-400 block">Deliver to office</span>
         </div>
-        <div class="bg-white rounded-xl border border-zinc-200 p-4 space-y-2">
-            <span class="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">Mobile Money</span>
-            <div class="text-2xl font-bold text-zinc-900"><?= formatMoney((int)$summary['momo_amount']) ?></div>
-            <span class="text-[11px] text-zinc-400 block">Electronic payments</span>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-2">
+            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Mobile Money</span>
+            <div class="text-2xl font-bold text-slate-900"><?= formatMoney((int)$summary['momo_amount']) ?></div>
+            <span class="text-[11px] text-slate-400 block">Electronic payments</span>
         </div>
     </div>
 
     <!-- Payments Table -->
-    <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden">
-        <div class="px-5 py-3.5 border-b border-zinc-100 flex items-center justify-between">
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-700">Receipts Issued</h2>
-            <span class="text-xs text-zinc-400"><?= count($payments) ?> Entries</span>
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-slate-100 flex items-center justify-between">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-900">Receipts Issued</h2>
+            <span class="text-xs text-slate-400"><?= count($payments) ?> Entries</span>
         </div>
 
         <?php if (empty($payments)): ?>
-            <div class="p-8 text-center text-zinc-400 text-xs">
+            <div class="p-8 text-center text-slate-400 text-xs">
                 No collections logged for <?= formatDate($dateFilter) ?>.
             </div>
         <?php else: ?>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs">
-                    <thead class="bg-zinc-50 text-zinc-400 uppercase font-medium text-[10px] tracking-wider border-b border-zinc-100">
+                    <thead class="bg-slate-50 text-slate-400 uppercase font-medium text-[10px] tracking-wider border-b border-slate-100">
                         <tr>
                             <th class="py-2.5 px-4 font-normal">Time</th>
                             <th class="py-2.5 px-4 font-normal">Receipt #</th>
@@ -105,32 +105,32 @@ include __DIR__ . '/../includes/header.php';
                             <th class="py-2.5 px-4 text-center font-normal">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-zinc-100">
+                    <tbody class="divide-y divide-slate-100">
                         <?php foreach ($payments as $p): ?>
-                            <tr class="hover:bg-zinc-50/50 transition">
-                                <td class="py-3 px-4 text-zinc-400 font-mono text-[11px]">
+                            <tr class="hover:bg-purple-50/30 transition">
+                                <td class="py-3 px-4 text-slate-400 font-mono text-[11px]">
                                     <?= date('h:i A', strtotime($p['collection_timestamp'])) ?>
                                 </td>
-                                <td class="py-3 px-4 font-mono font-medium text-zinc-900">
+                                <td class="py-3 px-4 font-mono font-medium text-slate-900">
                                     <?= htmlspecialchars($p['receipt_number']) ?>
                                     <?php if ($p['status'] === 'reversed'): ?>
-                                        <span class="ml-1 text-[9px] text-zinc-400 uppercase font-mono">(Reversed)</span>
+                                        <span class="ml-1 text-[9px] text-slate-400 uppercase font-mono">(Reversed)</span>
                                     <?php endif; ?>
                                 </td>
-                                <td class="py-3 px-4 font-medium text-zinc-900">
+                                <td class="py-3 px-4 font-medium text-slate-900">
                                     <?= htmlspecialchars($p['customer_name']) ?>
                                 </td>
-                                <td class="py-3 px-4 font-mono text-zinc-600">
+                                <td class="py-3 px-4 font-mono text-slate-600">
                                     <?= htmlspecialchars($p['loan_code']) ?>
                                 </td>
-                                <td class="py-3 px-4 uppercase text-[10px] font-mono text-zinc-600">
+                                <td class="py-3 px-4 uppercase text-[10px] font-mono text-slate-600">
                                     <?= htmlspecialchars($p['payment_method']) ?>
                                 </td>
-                                <td class="py-3 px-4 text-right font-bold text-zinc-900">
+                                <td class="py-3 px-4 text-right font-bold text-slate-900">
                                     <?= formatMoney((int)$p['amount_pesewas']) ?>
                                 </td>
                                 <td class="py-3 px-4 text-center">
-                                    <a href="<?= BASE_URL ?>/receipt.php?id=<?= $p['id'] ?>" class="text-[11px] text-zinc-600 hover:text-zinc-900 underline">
+                                    <a href="<?= BASE_URL ?>/receipt.php?id=<?= $p['id'] ?>" class="text-[11px] text-slate-600 hover:text-slate-900 underline">
                                         View
                                     </a>
                                 </td>

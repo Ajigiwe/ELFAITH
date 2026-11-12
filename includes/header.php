@@ -16,14 +16,14 @@ $currSelf = $_SERVER['PHP_SELF'] ?? '';
 $isCalculator = strpos($currSelf, 'calculator.php') !== false;
 ?>
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-zinc-50">
+<html lang="en" class="h-full bg-slate-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title><?= htmlspecialchars($page_title) ?> — <?= htmlspecialchars(COMPANY_NAME) ?></title>
     
     <!-- PWA & Mobile Web App Meta -->
-    <meta name="theme-color" content="#18181b">
+    <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="EL-FAITH">
@@ -106,15 +106,15 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col text-zinc-900 bg-zinc-50 font-sans antialiased pb-16 md:pb-0">
+<body class="min-h-screen flex flex-col text-slate-900 bg-slate-50 font-sans antialiased pb-16 md:pb-0">
 
-    <!-- Offline Notification Banner (Minimal) -->
-    <div id="offline-banner" class="hidden no-print bg-zinc-900 text-zinc-100 text-xs px-4 py-2 text-center sticky top-0 z-50 transition-all">
+    <!-- Offline Notification Banner -->
+    <div id="offline-banner" class="hidden no-print bg-purple-900 text-white text-xs px-4 py-2 text-center sticky top-0 z-50 transition-all">
         <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 flex-wrap">
-            <i data-lucide="wifi-off" class="w-3.5 h-3.5 text-zinc-400"></i>
+            <i data-lucide="wifi-off" class="w-3.5 h-3.5 text-purple-200"></i>
             <span id="offline-banner-text">Offline Mode &bull; Collections saved locally on device</span>
-            <span id="offline-count-badge" class="ml-1 bg-zinc-800 text-zinc-200 px-2 py-0.5 rounded text-[10px] font-mono">0 Pending</span>
-            <a href="<?= BASE_URL ?>/agent/offline_queue.php" class="ml-2 text-zinc-300 hover:text-white underline text-[11px] font-medium">View Queue</a>
+            <span id="offline-count-badge" class="ml-1 bg-purple-800 text-purple-100 px-2 py-0.5 rounded text-[10px] font-mono">0 Pending</span>
+            <a href="<?= BASE_URL ?>/agent/offline_queue.php" class="ml-2 text-blue-200 hover:text-white underline text-[11px] font-medium">View Queue</a>
         </div>
     </div>
 
@@ -164,29 +164,32 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
     <!-- App Shell with Collapsible Side Menu -->
     <div class="flex-1 flex min-h-0">
         <!-- Mobile Sidebar Backdrop -->
-        <div id="sidebar-backdrop" onclick="toggleMobileSidebar(false)" class="no-print fixed inset-0 bg-zinc-900/40 z-40 hidden md:hidden transition-opacity"></div>
+        <div id="sidebar-backdrop" onclick="toggleMobileSidebar(false)" class="no-print fixed inset-0 bg-slate-900/40 z-40 hidden md:hidden transition-opacity"></div>
 
         <!-- Collapsible Sidebar -->
-        <aside id="app-sidebar" class="no-print fixed inset-y-0 left-0 z-50 w-60 bg-white border-r border-zinc-200 flex flex-col transform -translate-x-full md:translate-x-0 md:sticky md:top-0 md:h-screen transition-all duration-200 ease-in-out shrink-0">
+        <aside id="app-sidebar" class="no-print fixed inset-y-0 left-0 z-50 w-60 bg-white border-r border-purple-100 flex flex-col transform -translate-x-full md:translate-x-0 md:sticky md:top-0 md:h-screen transition-all duration-200 ease-in-out shrink-0 shadow-sm">
+            <!-- Subtle Brand Top Accent -->
+            <div class="h-1 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 shrink-0"></div>
+
             <!-- Brand & Collapse Toggle -->
-            <div class="sidebar-header-row h-14 px-4 border-b border-zinc-200 flex items-center justify-between gap-2 shrink-0">
+            <div class="sidebar-header-row h-14 px-4 border-b border-slate-100 flex items-center justify-between gap-2 shrink-0">
                 <a href="<?= BASE_URL ?>" class="sidebar-brand-link flex items-center gap-2.5 min-w-0">
                     <?= renderCompanyLogo('navbar') ?>
                     <div class="sidebar-brand-text leading-none truncate">
-                        <span class="text-xs font-bold tracking-wide uppercase text-zinc-900 block truncate">EL-FAITH</span>
-                        <span class="text-[10px] block text-zinc-400 font-normal uppercase tracking-wider mt-0.5 truncate"><?= htmlspecialchars(BRANCH_NAME) ?></span>
+                        <span class="text-xs font-bold tracking-wide uppercase text-slate-900 block truncate">EL-FAITH</span>
+                        <span class="text-[10px] block text-purple-600 font-medium uppercase tracking-wider mt-0.5 truncate"><?= htmlspecialchars(BRANCH_NAME) ?></span>
                     </div>
                 </a>
 
                 <!-- Desktop Collapse Button -->
                 <button type="button" onclick="toggleDesktopSidebar()" title="Collapse / Expand Menu"
-                    class="hidden md:inline-flex items-center justify-center p-1.5 rounded-lg text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition shrink-0">
+                    class="hidden md:inline-flex items-center justify-center p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition shrink-0">
                     <i data-lucide="panel-left" class="w-4 h-4"></i>
                 </button>
 
                 <!-- Mobile Close Button -->
                 <button type="button" onclick="toggleMobileSidebar(false)" title="Close Menu"
-                    class="md:hidden inline-flex items-center justify-center p-1.5 rounded-lg text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition shrink-0">
+                    class="md:hidden inline-flex items-center justify-center p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition shrink-0">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
@@ -195,14 +198,14 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
             <nav class="flex-1 overflow-y-auto px-2.5 py-3 space-y-4">
                 <?php foreach ($navSections as $sectionName => $items): ?>
                     <div>
-                        <div class="sidebar-section-title px-2.5 mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
+                        <div class="sidebar-section-title px-2.5 mb-1.5 text-[10px] font-semibold uppercase tracking-wider text-purple-500">
                             <?= htmlspecialchars($sectionName) ?>
                         </div>
                         <div class="space-y-0.5">
                             <?php foreach ($items as $item): ?>
                                 <a href="<?= htmlspecialchars($item['url']) ?>" title="<?= htmlspecialchars($item['label']) ?>"
-                                   class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs transition <?= $item['active'] ? 'bg-zinc-900 text-white font-medium shadow-sm' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100' ?>">
-                                    <i data-lucide="<?= htmlspecialchars($item['icon']) ?>" class="w-4 h-4 shrink-0 <?= $item['active'] ? 'text-white' : 'text-zinc-500' ?>"></i>
+                                   class="sidebar-nav-link flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs transition <?= $item['active'] ? 'bg-purple-600 text-white font-medium shadow-sm' : 'text-slate-600 hover:text-purple-700 hover:bg-purple-50/80' ?>">
+                                    <i data-lucide="<?= htmlspecialchars($item['icon']) ?>" class="w-4 h-4 shrink-0 <?= $item['active'] ? 'text-white' : 'text-purple-400' ?>"></i>
                                     <span class="sidebar-label truncate"><?= htmlspecialchars($item['label']) ?></span>
                                 </a>
                             <?php endforeach; ?>
@@ -212,18 +215,18 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
             </nav>
 
             <!-- Sidebar Footer User Info -->
-            <div class="p-3 border-t border-zinc-200 shrink-0 bg-zinc-50/50">
+            <div class="p-3 border-t border-purple-100 shrink-0 bg-purple-50/40">
                 <div class="sidebar-footer-user flex items-center justify-between gap-2">
                     <div class="flex items-center gap-2.5 min-w-0">
-                        <div class="w-8 h-8 rounded-lg bg-zinc-900 text-white flex items-center justify-center text-[11px] font-bold shrink-0">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 text-white flex items-center justify-center text-[11px] font-bold shrink-0 shadow-sm">
                             <?= htmlspecialchars($initials) ?>
                         </div>
                         <div class="sidebar-user-meta min-w-0 leading-tight">
-                            <span class="block text-xs font-semibold text-zinc-900 truncate"><?= htmlspecialchars($user['name']) ?></span>
-                            <span class="block text-[10px] text-zinc-400 font-mono uppercase"><?= htmlspecialchars(strtoupper($user['role'])) ?></span>
+                            <span class="block text-xs font-semibold text-slate-900 truncate"><?= htmlspecialchars($user['name']) ?></span>
+                            <span class="block text-[10px] text-purple-600 font-mono font-medium uppercase"><?= htmlspecialchars(strtoupper($user['role'])) ?></span>
                         </div>
                     </div>
-                    <a href="<?= BASE_URL ?>/logout.php" title="Sign Out" class="sidebar-label p-1.5 rounded-lg text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition shrink-0">
+                    <a href="<?= BASE_URL ?>/logout.php" title="Sign Out" class="sidebar-label p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition shrink-0">
                         <i data-lucide="log-out" class="w-4 h-4"></i>
                     </a>
                 </div>
@@ -232,44 +235,45 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
 
         <!-- Right Content Column -->
         <div id="app-main-shell" class="flex-1 flex flex-col min-w-0">
-            <!-- Slim Minimal Top Utility Bar -->
-            <header class="no-print bg-white border-b border-zinc-200 sticky top-0 z-30 h-14 flex items-center shrink-0">
+            <!-- Slim White Top Utility Bar -->
+            <header class="no-print bg-white border-b border-purple-100 sticky top-0 z-30 h-14 flex items-center shrink-0">
                 <div class="w-full px-4 sm:px-6 flex items-center justify-between gap-3">
                     <!-- Left: Menu Triggers + Page Title -->
                     <div class="flex items-center gap-2.5 min-w-0">
                         <button type="button" onclick="toggleMobileSidebar(true)" title="Open Menu"
-                            class="md:hidden inline-flex items-center justify-center p-1.5 -ml-1 rounded-lg text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 transition">
+                            class="md:hidden inline-flex items-center justify-center p-1.5 -ml-1 rounded-lg text-slate-600 hover:text-blue-600 hover:bg-blue-50 transition">
                             <i data-lucide="menu" class="w-5 h-5"></i>
                         </button>
                         <button type="button" onclick="toggleDesktopSidebar()" title="Toggle Side Menu"
-                            class="hidden md:inline-flex items-center justify-center p-1.5 -ml-1 rounded-lg text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition">
+                            class="hidden md:inline-flex items-center justify-center p-1.5 -ml-1 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition">
                             <i data-lucide="menu" class="w-4 h-4"></i>
                         </button>
                         <a href="<?= BASE_URL ?>" class="md:hidden flex items-center gap-2 shrink-0">
                             <?= renderCompanyLogo('navbar') ?>
                         </a>
-                        <div class="min-w-0 truncate">
-                            <span class="text-xs font-semibold text-zinc-900 truncate block"><?= htmlspecialchars($page_title) ?></span>
+                        <div class="min-w-0 truncate flex items-center gap-2">
+                            <span class="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-purple-600 shrink-0"></span>
+                            <span class="text-xs font-semibold text-slate-900 truncate block"><?= htmlspecialchars($page_title) ?></span>
                         </div>
                     </div>
 
                     <!-- Right: Quick Actions & Account -->
                     <div class="flex items-center gap-2 shrink-0">
                         <a href="<?= BASE_URL ?>/calculator.php" title="Loan Calculator"
-                            class="p-1.5 rounded-lg transition <?= $isCalculator ? 'bg-zinc-100 text-zinc-900' : 'text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100' ?>">
+                            class="p-1.5 rounded-lg transition <?= $isCalculator ? 'bg-purple-100 text-purple-700' : 'text-slate-500 hover:text-purple-700 hover:bg-purple-50' ?>">
                             <i data-lucide="calculator" class="w-4 h-4"></i>
                         </a>
 
                         <button type="button" onclick="promptPwaInstall()"
-                            class="pwa-install-trigger hidden inline-flex items-center gap-1 px-2.5 py-1 bg-zinc-900 hover:bg-zinc-800 text-white text-[11px] font-medium rounded-lg transition shadow-sm whitespace-nowrap">
+                            class="pwa-install-trigger hidden inline-flex items-center gap-1 px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-medium rounded-lg transition shadow-sm whitespace-nowrap">
                             <i data-lucide="download" class="w-3 h-3"></i> Install App
                         </button>
 
-                        <div class="text-right hidden sm:block leading-tight pl-1 border-l border-zinc-200">
-                            <span class="block text-xs font-medium text-zinc-800"><?= htmlspecialchars($user['name']) ?></span>
-                            <span class="text-[10px] text-zinc-400 font-mono uppercase"><?= htmlspecialchars(strtoupper($user['role'])) ?></span>
+                        <div class="text-right hidden sm:block leading-tight pl-2 border-l border-purple-100">
+                            <span class="block text-xs font-medium text-slate-800"><?= htmlspecialchars($user['name']) ?></span>
+                            <span class="inline-block text-[10px] text-purple-700 bg-purple-50 px-1.5 py-0.2 rounded font-mono uppercase"><?= htmlspecialchars(strtoupper($user['role'])) ?></span>
                         </div>
-                        <a href="<?= BASE_URL ?>/logout.php" title="Sign Out" class="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 transition">
+                        <a href="<?= BASE_URL ?>/logout.php" title="Sign Out" class="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition">
                             <i data-lucide="log-out" class="w-4 h-4"></i>
                         </a>
                     </div>
@@ -280,40 +284,44 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
             <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5">
 <?php else: ?>
     <!-- Guest Minimal Header -->
-    <header class="no-print bg-white border-b border-zinc-200 sticky top-0 z-40">
+    <header class="no-print bg-white border-b border-purple-100 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
             <a href="<?= BASE_URL ?>" class="flex items-center gap-2.5">
                 <?= renderCompanyLogo('navbar') ?>
                 <div class="leading-none">
-                    <span class="text-xs font-bold tracking-wide uppercase text-zinc-900">EL-FAITH</span>
-                    <span class="text-[10px] block text-zinc-400 font-normal uppercase tracking-wider mt-0.5"><?= htmlspecialchars(BRANCH_NAME) ?></span>
+                    <span class="text-xs font-bold tracking-wide uppercase text-slate-900">EL-FAITH</span>
+                    <span class="text-[10px] block text-purple-600 font-medium uppercase tracking-wider mt-0.5"><?= htmlspecialchars(BRANCH_NAME) ?></span>
                 </div>
             </a>
-            <a href="<?= BASE_URL ?>/login.php" class="text-xs font-medium text-zinc-900 hover:text-zinc-600 transition">Sign In</a>
+            <a href="<?= BASE_URL ?>/login.php" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition">Sign In</a>
         </div>
     </header>
     <div id="app-main-shell" class="flex-1 flex flex-col min-w-0">
         <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5">
 <?php endif; ?>
 
-                <!-- Minimal Flash Alert Messages -->
+                <!-- Flash Alert Messages -->
                 <?php if ($flash): ?>
                     <?php
-                        $bgColor = 'bg-zinc-100 border-zinc-200 text-zinc-800';
+                        $bgColor = 'bg-blue-50 border-blue-200 text-blue-900';
+                        $iconColor = 'text-blue-600';
                         $icon = 'info';
                         if ($flash['type'] === 'success') {
-                            $bgColor = 'bg-zinc-50 border-zinc-300 text-zinc-800';
+                            $bgColor = 'bg-blue-50 border-blue-200 text-blue-900';
+                            $iconColor = 'text-blue-600';
                             $icon = 'check-circle';
                         } elseif ($flash['type'] === 'danger' || $flash['type'] === 'error') {
-                            $bgColor = 'bg-zinc-50 border-zinc-300 text-zinc-900';
+                            $bgColor = 'bg-rose-50 border-rose-200 text-rose-900';
+                            $iconColor = 'text-rose-600';
                             $icon = 'alert-triangle';
                         } elseif ($flash['type'] === 'warning') {
-                            $bgColor = 'bg-zinc-50 border-zinc-300 text-zinc-900';
+                            $bgColor = 'bg-purple-50 border-purple-200 text-purple-900';
+                            $iconColor = 'text-purple-600';
                             $icon = 'alert-circle';
                         }
                     ?>
-                    <div class="no-print mb-5 rounded-lg border p-3.5 <?= $bgColor ?> flex items-start gap-2.5 text-xs">
-                        <i data-lucide="<?= $icon ?>" class="w-4 h-4 shrink-0 text-zinc-600 mt-0.5"></i>
+                    <div class="no-print mb-5 rounded-lg border p-3.5 <?= $bgColor ?> flex items-start gap-2.5 text-xs shadow-sm">
+                        <i data-lucide="<?= $icon ?>" class="w-4 h-4 shrink-0 <?= $iconColor ?> mt-0.5"></i>
                         <div class="font-medium flex-1">
                             <?= htmlspecialchars($flash['message']) ?>
                         </div>

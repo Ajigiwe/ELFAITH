@@ -97,37 +97,37 @@ include __DIR__ . '/../includes/header.php';
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-base font-bold text-zinc-900 tracking-tight">Record Collection</h1>
-            <p class="text-xs text-zinc-400">Repayment collection & automatic SMS receipt</p>
+            <h1 class="text-base font-bold text-slate-900 tracking-tight">Record Collection</h1>
+            <p class="text-xs text-slate-400">Repayment collection & automatic SMS receipt</p>
         </div>
         <div class="flex items-center gap-2">
-            <a href="<?= BASE_URL ?>/agent/offline_queue.php" class="inline-flex items-center gap-1 text-xs text-zinc-600 bg-white border border-zinc-200 px-2.5 py-1.5 rounded-lg hover:bg-zinc-50 transition">
-                <i data-lucide="cloud" class="w-3.5 h-3.5 text-zinc-400"></i> Queue
+            <a href="<?= BASE_URL ?>/agent/offline_queue.php" class="inline-flex items-center gap-1 text-xs text-slate-600 bg-white border border-slate-200 px-2.5 py-1.5 rounded-lg hover:bg-slate-50 transition">
+                <i data-lucide="cloud" class="w-3.5 h-3.5 text-slate-400"></i> Queue
             </a>
-            <a href="<?= BASE_URL ?>/agent/index.php" class="inline-flex items-center gap-1 text-xs text-zinc-600 bg-white border border-zinc-200 px-2.5 py-1.5 rounded-lg hover:bg-zinc-50 transition">
+            <a href="<?= BASE_URL ?>/agent/index.php" class="inline-flex items-center gap-1 text-xs text-slate-600 bg-white border border-slate-200 px-2.5 py-1.5 rounded-lg hover:bg-slate-50 transition">
                 <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Route
             </a>
         </div>
     </div>
 
     <!-- Offline Active Mode Callout -->
-    <div id="collect-offline-notice" class="hidden p-3 rounded-lg bg-zinc-900 text-white text-xs font-medium flex items-center justify-between gap-2 shadow-sm">
+    <div id="collect-offline-notice" class="hidden p-3 rounded-lg bg-purple-700 text-white text-xs font-medium flex items-center justify-between gap-2 shadow-sm">
         <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
             <span><strong>Offline Mode:</strong> Payment will be saved locally with secure cryptographic UUID & auto-synced.</span>
         </div>
-        <span class="text-[10px] font-mono text-zinc-400 uppercase">Offline</span>
+        <span class="text-[10px] font-mono text-slate-400 uppercase">Offline</span>
     </div>
 
     <?php if (!empty($error)): ?>
-        <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-300 text-zinc-900 text-xs font-medium flex items-center gap-2">
-            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-zinc-700"></i>
+        <div class="p-3 rounded-lg bg-slate-50 border border-purple-200 text-slate-900 text-xs font-medium flex items-center gap-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-slate-700"></i>
             <span><?= htmlspecialchars($error) ?></span>
         </div>
     <?php endif; ?>
 
     <!-- Main Collection Form Card -->
-    <div class="bg-white rounded-xl border border-zinc-200 p-5 space-y-4 shadow-sm">
+    <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-4 shadow-sm">
         <form id="collection-form" method="POST" action="<?= BASE_URL ?>/agent/collect.php" class="space-y-4">
             <?= csrfField() ?>
             <!-- Client UUID for Idempotency & Offline Sync -->
@@ -138,11 +138,11 @@ include __DIR__ . '/../includes/header.php';
 
             <!-- Loan / Borrower Selector -->
             <div>
-                <label for="loan_id" class="block text-[11px] font-medium text-zinc-700 mb-1">
+                <label for="loan_id" class="block text-[11px] font-medium text-slate-700 mb-1">
                     Borrower / Loan Facility *
                 </label>
                 <select id="loan_id" name="loan_id" required 
-                    class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition">
+                    class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
                     <option value="">-- Choose active borrower --</option>
                     <?php foreach ($activeLoans as $al): ?>
                         <option value="<?= $al['id'] ?>" 
@@ -161,51 +161,51 @@ include __DIR__ . '/../includes/header.php';
             </div>
 
             <!-- Dynamic Loan Summary Card -->
-            <div id="loan-summary" class="hidden rounded-lg bg-zinc-50 border border-zinc-200 p-3 text-xs space-y-1.5">
+            <div id="loan-summary" class="hidden rounded-lg bg-slate-50 border border-slate-200 p-3 text-xs space-y-1.5">
                 <div class="flex justify-between items-start">
                     <div>
-                        <span id="summary-name" class="font-semibold text-zinc-900 block"></span>
-                        <span id="summary-location" class="text-zinc-400 text-[11px]"></span>
+                        <span id="summary-name" class="font-semibold text-slate-900 block"></span>
+                        <span id="summary-location" class="text-slate-400 text-[11px]"></span>
                     </div>
-                    <span id="summary-phone" class="font-mono text-zinc-600 font-medium"></span>
+                    <span id="summary-phone" class="font-mono text-slate-600 font-medium"></span>
                 </div>
-                <div class="grid grid-cols-2 gap-2 pt-2 border-t border-zinc-200 text-xs">
+                <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200 text-xs">
                     <div>
-                        <span class="text-zinc-400 block text-[10px] uppercase">Installment Due</span>
-                        <span id="summary-installment" class="font-bold text-zinc-900 text-sm"><?= htmlspecialchars(safeCurrencySymbol()) ?> 0.00</span>
+                        <span class="text-slate-400 block text-[10px] uppercase">Installment Due</span>
+                        <span id="summary-installment" class="font-bold text-slate-900 text-sm"><?= htmlspecialchars(safeCurrencySymbol()) ?> 0.00</span>
                     </div>
                     <div class="text-right">
-                        <span class="text-zinc-400 block text-[10px] uppercase">Remaining Balance</span>
-                        <span id="summary-balance" class="font-bold text-zinc-900 text-sm"><?= htmlspecialchars(safeCurrencySymbol()) ?> 0.00</span>
+                        <span class="text-slate-400 block text-[10px] uppercase">Remaining Balance</span>
+                        <span id="summary-balance" class="font-bold text-slate-900 text-sm"><?= htmlspecialchars(safeCurrencySymbol()) ?> 0.00</span>
                     </div>
                 </div>
             </div>
 
             <!-- Repayment Amount Field -->
             <div>
-                <label for="amount" class="block text-[11px] font-medium text-zinc-700 mb-1">
+                <label for="amount" class="block text-[11px] font-medium text-slate-700 mb-1">
                     Amount Collected (<?= htmlspecialchars(safeCurrencySymbol()) ?>) *
                 </label>
                 <div class="relative">
-                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 font-semibold text-xs"><?= htmlspecialchars(safeCurrencySymbol()) ?></span>
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-semibold text-xs"><?= htmlspecialchars(safeCurrencySymbol()) ?></span>
                     <input type="number" step="0.50" min="0.50" id="amount" name="amount" required
                         value="<?= $preselectedAmount > 0 ? number_format($preselectedAmount, 2, '.', '') : '' ?>"
-                        class="w-full pl-12 pr-3 py-2 bg-white border border-zinc-200 rounded-lg text-sm font-bold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition"
+                        class="w-full pl-12 pr-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition"
                         placeholder="0.00">
                 </div>
                 
                 <!-- Quick Amount Presets -->
                 <div class="flex gap-2 mt-2">
                     <button type="button" onclick="setPreset('full')" 
-                        class="flex-1 py-1 px-2 text-xs font-medium bg-zinc-50 hover:bg-zinc-100 text-zinc-700 border border-zinc-200 rounded-lg transition active:scale-95">
+                        class="flex-1 py-1 px-2 text-xs font-medium bg-slate-50 hover:bg-purple-50 text-slate-700 border border-slate-200 rounded-lg transition active:scale-95">
                         Full Installment
                     </button>
                     <button type="button" onclick="setPreset('double')" 
-                        class="flex-1 py-1 px-2 text-xs font-medium bg-zinc-50 hover:bg-zinc-100 text-zinc-700 border border-zinc-200 rounded-lg transition active:scale-95">
+                        class="flex-1 py-1 px-2 text-xs font-medium bg-slate-50 hover:bg-purple-50 text-slate-700 border border-slate-200 rounded-lg transition active:scale-95">
                         2x Installment
                     </button>
                     <button type="button" onclick="setPreset('half')" 
-                        class="flex-1 py-1 px-2 text-xs font-medium bg-zinc-50 hover:bg-zinc-100 text-zinc-700 border border-zinc-200 rounded-lg transition active:scale-95">
+                        class="flex-1 py-1 px-2 text-xs font-medium bg-slate-50 hover:bg-purple-50 text-slate-700 border border-slate-200 rounded-lg transition active:scale-95">
                         Half
                     </button>
                 </div>
@@ -213,55 +213,55 @@ include __DIR__ . '/../includes/header.php';
 
             <!-- Payment Method Radio Buttons -->
             <div>
-                <label class="block text-[11px] font-medium text-zinc-700 mb-1.5">
+                <label class="block text-[11px] font-medium text-slate-700 mb-1.5">
                     Payment Method *
                 </label>
                 <div class="grid grid-cols-2 gap-2 text-xs">
-                    <label class="flex items-center gap-2 p-2.5 rounded-lg border border-zinc-200 cursor-pointer hover:bg-zinc-50 transition">
-                        <input type="radio" name="payment_method" value="cash" checked class="text-zinc-900 focus:ring-zinc-900">
-                        <span class="font-medium text-zinc-900">Physical Cash</span>
+                    <label class="flex items-center gap-2 p-2.5 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition">
+                        <input type="radio" name="payment_method" value="cash" checked class="text-blue-600 focus:ring-blue-600">
+                        <span class="font-medium text-slate-900">Physical Cash</span>
                     </label>
-                    <label class="flex items-center gap-2 p-2.5 rounded-lg border border-zinc-200 cursor-pointer hover:bg-zinc-50 transition">
-                        <input type="radio" name="payment_method" value="momo" class="text-zinc-900 focus:ring-zinc-900">
-                        <span class="font-medium text-zinc-900">Mobile Money (MoMo)</span>
+                    <label class="flex items-center gap-2 p-2.5 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-50 transition">
+                        <input type="radio" name="payment_method" value="momo" class="text-blue-600 focus:ring-blue-600">
+                        <span class="font-medium text-slate-900">Mobile Money (MoMo)</span>
                     </label>
                 </div>
             </div>
 
             <!-- Mobile Money Reference (Conditional) -->
             <div id="momo-ref-box" class="hidden">
-                <label for="momo_reference" class="block text-[11px] font-medium text-zinc-700 mb-1">
+                <label for="momo_reference" class="block text-[11px] font-medium text-slate-700 mb-1">
                     MoMo Transaction Reference (Optional)
                 </label>
                 <input type="text" id="momo_reference" name="momo_reference" 
-                    class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs font-mono focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+                    class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                     placeholder="e.g. 2026102912345678">
             </div>
 
             <!-- Notes -->
             <div>
-                <label for="note" class="block text-[11px] font-medium text-zinc-700 mb-1">
+                <label for="note" class="block text-[11px] font-medium text-slate-700 mb-1">
                     Note (Optional)
                 </label>
                 <input type="text" id="note" name="note" 
-                    class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+                    class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                     placeholder="e.g. Paid at market stall">
             </div>
 
             <!-- GPS Status Indicator -->
-            <div class="flex items-center justify-between text-[11px] text-zinc-400 pt-1">
+            <div class="flex items-center justify-between text-[11px] text-slate-400 pt-1">
                 <span class="flex items-center gap-1.5">
                     <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
                     <span id="gps-status">GPS Optional</span>
                 </span>
-                <button type="button" onclick="refreshGps()" class="text-zinc-600 font-medium hover:underline">
+                <button type="button" onclick="refreshGps()" class="text-slate-600 font-medium hover:underline">
                     Capture GPS
                 </button>
             </div>
 
             <!-- Submit Button -->
             <button type="submit" id="submit-btn" 
-                class="w-full py-2.5 px-4 bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs rounded-lg transition active:scale-[0.99] flex items-center justify-center gap-1.5 shadow-sm">
+                class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition active:scale-[0.99] flex items-center justify-center gap-1.5 shadow-sm">
                 Submit Collection
             </button>
         </form>
@@ -392,7 +392,7 @@ include __DIR__ . '/../includes/header.php';
                     document.getElementById('gps_lat').value = lat;
                     document.getElementById('gps_lng').value = lng;
                     gpsStatus.textContent = `GPS: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
-                    gpsStatus.classList.add('text-zinc-800', 'font-medium');
+                    gpsStatus.classList.add('text-slate-800', 'font-medium');
                 } else {
                     gpsStatus.textContent = 'GPS Skipped (optional)';
                 }

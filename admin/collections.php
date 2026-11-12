@@ -145,65 +145,65 @@ include __DIR__ . '/../includes/header.php';
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-lg font-bold text-zinc-900 tracking-tight">Payments Ledger</h1>
-            <p class="text-xs text-zinc-400 mt-0.5">Append-only collection records & reversal audit log</p>
+            <h1 class="text-lg font-bold text-slate-900 tracking-tight">Payments Ledger</h1>
+            <p class="text-xs text-slate-400 mt-0.5">Append-only collection records & reversal audit log</p>
         </div>
         <div class="flex items-center gap-2">
             <a href="<?= BASE_URL ?>/admin/collections.php?export=csv&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>" 
-               class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-zinc-200 hover:bg-zinc-50 text-zinc-700 font-medium text-xs rounded-lg transition">
+               class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-medium text-xs rounded-lg transition">
                 <i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV
             </a>
             <a href="<?= BASE_URL ?>/admin/reports.php" 
-               class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs rounded-lg transition">
+               class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition">
                 <i data-lucide="printer" class="w-3.5 h-3.5"></i> Reports
             </a>
         </div>
     </div>
 
     <?php if (!empty($error)): ?>
-        <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-300 text-zinc-900 text-xs font-medium flex items-center gap-2">
-            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-zinc-700"></i>
+        <div class="p-3 rounded-lg bg-slate-50 border border-purple-200 text-slate-900 text-xs font-medium flex items-center gap-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-slate-700"></i>
             <span><?= htmlspecialchars($error) ?></span>
         </div>
     <?php endif; ?>
 
     <!-- Summary Statistics (Minimal Cards) -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-white rounded-xl border border-zinc-200 p-4 space-y-1">
-            <span class="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">Filtered Collections</span>
-            <div class="text-2xl font-bold text-zinc-900 tracking-tight"><?= formatMoney($totalSum) ?></div>
-            <span class="text-[11px] text-zinc-400 block"><?= count($payments) ?> transactions in view</span>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-1">
+            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Filtered Collections</span>
+            <div class="text-2xl font-bold text-slate-900 tracking-tight"><?= formatMoney($totalSum) ?></div>
+            <span class="text-[11px] text-slate-400 block"><?= count($payments) ?> transactions in view</span>
         </div>
-        <div class="bg-white rounded-xl border border-zinc-200 p-4 space-y-1">
-            <span class="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">Physical Cash</span>
-            <div class="text-2xl font-bold text-zinc-900 tracking-tight"><?= formatMoney($cashSum) ?></div>
-            <span class="text-[11px] text-zinc-400 block">Handed in at office</span>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-1">
+            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Physical Cash</span>
+            <div class="text-2xl font-bold text-slate-900 tracking-tight"><?= formatMoney($cashSum) ?></div>
+            <span class="text-[11px] text-slate-400 block">Handed in at office</span>
         </div>
-        <div class="bg-white rounded-xl border border-zinc-200 p-4 space-y-1">
-            <span class="text-[11px] font-medium text-zinc-400 uppercase tracking-wider block">Mobile Money</span>
-            <div class="text-2xl font-bold text-zinc-900 tracking-tight"><?= formatMoney($momoSum) ?></div>
-            <span class="text-[11px] text-zinc-400 block">Electronic MoMo</span>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-1">
+            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Mobile Money</span>
+            <div class="text-2xl font-bold text-slate-900 tracking-tight"><?= formatMoney($momoSum) ?></div>
+            <span class="text-[11px] text-slate-400 block">Electronic MoMo</span>
         </div>
     </div>
 
     <!-- Filters Panel (Minimal) -->
-    <div class="bg-white rounded-xl border border-zinc-200 p-3.5">
+    <div class="bg-white rounded-xl border border-slate-200 p-3.5">
         <form method="GET" class="grid grid-cols-1 sm:grid-cols-5 gap-2.5 text-xs">
             <div>
-                <label class="block text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-1">From Date</label>
+                <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-wider mb-1">From Date</label>
                 <input type="date" name="start_date" value="<?= htmlspecialchars($startDate) ?>" 
-                    class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900">
+                    class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
             </div>
 
             <div>
-                <label class="block text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-1">To Date</label>
+                <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-wider mb-1">To Date</label>
                 <input type="date" name="end_date" value="<?= htmlspecialchars($endDate) ?>" 
-                    class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900">
+                    class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
             </div>
 
             <div>
-                <label class="block text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-1">Field Agent</label>
-                <select name="agent_id" class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-800 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900">
+                <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-wider mb-1">Field Agent</label>
+                <select name="agent_id" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                     <option value="">All Agents</option>
                     <?php foreach ($agents as $ag): ?>
                         <option value="<?= $ag['id'] ?>" <?= $agentFilter === (int)$ag['id'] ? 'selected' : '' ?>>
@@ -214,8 +214,8 @@ include __DIR__ . '/../includes/header.php';
             </div>
 
             <div>
-                <label class="block text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-1">Method</label>
-                <select name="method" class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-800 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900">
+                <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-wider mb-1">Method</label>
+                <select name="method" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                     <option value="">All Methods</option>
                     <option value="cash" <?= $methodFilter === 'cash' ? 'selected' : '' ?>>Cash Only</option>
                     <option value="momo" <?= $methodFilter === 'momo' ? 'selected' : '' ?>>Mobile Money</option>
@@ -223,7 +223,7 @@ include __DIR__ . '/../includes/header.php';
             </div>
 
             <div class="flex items-end">
-                <button type="submit" class="w-full py-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs rounded-lg transition">
+                <button type="submit" class="w-full py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition">
                     Filter
                 </button>
             </div>
@@ -231,20 +231,20 @@ include __DIR__ . '/../includes/header.php';
     </div>
 
     <!-- Payments Ledger Table -->
-    <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden">
-        <div class="px-5 py-3 border-b border-zinc-100 flex items-center justify-between">
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-700">Ledger Records</h2>
-            <span class="text-xs text-zinc-400"><?= count($payments) ?> Entries</span>
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-900">Ledger Records</h2>
+            <span class="text-xs text-slate-400"><?= count($payments) ?> Entries</span>
         </div>
 
         <?php if (empty($payments)): ?>
-            <div class="p-8 text-center text-zinc-400 text-xs">
+            <div class="p-8 text-center text-slate-400 text-xs">
                 No payment transactions match the filter criteria.
             </div>
         <?php else: ?>
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs">
-                    <thead class="bg-zinc-50 text-zinc-400 uppercase font-medium text-[10px] tracking-wider border-b border-zinc-100">
+                    <thead class="bg-slate-50 text-slate-400 uppercase font-medium text-[10px] tracking-wider border-b border-slate-100">
                         <tr>
                             <th class="py-2.5 px-4 font-normal">Date Time</th>
                             <th class="py-2.5 px-4 font-normal">Receipt #</th>
@@ -257,57 +257,57 @@ include __DIR__ . '/../includes/header.php';
                             <th class="py-2.5 px-4 text-center font-normal">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-zinc-100">
+                    <tbody class="divide-y divide-slate-100">
                         <?php foreach ($payments as $p): ?>
-                            <tr class="hover:bg-zinc-50/50 transition">
-                                <td class="py-2.5 px-4 text-zinc-500 text-[11px]">
+                            <tr class="hover:bg-purple-50/30 transition">
+                                <td class="py-2.5 px-4 text-slate-500 text-[11px]">
                                     <?= date('d M Y, h:i A', strtotime($p['collection_timestamp'])) ?>
                                 </td>
-                                <td class="py-2.5 px-4 font-mono font-medium text-zinc-900">
+                                <td class="py-2.5 px-4 font-mono font-medium text-slate-900">
                                     <?= htmlspecialchars($p['receipt_number']) ?>
                                 </td>
                                 <td class="py-2.5 px-4">
-                                    <span class="font-medium text-zinc-900 block"><?= htmlspecialchars($p['customer_name']) ?></span>
-                                    <span class="text-[11px] font-mono text-zinc-400"><?= htmlspecialchars($p['customer_phone']) ?></span>
+                                    <span class="font-medium text-slate-900 block"><?= htmlspecialchars($p['customer_name']) ?></span>
+                                    <span class="text-[11px] font-mono text-slate-400"><?= htmlspecialchars($p['customer_phone']) ?></span>
                                 </td>
-                                <td class="py-2.5 px-4 font-mono text-zinc-500">
+                                <td class="py-2.5 px-4 font-mono text-slate-500">
                                     <?= htmlspecialchars($p['loan_code']) ?>
                                 </td>
-                                <td class="py-2.5 px-4 text-zinc-700">
+                                <td class="py-2.5 px-4 text-slate-700">
                                     <?= htmlspecialchars($p['agent_name']) ?>
                                 </td>
-                                <td class="py-2.5 px-4 uppercase text-[10px] font-medium text-zinc-500">
+                                <td class="py-2.5 px-4 uppercase text-[10px] font-medium text-slate-500">
                                     <?= htmlspecialchars($p['payment_method']) ?>
                                     <?php if ($p['momo_reference']): ?>
-                                        <span class="font-mono text-zinc-400 block text-[9px]"><?= htmlspecialchars($p['momo_reference']) ?></span>
+                                        <span class="font-mono text-slate-400 block text-[9px]"><?= htmlspecialchars($p['momo_reference']) ?></span>
                                     <?php endif; ?>
                                 </td>
-                                <td class="py-2.5 px-4 text-right font-semibold text-zinc-900">
+                                <td class="py-2.5 px-4 text-right font-semibold text-slate-900">
                                     <?= formatMoney((int)$p['amount_pesewas']) ?>
                                 </td>
                                 <td class="py-2.5 px-4">
                                     <?php if ($p['status'] === 'recorded'): ?>
-                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase bg-zinc-100 text-zinc-800">
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase bg-purple-50 text-slate-800">
                                             Recorded
                                         </span>
                                     <?php elseif ($p['status'] === 'reversed'): ?>
-                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase bg-zinc-200 text-zinc-500 line-through">
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase bg-slate-200 text-slate-500 line-through">
                                             Reversed
                                         </span>
                                     <?php else: ?>
-                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-mono uppercase bg-zinc-100 text-zinc-700">
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-mono uppercase bg-purple-50 text-slate-700">
                                             Correction
                                         </span>
                                     <?php endif; ?>
                                 </td>
                                 <td class="py-2.5 px-4 text-center">
                                     <div class="flex items-center justify-center gap-2">
-                                        <a href="<?= BASE_URL ?>/receipt.php?id=<?= $p['id'] ?>" class="text-zinc-600 hover:text-zinc-900 underline text-xs">
+                                        <a href="<?= BASE_URL ?>/receipt.php?id=<?= $p['id'] ?>" class="text-slate-600 hover:text-slate-900 underline text-xs">
                                             Receipt
                                         </a>
                                         <?php if ($p['status'] === 'recorded' && !$p['is_reversal']): ?>
                                             <button onclick="openReversalModal(<?= $p['id'] ?>, '<?= htmlspecialchars($p['receipt_number']) ?>', '<?= formatMoney((int)$p['amount_pesewas']) ?>', '<?= htmlspecialchars(addslashes($p['customer_name'])) ?>')" 
-                                                class="text-zinc-400 hover:text-zinc-900 text-xs">
+                                                class="text-slate-400 hover:text-slate-900 text-xs">
                                                 Reverse
                                             </button>
                                         <?php endif; ?>
@@ -323,17 +323,17 @@ include __DIR__ . '/../includes/header.php';
 </div>
 
 <!-- Reversal Modal (Minimal) -->
-<div id="reversal-modal" class="hidden fixed inset-0 bg-zinc-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl border border-zinc-200 max-w-md w-full p-6 space-y-4 shadow-sm">
+<div id="reversal-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl border border-slate-200 max-w-md w-full p-6 space-y-4 shadow-sm">
         <div>
-            <h3 class="text-sm font-bold text-zinc-900">Reverse Payment Entry</h3>
-            <p class="text-xs text-zinc-400 mt-0.5">Creates an immutable negative ledger reversal entry.</p>
+            <h3 class="text-sm font-bold text-slate-900">Reverse Payment Entry</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Creates an immutable negative ledger reversal entry.</p>
         </div>
 
-        <div class="p-3 bg-zinc-50 rounded-lg border border-zinc-200 text-xs space-y-1">
-            <div><span class="text-zinc-400 text-[10px] uppercase">Receipt:</span> <strong id="modal-receipt" class="font-mono text-zinc-900"></strong></div>
-            <div><span class="text-zinc-400 text-[10px] uppercase">Borrower:</span> <strong id="modal-customer" class="text-zinc-900"></strong></div>
-            <div><span class="text-zinc-400 text-[10px] uppercase">Amount:</span> <strong id="modal-amount" class="text-zinc-900"></strong></div>
+        <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-1">
+            <div><span class="text-slate-400 text-[10px] uppercase">Receipt:</span> <strong id="modal-receipt" class="font-mono text-slate-900"></strong></div>
+            <div><span class="text-slate-400 text-[10px] uppercase">Borrower:</span> <strong id="modal-customer" class="text-slate-900"></strong></div>
+            <div><span class="text-slate-400 text-[10px] uppercase">Amount:</span> <strong id="modal-amount" class="text-slate-900"></strong></div>
         </div>
 
         <form method="POST" action="<?= BASE_URL ?>/admin/collections.php" class="space-y-4 text-xs">
@@ -342,19 +342,19 @@ include __DIR__ . '/../includes/header.php';
             <input type="hidden" id="modal-payment-id" name="payment_id" value="">
 
             <div>
-                <label class="block text-[11px] font-medium text-zinc-700 mb-1">
+                <label class="block text-[11px] font-medium text-slate-700 mb-1">
                     Audit Reason for Reversal *
                 </label>
                 <textarea name="reversal_reason" rows="3" required
-                    class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+                    class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                     placeholder="e.g. Agent mistakenly entered GH₵ 100 instead of GH₵ 50; customer was double-charged"></textarea>
             </div>
 
             <div class="flex items-center justify-end gap-2 pt-2">
-                <button type="button" onclick="closeReversalModal()" class="px-3 py-1.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-lg text-xs font-medium">
+                <button type="button" onclick="closeReversalModal()" class="px-3 py-1.5 bg-purple-50 hover:bg-purple-100 text-slate-700 rounded-lg text-xs font-medium">
                     Cancel
                 </button>
-                <button type="submit" class="px-3.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg text-xs font-medium">
+                <button type="submit" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-medium">
                     Confirm Reversal
                 </button>
             </div>

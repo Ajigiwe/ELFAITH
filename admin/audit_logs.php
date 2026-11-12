@@ -40,15 +40,15 @@ include __DIR__ . '/../includes/header.php';
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-lg font-bold text-zinc-900 tracking-tight">Audit Trail</h1>
-            <p class="text-xs text-zinc-400 mt-0.5">Immutable chronological log & forensic accountability</p>
+            <h1 class="text-lg font-bold text-slate-900 tracking-tight">Audit Trail</h1>
+            <p class="text-xs text-slate-400 mt-0.5">Immutable chronological log & forensic accountability</p>
         </div>
     </div>
 
     <!-- Filter Bar (Minimal) -->
-    <div class="bg-white rounded-xl border border-zinc-200 p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+    <div class="bg-white rounded-xl border border-slate-200 p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
         <form method="GET" class="flex items-center gap-2.5">
-            <select name="action" class="px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-800 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900">
+            <select name="action" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                 <option value="">All Audited Actions</option>
                 <?php foreach ($actions as $act): ?>
                     <option value="<?= htmlspecialchars($act) ?>" <?= $actionFilter === $act ? 'selected' : '' ?>>
@@ -56,18 +56,18 @@ include __DIR__ . '/../includes/header.php';
                     </option>
                 <?php endforeach; ?>
             </select>
-            <button type="submit" class="px-3.5 py-1.5 bg-zinc-900 text-white rounded-lg text-xs font-medium hover:bg-zinc-800 transition">
+            <button type="submit" class="px-3.5 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition">
                 Filter
             </button>
         </form>
-        <span class="text-zinc-400 text-xs"><?= count($logs) ?> Recorded Events</span>
+        <span class="text-slate-400 text-xs"><?= count($logs) ?> Recorded Events</span>
     </div>
 
     <!-- Audit Table (Minimal) -->
-    <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden">
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
-                <thead class="bg-zinc-50 text-zinc-400 uppercase font-medium text-[10px] tracking-wider border-b border-zinc-100">
+                <thead class="bg-slate-50 text-slate-400 uppercase font-medium text-[10px] tracking-wider border-b border-slate-100">
                     <tr>
                         <th class="py-2.5 px-4 font-normal">Timestamp</th>
                         <th class="py-2.5 px-4 font-normal">Staff Member</th>
@@ -77,38 +77,38 @@ include __DIR__ . '/../includes/header.php';
                         <th class="py-2.5 px-4 font-normal">IP</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-zinc-100">
+                <tbody class="divide-y divide-slate-100">
                     <?php if (empty($logs)): ?>
                         <tr>
-                            <td colspan="6" class="py-8 text-center text-zinc-400">
+                            <td colspan="6" class="py-8 text-center text-slate-400">
                                 No audit events recorded.
                             </td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($logs as $l): ?>
-                            <tr class="hover:bg-zinc-50/50 transition">
-                                <td class="py-2.5 px-4 text-zinc-500 font-mono text-[11px]">
+                            <tr class="hover:bg-purple-50/30 transition">
+                                <td class="py-2.5 px-4 text-slate-500 font-mono text-[11px]">
                                     <?= date('d M Y, h:i A', strtotime($l['created_at'])) ?>
                                 </td>
                                 <td class="py-2.5 px-4">
-                                    <span class="font-medium text-zinc-900 block"><?= htmlspecialchars($l['user_name'] ?? 'System Process') ?></span>
-                                    <span class="text-[10px] font-mono text-zinc-400"><?= htmlspecialchars($l['staff_code'] ?? 'SYSTEM') ?></span>
+                                    <span class="font-medium text-slate-900 block"><?= htmlspecialchars($l['user_name'] ?? 'System Process') ?></span>
+                                    <span class="text-[10px] font-mono text-slate-400"><?= htmlspecialchars($l['staff_code'] ?? 'SYSTEM') ?></span>
                                 </td>
                                 <td class="py-2.5 px-4 font-mono">
-                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono uppercase bg-zinc-100 text-zinc-800">
+                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-mono uppercase bg-purple-50 text-slate-800">
                                         <?= htmlspecialchars($l['action']) ?>
                                     </span>
                                 </td>
-                                <td class="py-2.5 px-4 font-mono text-zinc-600">
+                                <td class="py-2.5 px-4 font-mono text-slate-600">
                                     <?= htmlspecialchars($l['table_name'] ?? '—') ?>
                                     <?php if ($l['record_id']): ?>
-                                        <span class="text-zinc-400">#<?= $l['record_id'] ?></span>
+                                        <span class="text-slate-400">#<?= $l['record_id'] ?></span>
                                     <?php endif; ?>
                                 </td>
-                                <td class="py-2.5 px-4 max-w-md font-mono text-[10px] text-zinc-500 truncate">
+                                <td class="py-2.5 px-4 max-w-md font-mono text-[10px] text-slate-500 truncate">
                                     <?= htmlspecialchars($l['new_values'] ?? $l['old_values'] ?? '—') ?>
                                 </td>
-                                <td class="py-2.5 px-4 font-mono text-[11px] text-zinc-400">
+                                <td class="py-2.5 px-4 font-mono text-[11px] text-slate-400">
                                     <?= htmlspecialchars($l['ip_address'] ?? '127.0.0.1') ?>
                                 </td>
                             </tr>

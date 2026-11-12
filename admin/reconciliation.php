@@ -130,24 +130,24 @@ include __DIR__ . '/../includes/header.php';
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-lg font-bold text-zinc-900 tracking-tight">Agent Cash Reconciliation</h1>
-            <p class="text-xs text-zinc-400 mt-0.5">Physical cash handed in vs system collection ledger</p>
+            <h1 class="text-lg font-bold text-slate-900 tracking-tight">Agent Cash Reconciliation</h1>
+            <p class="text-xs text-slate-400 mt-0.5">Physical cash handed in vs system collection ledger</p>
         </div>
     </div>
 
     <?php if (!empty($error)): ?>
-        <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-300 text-zinc-900 text-xs font-medium flex items-center gap-2">
-            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-zinc-700"></i>
+        <div class="p-3 rounded-lg bg-slate-50 border border-purple-200 text-slate-900 text-xs font-medium flex items-center gap-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-slate-700"></i>
             <span><?= htmlspecialchars($error) ?></span>
         </div>
     <?php endif; ?>
 
     <!-- Agent & Date Selector (Minimal) -->
-    <div class="bg-white rounded-xl border border-zinc-200 p-3.5">
+    <div class="bg-white rounded-xl border border-slate-200 p-3.5">
         <form method="GET" class="flex flex-col sm:flex-row items-center gap-2.5 text-xs">
             <div class="w-full sm:flex-1">
-                <label class="block text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-1">Field Agent</label>
-                <select name="agent_id" class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-800 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900">
+                <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-wider mb-1">Field Agent</label>
+                <select name="agent_id" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                     <?php foreach ($agents as $ag): ?>
                         <option value="<?= $ag['id'] ?>" <?= $agentId === (int)$ag['id'] ? 'selected' : '' ?>>
                             <?= htmlspecialchars($ag['name']) ?> (<?= htmlspecialchars($ag['staff_code']) ?>)
@@ -157,13 +157,13 @@ include __DIR__ . '/../includes/header.php';
             </div>
 
             <div class="w-full sm:w-auto">
-                <label class="block text-[10px] font-medium text-zinc-400 uppercase tracking-wider mb-1">Reconciliation Date</label>
+                <label class="block text-[10px] font-medium text-slate-400 uppercase tracking-wider mb-1">Reconciliation Date</label>
                 <input type="date" name="date" value="<?= htmlspecialchars($date) ?>" 
-                    class="px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900">
+                    class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
             </div>
 
             <div class="w-full sm:w-auto flex items-end">
-                <button type="submit" class="w-full sm:w-auto px-3.5 py-1.5 bg-zinc-900 text-white rounded-lg text-xs font-medium hover:bg-zinc-800 transition">
+                <button type="submit" class="w-full sm:w-auto px-3.5 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition">
                     Inspect Day
                 </button>
             </div>
@@ -173,29 +173,29 @@ include __DIR__ . '/../includes/header.php';
     <!-- Active Reconciliation Form Card -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <!-- Expected Cash Overview -->
-        <div class="bg-white rounded-xl border border-zinc-200 p-5 space-y-3">
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-500 pb-2 border-b border-zinc-100">
+        <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-3">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-700 pb-2 border-b border-slate-100">
                 System Records
             </h2>
 
             <div class="space-y-3 text-xs">
                 <div>
-                    <span class="text-zinc-400 block text-[10px] uppercase">Total Collections</span>
-                    <span class="text-lg font-bold text-zinc-900"><?= formatMoney((int)$expectedData['total_collected']) ?></span>
-                    <span class="text-[10px] text-zinc-400 block"><?= (int)$expectedData['tx_count'] ?> Transactions</span>
+                    <span class="text-slate-400 block text-[10px] uppercase">Total Collections</span>
+                    <span class="text-lg font-bold text-slate-900"><?= formatMoney((int)$expectedData['total_collected']) ?></span>
+                    <span class="text-[10px] text-slate-400 block"><?= (int)$expectedData['tx_count'] ?> Transactions</span>
                 </div>
                 <div>
-                    <span class="text-zinc-400 block text-[10px] uppercase">Mobile Money (Electronic)</span>
-                    <span class="text-sm font-semibold text-zinc-700"><?= formatMoney((int)$expectedData['expected_momo']) ?></span>
+                    <span class="text-slate-400 block text-[10px] uppercase">Mobile Money (Electronic)</span>
+                    <span class="text-sm font-semibold text-slate-700"><?= formatMoney((int)$expectedData['expected_momo']) ?></span>
                 </div>
-                <div class="p-3.5 bg-zinc-50 rounded-lg border border-zinc-200">
-                    <span class="text-zinc-500 font-medium uppercase text-[10px] block tracking-wider">
+                <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200">
+                    <span class="text-slate-500 font-medium uppercase text-[10px] block tracking-wider">
                         Target Physical Cash Hand-In
                     </span>
-                    <div class="text-2xl font-bold text-zinc-900 mt-1">
+                    <div class="text-2xl font-bold text-slate-900 mt-1">
                         <?= formatMoney((int)$expectedData['expected_cash']) ?>
                     </div>
-                    <span class="text-[10px] text-zinc-400 block mt-0.5">
+                    <span class="text-[10px] text-slate-400 block mt-0.5">
                         Cash to be handed in physically at office.
                     </span>
                 </div>
@@ -203,8 +203,8 @@ include __DIR__ . '/../includes/header.php';
         </div>
 
         <!-- Hand-In Form -->
-        <div class="lg:col-span-2 bg-white rounded-xl border border-zinc-200 p-5">
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-500 pb-3 border-b border-zinc-100">
+        <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 p-5">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-700 pb-3 border-b border-slate-100">
                 Physical Hand-In & Verification
             </h2>
 
@@ -215,44 +215,44 @@ include __DIR__ . '/../includes/header.php';
                 <input type="hidden" id="expected_cash_pesewas" name="expected_cash_pesewas" value="<?= $expectedData['expected_cash'] ?>">
 
                 <div>
-                    <label class="block text-[11px] font-medium text-zinc-700 mb-1">
+                    <label class="block text-[11px] font-medium text-slate-700 mb-1">
                         Physical Cash Handed In at Office (<?= htmlspecialchars(safeCurrencySymbol()) ?>) *
                     </label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none font-bold text-zinc-400 text-xs">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none font-bold text-slate-400 text-xs">
                             <?= htmlspecialchars(safeCurrencySymbol()) ?>
                         </span>
                         <input type="number" step="0.50" min="0" id="handed_in_cash" name="handed_in_cash" required 
-                            class="w-full pl-10 pr-3 py-2 bg-white border border-zinc-200 rounded-lg text-lg font-bold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+                            class="w-full pl-10 pr-3 py-2 bg-white border border-slate-200 rounded-lg text-lg font-bold text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                             placeholder="0.00" 
                             value="<?= $existingRecon ? pesewasToGHS((int)$existingRecon['handed_in_cash_pesewas']) : pesewasToGHS((int)$expectedData['expected_cash']) ?>">
                     </div>
                 </div>
 
                 <!-- Live Discrepancy Indicator -->
-                <div id="discrepancy-box" class="p-3.5 rounded-lg border border-zinc-200 bg-zinc-50 text-xs flex items-center justify-between">
+                <div id="discrepancy-box" class="p-3.5 rounded-lg border border-slate-200 bg-slate-50 text-xs flex items-center justify-between">
                     <div>
-                        <span class="text-[10px] uppercase font-medium text-zinc-400 block">Variance</span>
-                        <span id="discrepancy-amount" class="text-base font-bold text-zinc-900"><?= htmlspecialchars(safeCurrencySymbol()) ?> 0.00</span>
+                        <span class="text-[10px] uppercase font-medium text-slate-400 block">Variance</span>
+                        <span id="discrepancy-amount" class="text-base font-bold text-slate-900"><?= htmlspecialchars(safeCurrencySymbol()) ?> 0.00</span>
                     </div>
                     <div>
-                        <span id="discrepancy-tag" class="px-2 py-0.5 rounded text-[10px] font-medium uppercase bg-zinc-200 text-zinc-800">
+                        <span id="discrepancy-tag" class="px-2 py-0.5 rounded text-[10px] font-medium uppercase bg-slate-200 text-slate-800">
                             Balanced
                         </span>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-[11px] font-medium text-zinc-700 mb-1">
+                    <label class="block text-[11px] font-medium text-slate-700 mb-1">
                         Supervisor Notes (Optional)
                     </label>
                     <textarea name="notes" rows="2" 
-                        class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+                        class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                         placeholder="e.g. Cash counted and placed in safe."><?= htmlspecialchars($existingRecon['notes'] ?? '') ?></textarea>
                 </div>
 
                 <div>
-                    <button type="submit" class="w-full py-2.5 px-4 bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs rounded-lg transition active:scale-[0.99] flex items-center justify-center gap-1.5">
+                    <button type="submit" class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition active:scale-[0.99] flex items-center justify-center gap-1.5">
                         <i data-lucide="check" class="w-3.5 h-3.5"></i> Save Reconciliation
                     </button>
                 </div>
@@ -261,14 +261,14 @@ include __DIR__ . '/../includes/header.php';
     </div>
 
     <!-- Recent Reconciliations Table -->
-    <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden">
-        <div class="px-5 py-3 border-b border-zinc-100 flex items-center justify-between">
-            <h2 class="text-xs font-semibold uppercase tracking-wider text-zinc-700">Audit History (Last 10 Records)</h2>
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
+            <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-900">Audit History (Last 10 Records)</h2>
         </div>
 
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
-                <thead class="bg-zinc-50 text-zinc-400 uppercase font-medium text-[10px] tracking-wider border-b border-zinc-100">
+                <thead class="bg-slate-50 text-slate-400 uppercase font-medium text-[10px] tracking-wider border-b border-slate-100">
                     <tr>
                         <th class="py-2.5 px-4 font-normal">Date</th>
                         <th class="py-2.5 px-4 font-normal">Agent</th>
@@ -279,31 +279,31 @@ include __DIR__ . '/../includes/header.php';
                         <th class="py-2.5 px-4 font-normal">Verified By</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-zinc-100">
+                <tbody class="divide-y divide-slate-100">
                     <?php foreach ($recentRecons as $rc): ?>
-                        <tr class="hover:bg-zinc-50/50 transition">
-                            <td class="py-2.5 px-4 font-mono font-medium text-zinc-900">
+                        <tr class="hover:bg-purple-50/30 transition">
+                            <td class="py-2.5 px-4 font-mono font-medium text-slate-900">
                                 <?= formatDate($rc['reconciliation_date']) ?>
                             </td>
                             <td class="py-2.5 px-4">
-                                <span class="font-medium text-zinc-900 block"><?= htmlspecialchars($rc['agent_name']) ?></span>
-                                <span class="text-[10px] font-mono text-zinc-400"><?= htmlspecialchars($rc['staff_code']) ?></span>
+                                <span class="font-medium text-slate-900 block"><?= htmlspecialchars($rc['agent_name']) ?></span>
+                                <span class="text-[10px] font-mono text-slate-400"><?= htmlspecialchars($rc['staff_code']) ?></span>
                             </td>
-                            <td class="py-2.5 px-4 text-right text-zinc-700">
+                            <td class="py-2.5 px-4 text-right text-slate-700">
                                 <?= formatMoney((int)$rc['expected_cash_pesewas']) ?>
                             </td>
-                            <td class="py-2.5 px-4 text-right font-semibold text-zinc-900">
+                            <td class="py-2.5 px-4 text-right font-semibold text-slate-900">
                                 <?= formatMoney((int)$rc['handed_in_cash_pesewas']) ?>
                             </td>
-                            <td class="py-2.5 px-4 text-right font-medium <?= (int)$rc['discrepancy_pesewas'] !== 0 ? 'text-zinc-900 font-bold' : 'text-zinc-400' ?>">
+                            <td class="py-2.5 px-4 text-right font-medium <?= (int)$rc['discrepancy_pesewas'] !== 0 ? 'text-slate-900 font-bold' : 'text-slate-400' ?>">
                                 <?= formatMoney((int)$rc['discrepancy_pesewas']) ?>
                             </td>
                             <td class="py-2.5 px-4">
-                                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase <?= $rc['status'] === 'verified' ? 'bg-zinc-100 text-zinc-800' : 'bg-zinc-200 text-zinc-900 font-semibold' ?>">
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase <?= $rc['status'] === 'verified' ? 'bg-purple-50 text-slate-800' : 'bg-slate-200 text-slate-900 font-semibold' ?>">
                                     <?= $rc['status'] === 'verified' ? 'Verified' : 'Flagged' ?>
                                 </span>
                             </td>
-                            <td class="py-2.5 px-4 text-zinc-500">
+                            <td class="py-2.5 px-4 text-slate-500">
                                 <?= htmlspecialchars($rc['verifier_name'] ?? 'System') ?>
                             </td>
                         </tr>
@@ -330,13 +330,13 @@ include __DIR__ . '/../includes/header.php';
 
         if (diff === 0) {
             discTag.textContent = 'Balanced';
-            discTag.className = 'px-2 py-0.5 rounded text-[10px] font-medium uppercase bg-zinc-100 text-zinc-800';
+            discTag.className = 'px-2 py-0.5 rounded text-[10px] font-medium uppercase bg-purple-50 text-slate-800';
         } else if (diff < 0) {
             discTag.textContent = 'Shortage (' + Math.abs(diffGHS) + ')';
-            discTag.className = 'px-2 py-0.5 rounded text-[10px] font-semibold uppercase bg-zinc-200 text-zinc-900';
+            discTag.className = 'px-2 py-0.5 rounded text-[10px] font-semibold uppercase bg-slate-200 text-slate-900';
         } else {
             discTag.textContent = 'Excess (+' + diffGHS + ')';
-            discTag.className = 'px-2 py-0.5 rounded text-[10px] font-medium uppercase bg-zinc-100 text-zinc-700';
+            discTag.className = 'px-2 py-0.5 rounded text-[10px] font-medium uppercase bg-purple-50 text-slate-700';
         }
     }
 

@@ -648,17 +648,17 @@ function renderCompanyLogo(string $variant = 'navbar'): string {
 
     switch ($variant) {
         case 'receipt':
-            return '<div class="w-8 h-8 bg-zinc-900 text-white rounded-lg flex items-center justify-center mx-auto mb-2 font-bold text-xs">EF</div>';
+            return '<div class="w-9 h-9 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-xl flex items-center justify-center mx-auto mb-2 font-bold text-xs shadow-sm">EF</div>';
         case 'auth':
-            return '<div class="w-8 h-8 bg-zinc-900 rounded-lg flex items-center justify-center mx-auto mb-2.5 text-white font-bold text-xs tracking-tight">EF</div>';
+            return '<div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-2.5 text-white font-bold text-xs tracking-tight shadow-sm">EF</div>';
         case 'compact':
-            return '<div class="w-6 h-6 rounded bg-zinc-900 text-white text-[10px] font-bold flex items-center justify-center shrink-0">EF</div>';
+            return '<div class="w-6 h-6 rounded bg-gradient-to-br from-blue-600 to-purple-600 text-white text-[10px] font-bold flex items-center justify-center shrink-0">EF</div>';
         case 'report':
         case 'print':
             return '';
         case 'navbar':
         default:
-            return '<div class="w-7 h-7 rounded-lg bg-zinc-900 flex items-center justify-center text-white text-xs font-bold tracking-tight shrink-0">EF</div>';
+            return '<div class="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center text-white text-xs font-bold tracking-tight shrink-0 shadow-sm">EF</div>';
     }
 }
 

@@ -212,7 +212,7 @@ function showToast(message, type = 'info') {
     }
 
     const toast = document.createElement('div');
-    const bgClass = (type === 'success') ? 'bg-zinc-900 text-white border border-zinc-700' : 'bg-white text-zinc-900 border border-zinc-200';
+    const bgClass = (type === 'success') ? 'bg-blue-600 text-white border border-blue-500' : 'bg-white text-slate-900 border border-purple-200';
     toast.className = `${bgClass} p-3 rounded-lg shadow-lg text-xs font-medium flex items-center justify-between gap-2 pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0`;
     toast.innerHTML = `
         <div class="flex items-center gap-2">

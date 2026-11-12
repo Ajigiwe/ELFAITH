@@ -58,25 +58,25 @@ include __DIR__ . '/../includes/header.php';
     <!-- Header Toolbar -->
     <div class="no-print flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-lg font-bold text-zinc-900 tracking-tight">Reports & Print Statements</h1>
-            <p class="text-xs text-zinc-400 mt-0.5">Route collection sheets & defaulter audits</p>
+            <h1 class="text-lg font-bold text-slate-900 tracking-tight">Reports & Print Statements</h1>
+            <p class="text-xs text-slate-400 mt-0.5">Route collection sheets & defaulter audits</p>
         </div>
         <div class="flex items-center gap-2">
-            <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs rounded-lg transition">
+            <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition">
                 <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print Statement
             </button>
         </div>
     </div>
 
     <!-- Report Selector Tabs (Minimal) -->
-    <div class="no-print bg-white rounded-xl border border-zinc-200 p-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+    <div class="no-print bg-white rounded-xl border border-slate-200 p-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
         <div class="flex items-center gap-2">
             <a href="<?= BASE_URL ?>/admin/reports.php?type=daily_sheet&date=<?= urlencode($date) ?>" 
-               class="px-3 py-1.5 rounded-lg text-xs font-medium transition <?= $reportType === 'daily_sheet' ? 'bg-zinc-900 text-white' : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200' ?>">
+               class="px-3 py-1.5 rounded-lg text-xs font-medium transition <?= $reportType === 'daily_sheet' ? 'bg-purple-600 text-white shadow-sm' : 'bg-purple-50 text-purple-700 hover:bg-purple-100' ?>">
                 Daily Collection Sheet
             </a>
             <a href="<?= BASE_URL ?>/admin/reports.php?type=defaulters" 
-               class="px-3 py-1.5 rounded-lg text-xs font-medium transition <?= $reportType === 'defaulters' ? 'bg-zinc-900 text-white' : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200' ?>">
+               class="px-3 py-1.5 rounded-lg text-xs font-medium transition <?= $reportType === 'defaulters' ? 'bg-purple-600 text-white shadow-sm' : 'bg-purple-50 text-purple-700 hover:bg-purple-100' ?>">
                 Defaulter Audit
             </a>
         </div>
@@ -85,8 +85,8 @@ include __DIR__ . '/../includes/header.php';
             <form method="GET" class="flex items-center gap-2">
                 <input type="hidden" name="type" value="daily_sheet">
                 <input type="date" name="date" value="<?= htmlspecialchars($date) ?>" 
-                    class="px-2.5 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900">
-                <button type="submit" class="px-3 py-1.5 bg-zinc-900 text-white rounded-lg text-xs font-medium hover:bg-zinc-800 transition">
+                    class="px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                <button type="submit" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition">
                     Load
                 </button>
             </form>
@@ -94,14 +94,14 @@ include __DIR__ . '/../includes/header.php';
     </div>
 
     <!-- Printable Report Container -->
-    <div class="bg-white rounded-xl border border-zinc-200 p-6 space-y-6">
+    <div class="bg-white rounded-xl border border-slate-200 p-6 space-y-6">
         <!-- Branded Report Header -->
-        <div class="text-center pb-5 border-b border-zinc-200">
+        <div class="text-center pb-5 border-b border-slate-200">
             <?= renderCompanyLogo('report') ?>
-            <h1 class="text-base font-bold uppercase tracking-tight text-zinc-900"><?= htmlspecialchars(COMPANY_NAME) ?></h1>
-            <p class="text-xs text-zinc-500 mt-0.5"><?= htmlspecialchars(BRANCH_NAME) ?> Branch &bull; <?= htmlspecialchars(BRANCH_REGION) ?></p>
-            <p class="text-[11px] text-zinc-400 mt-0.5"><?= htmlspecialchars(COMPANY_PHONE) ?></p>
-            <div class="mt-3 inline-block px-3 py-1 rounded bg-zinc-100 text-zinc-800 text-[11px] font-medium uppercase tracking-wider">
+            <h1 class="text-base font-bold uppercase tracking-tight text-slate-900"><?= htmlspecialchars(COMPANY_NAME) ?></h1>
+            <p class="text-xs text-slate-500 mt-0.5"><?= htmlspecialchars(BRANCH_NAME) ?> Branch &bull; <?= htmlspecialchars(BRANCH_REGION) ?></p>
+            <p class="text-[11px] text-slate-400 mt-0.5"><?= htmlspecialchars(COMPANY_PHONE) ?></p>
+            <div class="mt-3 inline-block px-3 py-1 rounded bg-purple-50 text-slate-800 text-[11px] font-medium uppercase tracking-wider">
                 <?= $reportType === 'daily_sheet' ? 'Daily Collection Sheet — ' . formatDate($date) : 'Delinquent Loan & Defaulter Audit Report' ?>
             </div>
         </div>
@@ -118,25 +118,25 @@ include __DIR__ . '/../includes/header.php';
                 }
             ?>
             <!-- Totals Header (Minimal) -->
-            <div class="grid grid-cols-3 gap-3 p-3.5 rounded-lg bg-zinc-50 border border-zinc-200 text-xs">
+            <div class="grid grid-cols-3 gap-3 p-3.5 rounded-lg bg-slate-50 border border-slate-200 text-xs">
                 <div>
-                    <span class="text-zinc-400 block text-[10px] uppercase">Cash Collected</span>
-                    <span class="text-base font-bold text-zinc-900"><?= formatMoney($totCash) ?></span>
+                    <span class="text-slate-400 block text-[10px] uppercase">Cash Collected</span>
+                    <span class="text-base font-bold text-slate-900"><?= formatMoney($totCash) ?></span>
                 </div>
                 <div>
-                    <span class="text-zinc-400 block text-[10px] uppercase">MoMo Collected</span>
-                    <span class="text-base font-bold text-zinc-900"><?= formatMoney($totMoMo) ?></span>
+                    <span class="text-slate-400 block text-[10px] uppercase">MoMo Collected</span>
+                    <span class="text-base font-bold text-slate-900"><?= formatMoney($totMoMo) ?></span>
                 </div>
                 <div class="text-right">
-                    <span class="text-zinc-400 block text-[10px] uppercase">Total Realized</span>
-                    <span class="text-base font-bold text-zinc-900"><?= formatMoney($totAll) ?></span>
+                    <span class="text-slate-400 block text-[10px] uppercase">Total Realized</span>
+                    <span class="text-base font-bold text-slate-900"><?= formatMoney($totAll) ?></span>
                 </div>
             </div>
 
             <!-- Table -->
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs">
-                    <thead class="bg-zinc-50 text-zinc-400 uppercase font-medium text-[10px] tracking-wider border-b border-zinc-200">
+                    <thead class="bg-slate-50 text-slate-400 uppercase font-medium text-[10px] tracking-wider border-b border-slate-200">
                         <tr>
                             <th class="py-2.5 px-3 font-normal">Time</th>
                             <th class="py-2.5 px-3 font-normal">Receipt #</th>
@@ -148,17 +148,17 @@ include __DIR__ . '/../includes/header.php';
                             <th class="py-2.5 px-3 text-right font-normal">Amount</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-zinc-100">
+                    <tbody class="divide-y divide-slate-100">
                         <?php foreach ($dailySheet as $d): ?>
                             <tr>
-                                <td class="py-2.5 px-3 text-zinc-500 font-mono text-[11px]"><?= date('h:i A', strtotime($d['collection_timestamp'])) ?></td>
-                                <td class="py-2.5 px-3 font-mono font-medium text-zinc-900"><?= htmlspecialchars($d['receipt_number']) ?></td>
-                                <td class="py-2.5 px-3 font-medium text-zinc-900"><?= htmlspecialchars($d['customer_name']) ?></td>
-                                <td class="py-2.5 px-3 text-zinc-500 text-[11px]"><?= htmlspecialchars($d['location_landmark']) ?></td>
-                                <td class="py-2.5 px-3 font-mono text-zinc-700"><?= htmlspecialchars($d['loan_code']) ?></td>
-                                <td class="py-2.5 px-3 text-zinc-700"><?= htmlspecialchars($d['agent_name']) ?></td>
-                                <td class="py-2.5 px-3 uppercase text-[10px] font-medium text-zinc-500"><?= htmlspecialchars($d['payment_method']) ?></td>
-                                <td class="py-2.5 px-3 text-right font-semibold text-zinc-900"><?= formatMoney((int)$d['amount_pesewas']) ?></td>
+                                <td class="py-2.5 px-3 text-slate-500 font-mono text-[11px]"><?= date('h:i A', strtotime($d['collection_timestamp'])) ?></td>
+                                <td class="py-2.5 px-3 font-mono font-medium text-slate-900"><?= htmlspecialchars($d['receipt_number']) ?></td>
+                                <td class="py-2.5 px-3 font-medium text-slate-900"><?= htmlspecialchars($d['customer_name']) ?></td>
+                                <td class="py-2.5 px-3 text-slate-500 text-[11px]"><?= htmlspecialchars($d['location_landmark']) ?></td>
+                                <td class="py-2.5 px-3 font-mono text-slate-700"><?= htmlspecialchars($d['loan_code']) ?></td>
+                                <td class="py-2.5 px-3 text-slate-700"><?= htmlspecialchars($d['agent_name']) ?></td>
+                                <td class="py-2.5 px-3 uppercase text-[10px] font-medium text-slate-500"><?= htmlspecialchars($d['payment_method']) ?></td>
+                                <td class="py-2.5 px-3 text-right font-semibold text-slate-900"><?= formatMoney((int)$d['amount_pesewas']) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -166,16 +166,16 @@ include __DIR__ . '/../includes/header.php';
             </div>
 
             <!-- Signatures Section for Reconciliation Printout -->
-            <div class="pt-8 grid grid-cols-2 gap-8 text-xs text-zinc-600 border-t border-zinc-200 mt-6">
+            <div class="pt-8 grid grid-cols-2 gap-8 text-xs text-slate-600 border-t border-slate-200 mt-6">
                 <div>
-                    <div class="border-b border-zinc-300 w-44 mb-2"></div>
-                    <span class="font-medium text-zinc-900 block">Manager / Auditor</span>
-                    <span class="text-[10px] text-zinc-400">Signature</span>
+                    <div class="border-b border-purple-200 w-44 mb-2"></div>
+                    <span class="font-medium text-slate-900 block">Manager / Auditor</span>
+                    <span class="text-[10px] text-slate-400">Signature</span>
                 </div>
                 <div class="text-right flex flex-col items-end">
-                    <div class="border-b border-zinc-300 w-44 mb-2"></div>
-                    <span class="font-medium text-zinc-900 block">Field Supervisor</span>
-                    <span class="text-[10px] text-zinc-400">Verified & Handed Over</span>
+                    <div class="border-b border-purple-200 w-44 mb-2"></div>
+                    <span class="font-medium text-slate-900 block">Field Supervisor</span>
+                    <span class="text-[10px] text-slate-400">Verified & Handed Over</span>
                 </div>
             </div>
 
@@ -183,7 +183,7 @@ include __DIR__ . '/../includes/header.php';
             <!-- DEFAULTER AUDIT REPORT -->
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs">
-                    <thead class="bg-zinc-50 text-zinc-400 uppercase font-medium text-[10px] tracking-wider border-b border-zinc-200">
+                    <thead class="bg-slate-50 text-slate-400 uppercase font-medium text-[10px] tracking-wider border-b border-slate-200">
                         <tr>
                             <th class="py-2.5 px-3 font-normal">Overdue</th>
                             <th class="py-2.5 px-3 font-normal">Borrower & Phone</th>
@@ -194,22 +194,22 @@ include __DIR__ . '/../includes/header.php';
                             <th class="py-2.5 px-3 text-right font-normal">Overdue Amount</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-zinc-100">
+                    <tbody class="divide-y divide-slate-100">
                         <?php foreach ($defaulters as $df): ?>
                             <tr>
-                                <td class="py-2.5 px-3 font-mono font-medium text-zinc-900"><?= $df['days_overdue'] ?> days</td>
+                                <td class="py-2.5 px-3 font-mono font-medium text-slate-900"><?= $df['days_overdue'] ?> days</td>
                                 <td class="py-2.5 px-3">
-                                    <span class="font-medium text-zinc-900 block"><?= htmlspecialchars($df['full_name']) ?></span>
-                                    <span class="font-mono text-zinc-400 text-[10px]"><?= htmlspecialchars($df['phone']) ?></span>
+                                    <span class="font-medium text-slate-900 block"><?= htmlspecialchars($df['full_name']) ?></span>
+                                    <span class="font-mono text-slate-400 text-[10px]"><?= htmlspecialchars($df['phone']) ?></span>
                                 </td>
-                                <td class="py-2.5 px-3 text-zinc-500 text-[11px]"><?= htmlspecialchars($df['location_landmark']) ?></td>
+                                <td class="py-2.5 px-3 text-slate-500 text-[11px]"><?= htmlspecialchars($df['location_landmark']) ?></td>
                                 <td class="py-2.5 px-3">
-                                    <span class="block text-zinc-800"><?= htmlspecialchars($df['guarantor_name']) ?></span>
-                                    <span class="font-mono text-[10px] text-zinc-400"><?= htmlspecialchars($df['guarantor_phone']) ?></span>
+                                    <span class="block text-slate-800"><?= htmlspecialchars($df['guarantor_name']) ?></span>
+                                    <span class="font-mono text-[10px] text-slate-400"><?= htmlspecialchars($df['guarantor_phone']) ?></span>
                                 </td>
-                                <td class="py-2.5 px-3 font-mono text-zinc-700"><?= htmlspecialchars($df['loan_code']) ?></td>
-                                <td class="py-2.5 px-3 text-zinc-700"><?= htmlspecialchars($df['agent_name'] ?? 'Unassigned') ?></td>
-                                <td class="py-2.5 px-3 text-right font-semibold text-zinc-900"><?= formatMoney((int)$df['overdue_pesewas']) ?></td>
+                                <td class="py-2.5 px-3 font-mono text-slate-700"><?= htmlspecialchars($df['loan_code']) ?></td>
+                                <td class="py-2.5 px-3 text-slate-700"><?= htmlspecialchars($df['agent_name'] ?? 'Unassigned') ?></td>
+                                <td class="py-2.5 px-3 text-right font-semibold text-slate-900"><?= formatMoney((int)$df['overdue_pesewas']) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
