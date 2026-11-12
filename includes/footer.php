@@ -109,9 +109,46 @@
             </div>
         </div>
     </footer>
+        </div><!-- /#app-main-shell -->
+<?php if ($user): ?>
+    </div><!-- /.flex-1 flex min-h-0 -->
+<?php endif; ?>
 
-    <!-- App JavaScript & Offline Sync Manager -->
+    <!-- App JavaScript, Sidebar Controls & Offline Sync Manager -->
     <script>
+        function toggleDesktopSidebar() {
+            const root = document.documentElement;
+            const isCollapsed = root.classList.toggle('sidebar-is-collapsed');
+            try {
+                localStorage.setItem('elfaith_sidebar_collapsed', isCollapsed ? '1' : '0');
+            } catch (e) {}
+        }
+
+        function toggleMobileSidebar(forceOpen) {
+            const sidebar = document.getElementById('app-sidebar');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            if (!sidebar || !backdrop) return;
+
+            const shouldOpen = typeof forceOpen === 'boolean'
+                ? forceOpen
+                : sidebar.classList.contains('-translate-x-full');
+
+            if (shouldOpen) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('hidden');
+            }
+        }
+
+        // Close mobile drawer on Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                toggleMobileSidebar(false);
+            }
+        });
+
         // Initialize Lucide Icons
         if (window.lucide) {
             lucide.createIcons();

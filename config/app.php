@@ -64,7 +64,18 @@ define('BRANCH_REGION', $system_settings['branch_region'] ?? 'Western Region, Gh
 define('COMPANY_PHONE', $system_settings['company_phone'] ?? '+233 24 556 7890');
 define('COMPANY_EMAIL', $system_settings['company_email'] ?? 'admin@el-faithgroupofcompanies.com');
 define('CURRENCY_CODE', $system_settings['currency_code'] ?? 'GHS');
-define('CURRENCY_SYMBOL', $system_settings['currency_symbol'] ?? 'GH₵');
+$rawCurrencySymbol = trim((string)($system_settings['currency_symbol'] ?? 'GH₵'));
+if ($rawCurrencySymbol === '' || preg_match('/^\d+$/', $rawCurrencySymbol)) {
+    $rawCurrencySymbol = 'GH₵';
+    if (isset($pdo)) {
+        try {
+            $pdo->prepare("UPDATE system_settings SET setting_value = 'GH₵', updated_at = NOW() WHERE setting_key = 'currency_symbol'")->execute();
+        } catch (Exception $e) {
+            // Non-blocking fallback
+        }
+    }
+}
+define('CURRENCY_SYMBOL', $rawCurrencySymbol);
 define('DEFAULT_INTEREST_RATE', (float)($system_settings['default_interest_rate'] ?? 10.00));
 define('SMS_PROVIDER', $system_settings['sms_provider'] ?? 'simulated');
 define('SMS_SENDER_ID', $system_settings['sms_sender_id'] ?? 'ELFAITH');

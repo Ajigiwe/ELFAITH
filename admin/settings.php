@@ -70,7 +70,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 foreach ($allowedKeys as $key) {
                     if (isset($_POST[$key])) {
-                        $stmtUpd->execute([$key, trim($_POST[$key])]);
+                        $val = trim($_POST[$key]);
+                        if ($key === 'currency_symbol' && ($val === '' || preg_match('/^\d+$/', $val))) {
+                            $val = 'GH₵';
+                        }
+                        $stmtUpd->execute([$key, $val]);
                     }
                 }
 
