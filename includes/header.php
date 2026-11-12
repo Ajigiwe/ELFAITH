@@ -168,9 +168,6 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
 
         <!-- Collapsible Sidebar -->
         <aside id="app-sidebar" class="no-print fixed inset-y-0 left-0 z-50 w-60 bg-white border-r border-zinc-200 flex flex-col transform -translate-x-full md:translate-x-0 md:sticky md:top-0 md:h-screen transition-all duration-200 ease-in-out shrink-0 shadow-sm">
-            <!-- Deep Black & Blue Brand Top Accent -->
-            <div class="h-1 bg-gradient-to-r from-black via-blue-600 to-black shrink-0"></div>
-
             <!-- Brand & Collapse Toggle -->
             <div class="sidebar-header-row h-14 px-4 border-b border-zinc-200 flex items-center justify-between gap-2 shrink-0">
                 <a href="<?= BASE_URL ?>" class="sidebar-brand-link flex items-center gap-2.5 min-w-0">
