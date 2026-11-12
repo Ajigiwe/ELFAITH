@@ -201,15 +201,15 @@ include __DIR__ . '/../includes/header.php';
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-lg font-bold text-slate-900 tracking-tight">Loans</h1>
-            <p class="text-xs text-slate-400 mt-0.5">Loan facilities, terms, amortization & portfolio balance</p>
+            <h1 class="text-lg font-bold text-black tracking-tight">Loans</h1>
+            <p class="text-xs text-zinc-500 mt-0.5">Loan facilities, terms, amortization & portfolio balance</p>
         </div>
         <div class="flex items-center gap-2">
-            <a href="<?= BASE_URL ?>/calculator.php" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-medium text-xs rounded-lg transition">
-                <i data-lucide="calculator" class="w-3.5 h-3.5 text-slate-400"></i> Loan Calculator
+            <a href="<?= BASE_URL ?>/calculator.php" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-zinc-200 hover:bg-zinc-100 text-zinc-800 font-medium text-xs rounded-lg transition">
+                <i data-lucide="calculator" class="w-3.5 h-3.5 text-zinc-500"></i> Loan Calculator
             </a>
             <?php if ($action === 'new'): ?>
-                <a href="<?= BASE_URL ?>/admin/loans.php" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-medium text-xs rounded-lg transition">
+                <a href="<?= BASE_URL ?>/admin/loans.php" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-zinc-200 hover:bg-zinc-100 text-zinc-800 font-medium text-xs rounded-lg transition">
                     <i data-lucide="list" class="w-3.5 h-3.5"></i> View All Loans
                 </a>
             <?php else: ?>
@@ -221,18 +221,18 @@ include __DIR__ . '/../includes/header.php';
     </div>
 
     <?php if (!empty($error)): ?>
-        <div class="p-3 rounded-lg bg-slate-50 border border-purple-200 text-slate-900 text-xs font-medium flex items-center gap-2">
-            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-slate-700"></i>
+        <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200 text-black text-xs font-medium flex items-center gap-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-zinc-800"></i>
             <span><?= htmlspecialchars($error) ?></span>
         </div>
     <?php endif; ?>
 
     <?php if ($action === 'new'): ?>
         <!-- ORIGINATE NEW LOAN FORM -->
-        <div class="max-w-xl mx-auto bg-white rounded-xl border border-slate-200 p-5 sm:p-6">
-            <div class="mb-5 pb-3 border-b border-slate-100">
-                <h2 class="text-sm font-bold text-slate-900">Issue New Loan Facility</h2>
-                <p class="text-xs text-slate-400 mt-0.5">Calculates schedule with integer-safe pesewas allocation</p>
+        <div class="max-w-xl mx-auto bg-white rounded-xl border border-zinc-200 p-5 sm:p-6">
+            <div class="mb-5 pb-3 border-b border-zinc-100">
+                <h2 class="text-sm font-bold text-black">Issue New Loan Facility</h2>
+                <p class="text-xs text-zinc-500 mt-0.5">Calculates schedule with integer-safe pesewas allocation</p>
             </div>
 
             <form method="POST" action="<?= BASE_URL ?>/admin/loans.php?action=new" class="space-y-4 text-xs">
@@ -240,9 +240,9 @@ include __DIR__ . '/../includes/header.php';
 
                 <!-- Customer Selection -->
                 <div>
-                    <label class="block text-[11px] font-medium text-slate-700 mb-1">Borrower *</label>
+                    <label class="block text-[11px] font-medium text-zinc-800 mb-1">Borrower *</label>
                     <select id="cust-select" name="customer_id" required 
-                        class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                        class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                         <option value="">-- Choose Borrower --</option>
                         <?php foreach ($customers as $c): ?>
                             <option value="<?= $c['id'] ?>" data-agent-id="<?= $c['assigned_agent_id'] ?>" <?= $preselectedCustomerId === (int)$c['id'] ? 'selected' : '' ?>>
@@ -254,9 +254,9 @@ include __DIR__ . '/../includes/header.php';
 
                 <!-- Assigned Agent -->
                 <div>
-                    <label class="block text-[11px] font-medium text-slate-700 mb-1">Assigned Collection Agent</label>
+                    <label class="block text-[11px] font-medium text-zinc-800 mb-1">Assigned Collection Agent</label>
                     <select id="agent-select" name="agent_id" 
-                        class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                        class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                         <option value="">-- Choose Agent --</option>
                         <?php foreach ($agents as $ag): ?>
                             <option value="<?= $ag['id'] ?>">
@@ -269,24 +269,24 @@ include __DIR__ . '/../includes/header.php';
                 <!-- Principal Amount & Interest Rate -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Principal Amount (<?= htmlspecialchars(safeCurrencySymbol()) ?>) *</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Principal Amount (<?= htmlspecialchars(safeCurrencySymbol()) ?>) *</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none font-bold text-slate-400 text-xs">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none font-bold text-zinc-500 text-xs">
                                 <?= htmlspecialchars(safeCurrencySymbol()) ?>
                             </span>
                             <input type="number" step="0.01" min="1" id="principal" name="principal" required 
-                                class="w-full pl-10 pr-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                                class="w-full pl-10 pr-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs font-semibold text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                                 placeholder="1000.00" value="<?= htmlspecialchars((string)$prefillPrincipal) ?>">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Interest Rate (%) *</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Interest Rate (%) *</label>
                         <div class="relative">
                             <input type="number" step="0.01" min="0" max="500" id="interest_rate" name="interest_rate" required 
-                                class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                                class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs font-semibold text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                                 value="<?= htmlspecialchars((string)$prefillInterestRate) ?>">
-                            <span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400 text-xs">
+                            <span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-zinc-500 text-xs">
                                 %
                             </span>
                         </div>
@@ -296,16 +296,16 @@ include __DIR__ . '/../includes/header.php';
                 <!-- Interest Method & Repayment Frequency -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Calculation Method</label>
-                        <select name="interest_method" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Calculation Method</label>
+                        <select name="interest_method" class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                             <option value="flat" selected>Flat Rate (Policy Standard)</option>
                             <option value="reducing_balance">Reducing Balance Amortization</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Repayment Frequency</label>
-                        <select id="frequency" name="repayment_frequency" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Repayment Frequency</label>
+                        <select id="frequency" name="repayment_frequency" class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                             <option value="daily" <?= $prefillFreq === 'daily' ? 'selected' : '' ?>>Daily Collections (Mon - Sat)</option>
                             <option value="weekly" <?= $prefillFreq === 'weekly' ? 'selected' : '' ?>>Weekly</option>
                             <option value="monthly" <?= $prefillFreq === 'monthly' ? 'selected' : '' ?>>Monthly</option>
@@ -316,12 +316,12 @@ include __DIR__ . '/../includes/header.php';
                 <!-- Term Duration & First Due Date -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Term Duration *</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Term Duration *</label>
                         <div class="flex gap-2">
                             <input type="number" min="1" id="term_duration" name="term_duration" required 
-                                class="w-20 px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                                class="w-20 px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs font-semibold text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                                 value="<?= (int)$prefillDuration ?>">
-                            <select id="term_period" name="term_period" class="flex-1 px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                            <select id="term_period" name="term_period" class="flex-1 px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                                 <option value="days" <?= $prefillPeriod === 'days' ? 'selected' : '' ?>>Days</option>
                                 <option value="weeks" <?= $prefillPeriod === 'weeks' ? 'selected' : '' ?>>Weeks</option>
                                 <option value="months" <?= $prefillPeriod === 'months' ? 'selected' : '' ?>>Months</option>
@@ -330,45 +330,45 @@ include __DIR__ . '/../includes/header.php';
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">First Repayment Due Date *</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">First Repayment Due Date *</label>
                         <input type="date" name="first_due_date" required 
-                            class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                            class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                             value="<?= htmlspecialchars($prefillFirstDue) ?>">
                     </div>
                 </div>
 
                 <!-- Minimal Projection Box -->
-                <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200 text-xs space-y-2">
+                <div class="p-3.5 rounded-lg bg-zinc-50 border border-zinc-200 text-xs space-y-2">
                     <div class="flex items-center justify-between">
-                        <span class="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">Projection Summary</span>
-                        <span class="text-[10px] text-slate-400">Installment editable below</span>
+                        <span class="text-[10px] font-medium text-zinc-500 uppercase tracking-wider block">Projection Summary</span>
+                        <span class="text-[10px] text-zinc-500">Installment editable below</span>
                     </div>
-                    <div class="grid grid-cols-3 gap-2 pt-1 text-slate-800 items-end">
+                    <div class="grid grid-cols-3 gap-2 pt-1 text-zinc-950 items-end">
                         <div>
-                            <span class="text-slate-400 block text-[10px] uppercase">Interest</span>
-                            <span id="proj-interest" class="font-semibold text-slate-900"><?= htmlspecialchars(safeCurrencySymbol()) ?> 100.00</span>
+                            <span class="text-zinc-500 block text-[10px] uppercase">Interest</span>
+                            <span id="proj-interest" class="font-semibold text-black"><?= htmlspecialchars(safeCurrencySymbol()) ?> 100.00</span>
                         </div>
                         <div>
-                            <span class="text-slate-400 block text-[10px] uppercase">Total Payable</span>
-                            <span id="proj-total" class="font-semibold text-slate-900"><?= htmlspecialchars(safeCurrencySymbol()) ?> 1,100.00</span>
+                            <span class="text-zinc-500 block text-[10px] uppercase">Total Payable</span>
+                            <span id="proj-total" class="font-semibold text-black"><?= htmlspecialchars(safeCurrencySymbol()) ?> 1,100.00</span>
                         </div>
                         <div>
-                            <label for="custom_installment_input" class="text-slate-400 block text-[10px] uppercase">Installment (<?= htmlspecialchars(safeCurrencySymbol()) ?>)</label>
+                            <label for="custom_installment_input" class="text-zinc-500 block text-[10px] uppercase">Installment (<?= htmlspecialchars(safeCurrencySymbol()) ?>)</label>
                             <input type="number" step="0.01" min="0.01" id="custom_installment_input"
                                 oninput="onLoanFormInstallmentEdit()"
                                 value="<?= htmlspecialchars((string)$prefillCustomInstallment) ?>"
-                                class="mt-0.5 w-full px-2 py-1 bg-white border border-slate-200 rounded text-xs font-semibold text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                                class="mt-0.5 w-full px-2 py-1 bg-white border border-zinc-200 rounded text-xs font-semibold text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                             <input type="hidden" name="custom_installment" id="custom_installment" value="<?= htmlspecialchars((string)$prefillCustomInstallment) ?>">
-                            <span id="proj-installment-count" class="text-[10px] text-slate-400 block mt-0.5">22 installments</span>
+                            <span id="proj-installment-count" class="text-[10px] text-zinc-500 block mt-0.5">22 installments</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Notes -->
                 <div>
-                    <label class="block text-[11px] font-medium text-slate-700 mb-1">Notes (Optional)</label>
+                    <label class="block text-[11px] font-medium text-zinc-800 mb-1">Notes (Optional)</label>
                     <input type="text" name="notes" placeholder="e.g. Working capital facility"
-                        class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                        class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                 </div>
 
                 <div class="pt-2">
@@ -458,19 +458,19 @@ include __DIR__ . '/../includes/header.php';
     <?php else: ?>
         <!-- LOANS LIST TABLE -->
         <!-- Search and Filter Bar -->
-        <div class="bg-white rounded-xl border border-slate-200 p-3.5">
+        <div class="bg-white rounded-xl border border-zinc-200 p-3.5">
             <form method="GET" class="flex flex-col sm:flex-row items-center gap-2.5 text-xs">
                 <div class="relative flex-1 w-full">
-                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-500">
                         <i data-lucide="search" class="w-3.5 h-3.5"></i>
                     </span>
                     <input type="text" name="q" value="<?= htmlspecialchars($search) ?>" 
-                        class="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                        class="w-full pl-9 pr-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs placeholder-zinc-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                         placeholder="Search loan code, borrower name, phone...">
                 </div>
 
                 <div class="w-full sm:w-auto">
-                    <select name="status" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                    <select name="status" class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-950 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                         <option value="">All Statuses</option>
                         <option value="active" <?= $statusFilter === 'active' ? 'selected' : '' ?>>Active</option>
                         <option value="paid" <?= $statusFilter === 'paid' ? 'selected' : '' ?>>Paid Off</option>
@@ -485,20 +485,20 @@ include __DIR__ . '/../includes/header.php';
             </form>
         </div>
 
-        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
-            <div class="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
-                <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-900">All Loan Facilities</h2>
-                <span class="text-xs text-slate-400"><?= count($loansList) ?> Loans</span>
+        <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden">
+            <div class="px-5 py-3 border-b border-zinc-100 flex items-center justify-between">
+                <h2 class="text-xs font-semibold uppercase tracking-wider text-black">All Loan Facilities</h2>
+                <span class="text-xs text-zinc-500"><?= count($loansList) ?> Loans</span>
             </div>
 
             <?php if (empty($loansList)): ?>
-                <div class="p-8 text-center text-slate-400 text-xs">
+                <div class="p-8 text-center text-zinc-500 text-xs">
                     No loan facilities match your criteria.
                 </div>
             <?php else: ?>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-50 text-slate-400 uppercase font-medium text-[10px] tracking-wider border-b border-slate-100">
+                        <thead class="bg-zinc-50 text-zinc-500 uppercase font-medium text-[10px] tracking-wider border-b border-zinc-100">
                             <tr>
                                 <th class="py-2.5 px-4 font-normal">Loan Code</th>
                                 <th class="py-2.5 px-4 font-normal">Borrower</th>
@@ -511,40 +511,40 @@ include __DIR__ . '/../includes/header.php';
                                 <th class="py-2.5 px-4 text-center font-normal">Action</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100">
+                        <tbody class="divide-y divide-zinc-100">
                             <?php foreach ($loansList as $l): ?>
-                                <tr class="hover:bg-purple-50/30 transition">
-                                    <td class="py-3 px-4 font-mono font-medium text-slate-900">
+                                <tr class="hover:bg-blue-50/30 transition">
+                                    <td class="py-3 px-4 font-mono font-medium text-black">
                                         <?= htmlspecialchars($l['loan_code']) ?>
                                     </td>
                                     <td class="py-3 px-4">
-                                        <a href="<?= BASE_URL ?>/admin/customer_view.php?id=<?= $l['customer_id'] ?>" class="font-medium text-slate-900 hover:underline block">
+                                        <a href="<?= BASE_URL ?>/admin/customer_view.php?id=<?= $l['customer_id'] ?>" class="font-medium text-black hover:underline block">
                                             <?= htmlspecialchars($l['customer_name']) ?>
                                         </a>
-                                        <span class="text-[11px] font-mono text-slate-400"><?= htmlspecialchars($l['customer_phone']) ?></span>
+                                        <span class="text-[11px] font-mono text-zinc-500"><?= htmlspecialchars($l['customer_phone']) ?></span>
                                     </td>
-                                    <td class="py-3 px-4 text-slate-700">
+                                    <td class="py-3 px-4 text-zinc-800">
                                         <?= htmlspecialchars($l['agent_name'] ?? 'Unassigned') ?>
                                     </td>
-                                    <td class="py-3 px-4 text-right text-slate-600">
+                                    <td class="py-3 px-4 text-right text-zinc-700">
                                         <?= formatMoney((int)$l['principal_pesewas']) ?>
                                     </td>
-                                    <td class="py-3 px-4 text-right font-medium text-slate-900">
+                                    <td class="py-3 px-4 text-right font-medium text-black">
                                         <?= formatMoney((int)$l['total_payable_pesewas']) ?>
                                     </td>
-                                    <td class="py-3 px-4 text-right font-semibold text-slate-900">
+                                    <td class="py-3 px-4 text-right font-semibold text-black">
                                         <?= formatMoney((int)$l['remaining_balance_pesewas']) ?>
                                     </td>
-                                    <td class="py-3 px-4 text-slate-400 text-[11px]">
+                                    <td class="py-3 px-4 text-zinc-500 text-[11px]">
                                         <?= $l['term_duration'] ?> <?= $l['term_period'] ?>
                                     </td>
                                     <td class="py-3 px-4">
-                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase <?= $l['status'] === 'active' ? 'bg-purple-50 text-slate-800' : ($l['status'] === 'overdue' ? 'bg-slate-200 text-slate-900 font-semibold' : 'bg-purple-50 text-slate-500') ?>">
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase <?= $l['status'] === 'active' ? 'bg-zinc-100 text-zinc-950' : ($l['status'] === 'overdue' ? 'bg-zinc-200 text-black font-semibold' : 'bg-zinc-100 text-zinc-600') ?>">
                                             <?= htmlspecialchars($l['status']) ?>
                                         </span>
                                     </td>
                                     <td class="py-3 px-4 text-center">
-                                        <a href="<?= BASE_URL ?>/admin/loan_view.php?id=<?= $l['id'] ?>" class="px-2 py-1 bg-purple-50 hover:bg-purple-100 text-slate-800 rounded text-[11px] font-medium transition">
+                                        <a href="<?= BASE_URL ?>/admin/loan_view.php?id=<?= $l['id'] ?>" class="px-2 py-1 bg-zinc-100 hover:bg-zinc-200 text-zinc-950 rounded text-[11px] font-medium transition">
                                             Schedule
                                         </a>
                                     </td>

@@ -107,23 +107,23 @@ include __DIR__ . '/../includes/header.php';
 <div class="max-w-xl mx-auto space-y-6">
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-lg font-bold text-slate-900 tracking-tight">Register Borrower</h1>
-            <p class="text-xs text-slate-400 mt-0.5">Customer KYC, location landmark & guarantor registration</p>
+            <h1 class="text-lg font-bold text-black tracking-tight">Register Borrower</h1>
+            <p class="text-xs text-zinc-500 mt-0.5">Customer KYC, location landmark & guarantor registration</p>
         </div>
         <a href="<?= $role === 'admin' ? BASE_URL . '/admin/customers.php' : BASE_URL . '/agent/my_customers.php' ?>" 
-           class="inline-flex items-center gap-1 text-xs text-slate-600 bg-white border border-slate-200 px-2.5 py-1.5 rounded-lg hover:bg-slate-50">
+           class="inline-flex items-center gap-1 text-xs text-zinc-700 bg-white border border-zinc-200 px-2.5 py-1.5 rounded-lg hover:bg-zinc-100">
             <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back
         </a>
     </div>
 
     <?php if (!empty($error)): ?>
-        <div class="p-3 rounded-lg bg-slate-50 border border-purple-200 text-slate-900 text-xs font-medium flex items-center gap-2">
-            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-slate-700"></i>
+        <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200 text-black text-xs font-medium flex items-center gap-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-zinc-800"></i>
             <span><?= htmlspecialchars($error) ?></span>
         </div>
     <?php endif; ?>
 
-    <div class="bg-white rounded-xl border border-slate-200 p-5 sm:p-6">
+    <div class="bg-white rounded-xl border border-zinc-200 p-5 sm:p-6">
         <form method="POST" class="space-y-5 text-xs">
             <?= csrfField() ?>
             <input type="hidden" id="gps_lat" name="gps_lat" value="">
@@ -131,35 +131,35 @@ include __DIR__ . '/../includes/header.php';
 
             <!-- Section 1: Customer Personal Details -->
             <div class="space-y-3">
-                <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-700 pb-2 border-b border-slate-100">
+                <h2 class="text-xs font-semibold uppercase tracking-wider text-black pb-2 border-b border-zinc-100">
                     Borrower Personal Details
                 </h2>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div class="sm:col-span-2">
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Full Name *</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Full Name *</label>
                         <input type="text" name="full_name" required value="<?= htmlspecialchars($_POST['full_name'] ?? '') ?>"
-                            class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                            class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                             placeholder="e.g. Kwadwo Mensah">
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Phone Number *</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Phone Number *</label>
                         <input type="text" name="phone" required value="<?= htmlspecialchars($_POST['phone'] ?? '') ?>"
-                            class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                            class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                             placeholder="e.g. +233241234567">
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Alternative Phone (Optional)</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Alternative Phone (Optional)</label>
                         <input type="text" name="alt_phone" value="<?= htmlspecialchars($_POST['alt_phone'] ?? '') ?>"
-                            class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                            class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                             placeholder="e.g. +233501234567">
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">ID Type *</label>
-                        <select name="id_type" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">ID Type *</label>
+                        <select name="id_type" class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                             <option value="Ghana Card" selected>Ghana Card</option>
                             <option value="Voters ID">Voters ID</option>
                             <option value="Passport">Passport</option>
@@ -167,76 +167,76 @@ include __DIR__ . '/../includes/header.php';
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Ghana Card / ID Number *</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Ghana Card / ID Number *</label>
                         <input type="text" name="id_number" required value="<?= htmlspecialchars($_POST['id_number'] ?? '') ?>"
-                            class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                            class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                             placeholder="e.g. GHA-712345678-1">
                     </div>
 
                     <div class="sm:col-span-2">
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Occupation / Business *</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Occupation / Business *</label>
                         <input type="text" name="occupation" required value="<?= htmlspecialchars($_POST['occupation'] ?? '') ?>"
-                            class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                            class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                             placeholder="e.g. Market Trader, Cocoa Farmer, Mechanic">
                     </div>
                 </div>
             </div>
 
             <!-- Section 2: Location & Address -->
-            <div class="space-y-3 pt-3 border-t border-slate-100">
-                <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-700 pb-2 border-b border-slate-100">
+            <div class="space-y-3 pt-3 border-t border-zinc-100">
+                <h2 class="text-xs font-semibold uppercase tracking-wider text-black pb-2 border-b border-zinc-100">
                     Location & Landmark
                 </h2>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div class="sm:col-span-2">
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Residential Address *</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Residential Address *</label>
                         <input type="text" name="residential_address" required value="<?= htmlspecialchars($_POST['residential_address'] ?? '') ?>"
-                            class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                            class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                             placeholder="e.g. House No 24, Powuako Market Road">
                     </div>
 
                     <div class="sm:col-span-2">
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Location Landmark (For Route Navigation) *</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Location Landmark (For Route Navigation) *</label>
                         <input type="text" name="location_landmark" required value="<?= htmlspecialchars($_POST['location_landmark'] ?? '') ?>"
-                            class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                            class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                             placeholder="e.g. Behind Central Mosque, opposite Chief Palace">
                     </div>
                 </div>
             </div>
 
             <!-- Section 3: Guarantor Information -->
-            <div class="space-y-3 pt-3 border-t border-slate-100">
-                <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-700 pb-2 border-b border-slate-100">
+            <div class="space-y-3 pt-3 border-t border-zinc-100">
+                <h2 class="text-xs font-semibold uppercase tracking-wider text-black pb-2 border-b border-zinc-100">
                     Guarantor Information
                 </h2>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Guarantor Full Name *</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Guarantor Full Name *</label>
                         <input type="text" name="guarantor_name" required value="<?= htmlspecialchars($_POST['guarantor_name'] ?? '') ?>"
-                            class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                            class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                             placeholder="e.g. Akua Donkor">
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Guarantor Phone *</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Guarantor Phone *</label>
                         <input type="text" name="guarantor_phone" required value="<?= htmlspecialchars($_POST['guarantor_phone'] ?? '') ?>"
-                            class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                            class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                             placeholder="e.g. +233245678901">
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Relationship to Borrower *</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Relationship to Borrower *</label>
                         <input type="text" name="guarantor_relation" required value="<?= htmlspecialchars($_POST['guarantor_relation'] ?? '') ?>"
-                            class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                            class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                             placeholder="e.g. Brother, Mother, Business Partner">
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-medium text-slate-700 mb-1">Guarantor Address (Optional)</label>
+                        <label class="block text-[11px] font-medium text-zinc-800 mb-1">Guarantor Address (Optional)</label>
                         <input type="text" name="guarantor_address" value="<?= htmlspecialchars($_POST['guarantor_address'] ?? '') ?>"
-                            class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
+                            class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600"
                             placeholder="e.g. Wassa Powuako Station">
                     </div>
                 </div>
@@ -244,9 +244,9 @@ include __DIR__ . '/../includes/header.php';
 
             <!-- Admin Only: Assign to Agent -->
             <?php if ($role === 'admin' && !empty($agentsList)): ?>
-                <div class="pt-3 border-t border-slate-100">
-                    <label class="block text-[11px] font-medium text-slate-700 mb-1">Assign Field Agent</label>
-                    <select name="assigned_agent_id" class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                <div class="pt-3 border-t border-zinc-100">
+                    <label class="block text-[11px] font-medium text-zinc-800 mb-1">Assign Field Agent</label>
+                    <select name="assigned_agent_id" class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                         <?php foreach ($agentsList as $ag): ?>
                             <option value="<?= $ag['id'] ?>"><?= htmlspecialchars($ag['name']) ?> (<?= htmlspecialchars($ag['staff_code']) ?>)</option>
                         <?php endforeach; ?>

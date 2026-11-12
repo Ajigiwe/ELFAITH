@@ -18,8 +18,8 @@ include __DIR__ . '/../includes/header.php';
     <!-- Header -->
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-base font-bold text-slate-900 tracking-tight">Offline Queue & Sync</h1>
-            <p class="text-xs text-slate-400 mt-0.5">Collections stored securely on phone during offline field operations</p>
+            <h1 class="text-base font-bold text-black tracking-tight">Offline Queue & Sync</h1>
+            <p class="text-xs text-zinc-500 mt-0.5">Collections stored securely on phone during offline field operations</p>
         </div>
         <div class="flex items-center gap-2">
             <button id="sync-now-btn" onclick="triggerManualSync()" 
@@ -31,44 +31,44 @@ include __DIR__ . '/../includes/header.php';
     </div>
 
     <!-- Live Status Overview Card -->
-    <div class="bg-white rounded-xl border border-slate-200 p-4 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+    <div class="bg-white rounded-xl border border-zinc-200 p-4 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
         <div>
-            <span class="text-[10px] uppercase font-medium text-slate-400 tracking-wider block">Network Status</span>
-            <div id="device-network-status" class="font-semibold text-slate-900 mt-0.5 flex items-center gap-1.5">
+            <span class="text-[10px] uppercase font-medium text-zinc-500 tracking-wider block">Network Status</span>
+            <div id="device-network-status" class="font-semibold text-black mt-0.5 flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                 <span>Checking...</span>
             </div>
         </div>
         <div>
-            <span class="text-[10px] uppercase font-medium text-slate-400 tracking-wider block">Queued Items</span>
-            <div id="queue-total-count" class="font-bold text-slate-900 text-sm mt-0.5">
+            <span class="text-[10px] uppercase font-medium text-zinc-500 tracking-wider block">Queued Items</span>
+            <div id="queue-total-count" class="font-bold text-black text-sm mt-0.5">
                 0 Items
             </div>
         </div>
         <div class="col-span-2 sm:col-span-1">
-            <span class="text-[10px] uppercase font-medium text-slate-400 tracking-wider block">Queued Value</span>
-            <div id="queue-total-amount" class="font-bold text-slate-900 text-sm mt-0.5">
+            <span class="text-[10px] uppercase font-medium text-zinc-500 tracking-wider block">Queued Value</span>
+            <div id="queue-total-amount" class="font-bold text-black text-sm mt-0.5">
                 GH₵ 0.00
             </div>
         </div>
     </div>
 
     <!-- Queue List Card -->
-    <div class="bg-white rounded-xl border border-slate-200 p-5 space-y-4 shadow-sm">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-            <span class="text-xs font-semibold uppercase tracking-wider text-purple-900">Locally Queued Receipts</span>
-            <span id="queue-count-badge" class="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-purple-50 text-slate-800">
+    <div class="bg-white rounded-xl border border-zinc-200 p-5 space-y-4 shadow-sm">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
+            <span class="text-xs font-semibold uppercase tracking-wider text-black">Locally Queued Receipts</span>
+            <span id="queue-count-badge" class="px-2 py-0.5 rounded text-[10px] font-mono uppercase bg-zinc-100 text-zinc-950">
                 0 Items
             </span>
         </div>
 
         <!-- Empty State -->
-        <div id="queue-empty" class="text-center py-10 text-slate-400 text-xs">
-            <div class="w-10 h-10 rounded-full bg-purple-50 text-slate-500 flex items-center justify-center mx-auto mb-2.5">
+        <div id="queue-empty" class="text-center py-10 text-zinc-500 text-xs">
+            <div class="w-10 h-10 rounded-full bg-zinc-100 text-zinc-600 flex items-center justify-center mx-auto mb-2.5">
                 <i data-lucide="check" class="w-5 h-5"></i>
             </div>
-            <p class="text-sm font-semibold text-slate-900">Queue is Clear</p>
-            <p class="text-xs text-slate-400 mt-1 max-w-xs mx-auto">All collections recorded on this device have been synchronized to the central ledger.</p>
+            <p class="text-sm font-semibold text-black">Queue is Clear</p>
+            <p class="text-xs text-zinc-500 mt-1 max-w-xs mx-auto">All collections recorded on this device have been synchronized to the central ledger.</p>
             <div class="mt-4">
                 <a href="<?= BASE_URL ?>/agent/collect.php" class="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition">
                     <i data-lucide="plus" class="w-3.5 h-3.5"></i> Record Collection
@@ -77,32 +77,32 @@ include __DIR__ . '/../includes/header.php';
         </div>
 
         <!-- Populated List -->
-        <div id="queue-list" class="divide-y divide-slate-100 hidden">
+        <div id="queue-list" class="divide-y divide-zinc-100 hidden">
             <!-- Dynamically populated from OfflineStorage JS -->
         </div>
 
         <!-- Footer Actions -->
-        <div id="queue-actions-bar" class="pt-3 border-t border-slate-100 flex items-center justify-between hidden">
-            <button onclick="clearQueuePrompt()" class="text-[11px] text-slate-400 hover:text-red-600 transition flex items-center gap-1">
+        <div id="queue-actions-bar" class="pt-3 border-t border-zinc-100 flex items-center justify-between hidden">
+            <button onclick="clearQueuePrompt()" class="text-[11px] text-zinc-500 hover:text-red-600 transition flex items-center gap-1">
                 <i data-lucide="trash-2" class="w-3 h-3"></i> Clear Local Queue
             </button>
-            <span class="text-[10px] text-slate-400">Stored safely in encrypted browser storage</span>
+            <span class="text-[10px] text-zinc-500">Stored safely in encrypted browser storage</span>
         </div>
     </div>
 </div>
 
 <!-- Offline Receipt Modal Preview -->
-<div id="offline-receipt-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl border border-slate-200 max-w-sm w-full p-5 space-y-4 shadow-sm animate-in fade-in duration-100">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+<div id="offline-receipt-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl border border-zinc-200 max-w-sm w-full p-5 space-y-4 shadow-sm animate-in fade-in duration-100">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
             <div class="flex items-center gap-2.5">
                 <?= renderCompanyLogo('compact') ?>
                 <div class="leading-tight">
-                    <span class="block text-[10px] font-bold uppercase tracking-wide text-slate-900"><?= htmlspecialchars(COMPANY_NAME) ?></span>
-                    <h3 class="text-[11px] font-medium text-slate-500 uppercase tracking-wider">Offline Field Receipt</h3>
+                    <span class="block text-[10px] font-bold uppercase tracking-wide text-black"><?= htmlspecialchars(COMPANY_NAME) ?></span>
+                    <h3 class="text-[11px] font-medium text-zinc-600 uppercase tracking-wider">Offline Field Receipt</h3>
                 </div>
             </div>
-            <button type="button" onclick="closeReceiptModal()" class="text-slate-400 hover:text-slate-600 p-1">
+            <button type="button" onclick="closeReceiptModal()" class="text-zinc-500 hover:text-zinc-800 p-1">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
         </div>
@@ -111,8 +111,8 @@ include __DIR__ . '/../includes/header.php';
             <!-- Populated dynamically -->
         </div>
 
-        <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-            <button type="button" onclick="window.print()" class="px-3 py-1.5 bg-purple-50 text-slate-800 rounded-lg text-xs font-medium hover:bg-purple-100 transition flex items-center gap-1">
+        <div class="pt-3 border-t border-zinc-100 flex items-center justify-between">
+            <button type="button" onclick="window.print()" class="px-3 py-1.5 bg-zinc-100 text-zinc-950 rounded-lg text-xs font-medium hover:bg-zinc-200 transition flex items-center gap-1">
                 <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print
             </button>
             <button type="button" onclick="closeReceiptModal()" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700 transition">
@@ -173,16 +173,16 @@ include __DIR__ . '/../includes/header.php';
             row.innerHTML = `
                 <div class="space-y-0.5">
                     <div class="flex items-center gap-1.5">
-                        <span class="font-mono text-[10px] text-slate-400 block">UUID: ${shortUuid}</span>
+                        <span class="font-mono text-[10px] text-zinc-500 block">UUID: ${shortUuid}</span>
                         <span class="px-1 py-0.2 rounded text-[9px] font-mono uppercase bg-amber-50 text-amber-700 border border-amber-200">Offline</span>
                     </div>
-                    <span class="font-medium text-slate-900 block">Loan #${item.loan_id} &bull; Customer #${item.customer_id}</span>
-                    <span class="block text-[11px] text-slate-400 font-mono">${item.collection_timestamp} &bull; ${item.payment_method.toUpperCase()}${item.momo_reference ? ' (' + item.momo_reference + ')' : ''}</span>
+                    <span class="font-medium text-black block">Loan #${item.loan_id} &bull; Customer #${item.customer_id}</span>
+                    <span class="block text-[11px] text-zinc-500 font-mono">${item.collection_timestamp} &bull; ${item.payment_method.toUpperCase()}${item.momo_reference ? ' (' + item.momo_reference + ')' : ''}</span>
                 </div>
                 <div class="text-right space-y-1">
-                    <span class="text-xs font-bold text-slate-900 block">GH₵ ${formattedAmount}</span>
+                    <span class="text-xs font-bold text-black block">GH₵ ${formattedAmount}</span>
                     <button type="button" onclick='viewOfflineReceipt(${JSON.stringify(item)})' 
-                        class="text-[10px] text-slate-600 hover:text-slate-900 underline font-medium">
+                        class="text-[10px] text-zinc-700 hover:text-black underline font-medium">
                         Receipt &rarr;
                     </button>
                 </div>
@@ -197,30 +197,30 @@ include __DIR__ . '/../includes/header.php';
         const body = document.getElementById('receipt-modal-body');
         const formattedAmount = (item.amount_pesewas / 100).toFixed(2);
         body.innerHTML = `
-            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-2">
-                <div class="flex justify-between text-slate-500 text-[11px]">
+            <div class="p-3 bg-zinc-50 rounded-lg border border-zinc-200 space-y-2">
+                <div class="flex justify-between text-zinc-600 text-[11px]">
                     <span>Receipt Code:</span>
-                    <span class="font-mono font-bold text-slate-900">EF-OFFLINE-${item.uuid.substring(0, 8).toUpperCase()}</span>
+                    <span class="font-mono font-bold text-black">EF-OFFLINE-${item.uuid.substring(0, 8).toUpperCase()}</span>
                 </div>
-                <div class="flex justify-between text-slate-500 text-[11px]">
+                <div class="flex justify-between text-zinc-600 text-[11px]">
                     <span>Date & Time:</span>
-                    <span class="text-slate-800">${item.collection_timestamp}</span>
+                    <span class="text-zinc-950">${item.collection_timestamp}</span>
                 </div>
-                <div class="flex justify-between text-slate-500 text-[11px]">
+                <div class="flex justify-between text-zinc-600 text-[11px]">
                     <span>Payment Method:</span>
-                    <span class="uppercase font-medium text-slate-800">${item.payment_method}</span>
+                    <span class="uppercase font-medium text-zinc-950">${item.payment_method}</span>
                 </div>
                 ${item.momo_reference ? `
-                <div class="flex justify-between text-slate-500 text-[11px]">
+                <div class="flex justify-between text-zinc-600 text-[11px]">
                     <span>MoMo Reference:</span>
-                    <span class="font-mono text-slate-800">${item.momo_reference}</span>
+                    <span class="font-mono text-zinc-950">${item.momo_reference}</span>
                 </div>` : ''}
-                <div class="pt-2 border-t border-slate-200 flex justify-between items-center text-sm font-bold text-slate-900">
+                <div class="pt-2 border-t border-zinc-200 flex justify-between items-center text-sm font-bold text-black">
                     <span>Amount Collected:</span>
                     <span class="text-base">GH₵ ${formattedAmount}</span>
                 </div>
             </div>
-            <p class="text-[10px] text-slate-400 text-center">
+            <p class="text-[10px] text-zinc-500 text-center">
                 This receipt was captured offline and will be officially booked to the central ledger upon internet connection.
             </p>
         `;

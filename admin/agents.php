@@ -270,8 +270,8 @@ include __DIR__ . '/../includes/header.php';
     <!-- Page Header & Main Action -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-lg font-bold text-slate-900 tracking-tight">Staff & User Management</h1>
-            <p class="text-xs text-slate-400 mt-0.5">Manage personnel accounts, credentials, administrative roles, and system access</p>
+            <h1 class="text-lg font-bold text-black tracking-tight">Staff & User Management</h1>
+            <p class="text-xs text-zinc-500 mt-0.5">Manage personnel accounts, credentials, administrative roles, and system access</p>
         </div>
         <button type="button" onclick="openAddModal()" 
             class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition active:scale-[0.99] self-start sm:self-auto shadow-sm">
@@ -281,8 +281,8 @@ include __DIR__ . '/../includes/header.php';
 
     <!-- Feedback Message -->
     <?php if (!empty($error)): ?>
-        <div class="p-3 rounded-lg bg-slate-50 border border-purple-200 text-slate-900 text-xs font-medium flex items-center gap-2">
-            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-slate-700"></i>
+        <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200 text-black text-xs font-medium flex items-center gap-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-zinc-800"></i>
             <span><?= htmlspecialchars($error) ?></span>
         </div>
     <?php endif; ?>
@@ -294,15 +294,15 @@ include __DIR__ . '/../includes/header.php';
             <div class="text-xl font-bold text-white mt-1"><?= $totalUsers ?></div>
             <span class="text-[10px] text-blue-100 mt-0.5 block"><?= $adminCount ?> Admin &bull; <?= $agentCount ?> Agents</span>
         </div>
-        <div class="bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-xl p-3.5 shadow-sm">
-            <span class="text-[10px] uppercase font-semibold text-purple-100 tracking-wider block">Active Users</span>
+        <div class="bg-gradient-to-br from-zinc-900 via-zinc-950 to-black text-white rounded-xl p-3.5 shadow-sm border border-zinc-800">
+            <span class="text-[10px] uppercase font-semibold text-zinc-300 tracking-wider block">Active Users</span>
             <div class="text-xl font-bold text-white mt-1 flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-emerald-300"></span>
                 <?= $activeCount ?>
             </div>
-            <span class="text-[10px] text-purple-100 mt-0.5 block">Can sign in & collect</span>
+            <span class="text-[10px] text-blue-400 mt-0.5 block">Can sign in & collect</span>
         </div>
-        <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-xl p-3.5 shadow-sm">
+        <div class="bg-gradient-to-br from-blue-700 to-blue-900 text-white rounded-xl p-3.5 shadow-sm">
             <span class="text-[10px] uppercase font-semibold text-blue-100 tracking-wider block">Deactivated</span>
             <div class="text-xl font-bold text-white mt-1 flex items-center gap-1.5">
                 <span class="w-2 h-2 rounded-full bg-white/60"></span>
@@ -310,30 +310,30 @@ include __DIR__ . '/../includes/header.php';
             </div>
             <span class="text-[10px] text-blue-100 mt-0.5 block">Sign in blocked</span>
         </div>
-        <div class="bg-gradient-to-br from-purple-700 to-purple-800 text-white rounded-xl p-3.5 shadow-sm">
-            <span class="text-[10px] uppercase font-semibold text-purple-100 tracking-wider block">Security Rule</span>
+        <div class="bg-gradient-to-br from-neutral-900 via-zinc-950 to-black text-white rounded-xl p-3.5 shadow-sm border border-zinc-800">
+            <span class="text-[10px] uppercase font-semibold text-zinc-300 tracking-wider block">Security Rule</span>
             <div class="text-xs font-semibold text-white mt-1 leading-snug">Strict Self-Guard & Single Admin Lock</div>
-            <span class="text-[10px] text-purple-200 mt-0.5 block">Tamper-evident audit</span>
+            <span class="text-[10px] text-blue-400 mt-0.5 block">Tamper-evident audit</span>
         </div>
     </div>
 
     <!-- Filter & Live Search Toolbar -->
-    <div class="bg-white rounded-xl border border-slate-200 p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+    <div class="bg-white rounded-xl border border-zinc-200 p-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
         <div class="relative flex-1">
-            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+            <i data-lucide="search" class="w-3.5 h-3.5 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
             <input type="text" id="staff-search" oninput="filterStaffCards()" 
                 placeholder="Search staff by name, username, staff code, or email..."
-                class="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition">
+                class="w-full pl-8 pr-3 py-1.5 bg-zinc-50 border border-zinc-200 rounded-lg text-xs text-black placeholder-zinc-400 focus:outline-none focus:border-blue-600 focus:bg-white transition">
         </div>
         <div class="flex items-center gap-2">
             <select id="role-filter" onchange="filterStaffCards()" 
-                class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition">
+                class="px-2.5 py-1.5 bg-zinc-50 border border-zinc-200 rounded-lg text-xs text-zinc-800 focus:outline-none focus:border-blue-600 focus:bg-white transition">
                 <option value="all">All Roles</option>
                 <option value="admin">Administrators</option>
                 <option value="agent">Field Agents</option>
             </select>
             <select id="status-filter" onchange="filterStaffCards()" 
-                class="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition">
+                class="px-2.5 py-1.5 bg-zinc-50 border border-zinc-200 rounded-lg text-xs text-zinc-800 focus:outline-none focus:border-blue-600 focus:bg-white transition">
                 <option value="all">All Statuses</option>
                 <option value="active">Active Only</option>
                 <option value="inactive">Deactivated Only</option>
@@ -359,7 +359,7 @@ include __DIR__ . '/../includes/header.php';
                     'is_self' => $isSelf
                 ]), ENT_QUOTES, 'UTF-8');
             ?>
-            <div class="staff-card bg-white rounded-xl border <?= $isActive ? 'border-slate-200' : 'border-purple-200 bg-slate-50/60' ?> p-4 space-y-3 transition flex flex-col justify-between"
+            <div class="staff-card bg-white rounded-xl border <?= $isActive ? 'border-zinc-200' : 'border-zinc-200 bg-zinc-100/70' ?> p-4 space-y-3 transition flex flex-col justify-between"
                 data-name="<?= htmlspecialchars(strtolower($st['name'])) ?>"
                 data-username="<?= htmlspecialchars(strtolower($st['username'])) ?>"
                 data-code="<?= htmlspecialchars(strtolower($st['staff_code'])) ?>"
@@ -372,19 +372,19 @@ include __DIR__ . '/../includes/header.php';
                     <div class="flex items-start justify-between gap-2">
                         <div>
                             <div class="flex items-center gap-1.5">
-                                <span class="text-[10px] font-mono text-slate-400 block"><?= htmlspecialchars($st['staff_code']) ?></span>
+                                <span class="text-[10px] font-mono text-zinc-500 block"><?= htmlspecialchars($st['staff_code']) ?></span>
                                 <?php if ($isSelf): ?>
-                                    <span class="px-1 py-0.2 text-[9px] font-semibold bg-purple-50 text-slate-600 rounded">YOU</span>
+                                    <span class="px-1 py-0.2 text-[9px] font-semibold bg-zinc-100 text-zinc-700 rounded">YOU</span>
                                 <?php endif; ?>
                             </div>
-                            <h2 class="text-sm font-bold text-slate-900 mt-0.5 <?= !$isActive ? 'text-slate-500' : '' ?>">
+                            <h2 class="text-sm font-bold text-black mt-0.5 <?= !$isActive ? 'text-zinc-600' : '' ?>">
                                 <?= htmlspecialchars($st['name']) ?>
                             </h2>
-                            <span class="text-xs text-slate-400 font-mono">@<?= htmlspecialchars($st['username']) ?></span>
+                            <span class="text-xs text-zinc-500 font-mono">@<?= htmlspecialchars($st['username']) ?></span>
                         </div>
 
                         <div class="flex flex-col items-end gap-1">
-                            <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider <?= $st['role'] === 'admin' ? 'bg-purple-600 text-white' : 'bg-blue-50 text-blue-700 border border-blue-200' ?>">
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider <?= $st['role'] === 'admin' ? 'bg-black text-white' : 'bg-blue-50 text-blue-700 border border-blue-200' ?>">
                                 <?= htmlspecialchars($st['role']) ?>
                             </span>
 
@@ -394,7 +394,7 @@ include __DIR__ . '/../includes/header.php';
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
                                 </span>
                             <?php else: ?>
-                                <span class="inline-flex items-center gap-1 text-[10px] font-medium text-slate-600 bg-slate-200/70 px-1.5 py-0.5 rounded border border-purple-200">
+                                <span class="inline-flex items-center gap-1 text-[10px] font-medium text-zinc-700 bg-zinc-200 px-1.5 py-0.5 rounded border border-zinc-200">
                                     <span class="w-1.5 h-1.5 rounded-full bg-zinc-400"></span> <?= ucfirst(htmlspecialchars($st['status'])) ?>
                                 </span>
                             <?php endif; ?>
@@ -402,47 +402,47 @@ include __DIR__ . '/../includes/header.php';
                     </div>
 
                     <!-- Contact Details -->
-                    <div class="space-y-1 text-xs text-slate-600 pt-1">
+                    <div class="space-y-1 text-xs text-zinc-700 pt-1">
                         <div class="flex items-center gap-1.5">
-                            <i data-lucide="phone" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+                            <i data-lucide="phone" class="w-3.5 h-3.5 text-zinc-500 shrink-0"></i>
                             <span class="font-mono text-[11px]"><?= htmlspecialchars($st['phone']) ?></span>
                         </div>
                         <div class="flex items-center gap-1.5">
-                            <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
-                            <span class="text-[11px] text-slate-500 truncate" title="<?= htmlspecialchars($st['email']) ?>"><?= htmlspecialchars($st['email']) ?></span>
+                            <i data-lucide="mail" class="w-3.5 h-3.5 text-zinc-500 shrink-0"></i>
+                            <span class="text-[11px] text-zinc-600 truncate" title="<?= htmlspecialchars($st['email']) ?>"><?= htmlspecialchars($st['email']) ?></span>
                         </div>
-                        <div class="flex items-center gap-1.5 text-[10px] text-slate-400">
-                            <i data-lucide="clock" class="w-3 h-3 text-slate-400 shrink-0"></i>
+                        <div class="flex items-center gap-1.5 text-[10px] text-zinc-500">
+                            <i data-lucide="clock" class="w-3 h-3 text-zinc-500 shrink-0"></i>
                             <span>Last sign in: <?= $st['last_login_at'] ? formatDateTime($st['last_login_at']) : 'Never' ?></span>
                         </div>
                     </div>
 
                     <!-- Portfolio / Borrower Statistics -->
-                    <div class="pt-2.5 border-t border-slate-100 grid grid-cols-2 gap-2 text-xs">
+                    <div class="pt-2.5 border-t border-zinc-100 grid grid-cols-2 gap-2 text-xs">
                         <div>
-                            <span class="text-slate-400 block text-[10px] uppercase">Borrowers</span>
-                            <span class="text-sm font-semibold text-slate-900"><?= (int)$st['assigned_customers_count'] ?></span>
+                            <span class="text-zinc-500 block text-[10px] uppercase">Borrowers</span>
+                            <span class="text-sm font-semibold text-black"><?= (int)$st['assigned_customers_count'] ?></span>
                         </div>
                         <div class="text-right">
-                            <span class="text-slate-400 block text-[10px] uppercase">Portfolio</span>
-                            <span class="text-sm font-semibold text-slate-900"><?= formatMoney((int)$st['portfolio_pesewas']) ?></span>
+                            <span class="text-zinc-500 block text-[10px] uppercase">Portfolio</span>
+                            <span class="text-sm font-semibold text-black"><?= formatMoney((int)$st['portfolio_pesewas']) ?></span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Action Toolbar: Edit & Deactivate / Activate -->
-                <div class="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-1 text-xs">
+                <div class="pt-2.5 border-t border-zinc-100 flex items-center justify-between gap-1 text-xs">
                     <div class="flex items-center gap-1.5">
                         <!-- Edit Button -->
                         <button type="button" 
                             onclick='openEditModal(<?= $userJson ?>)' 
-                            class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:text-slate-900 transition">
-                            <i data-lucide="edit-2" class="w-3 h-3 text-slate-400"></i> Edit
+                            class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-zinc-800 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-100 hover:text-black transition">
+                            <i data-lucide="edit-2" class="w-3 h-3 text-zinc-500"></i> Edit
                         </button>
 
                         <!-- Deactivate / Activate Action Button -->
                         <?php if ($isSelf): ?>
-                            <span class="text-[11px] text-slate-400 italic px-1" title="You cannot deactivate your own account">Current User</span>
+                            <span class="text-[11px] text-zinc-500 italic px-1" title="You cannot deactivate your own account">Current User</span>
                         <?php elseif ($isActive): ?>
                             <form method="POST" action="agents.php" class="inline" onsubmit="return confirm('Deactivate account for <?= htmlspecialchars(addslashes($st['name'])) ?>? They will immediately lose login and collection privileges.')">
                                 <?= csrfField() ?>
@@ -450,8 +450,8 @@ include __DIR__ . '/../includes/header.php';
                                 <input type="hidden" name="user_id" value="<?= (int)$st['id'] ?>">
                                 <input type="hidden" name="target_status" value="inactive">
                                 <button type="submit" 
-                                    class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-slate-600 bg-slate-50 border border-slate-200 rounded-lg hover:bg-purple-50 hover:text-red-700 transition">
-                                    <i data-lucide="user-x" class="w-3 h-3 text-slate-400"></i> Deactivate
+                                    class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-zinc-700 bg-zinc-50 border border-zinc-200 rounded-lg hover:bg-zinc-100 hover:text-red-700 transition">
+                                    <i data-lucide="user-x" class="w-3 h-3 text-zinc-500"></i> Deactivate
                                 </button>
                             </form>
                         <?php else: ?>
@@ -461,7 +461,7 @@ include __DIR__ . '/../includes/header.php';
                                 <input type="hidden" name="user_id" value="<?= (int)$st['id'] ?>">
                                 <input type="hidden" name="target_status" value="active">
                                 <button type="submit" 
-                                    class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-slate-800 bg-white border border-purple-200 rounded-lg hover:bg-slate-50 transition">
+                                    class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-zinc-950 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-100 transition">
                                     <i data-lucide="user-check" class="w-3 h-3 text-emerald-600"></i> Activate
                                 </button>
                             </form>
@@ -470,7 +470,7 @@ include __DIR__ . '/../includes/header.php';
 
                     <?php if ($st['role'] === 'agent'): ?>
                         <a href="<?= BASE_URL ?>/admin/reconciliation.php?agent_id=<?= $st['id'] ?>" 
-                            class="text-[11px] text-slate-600 hover:text-slate-900 font-medium hover:underline inline-flex items-center gap-0.5">
+                            class="text-[11px] text-zinc-700 hover:text-black font-medium hover:underline inline-flex items-center gap-0.5">
                             Reconcile &rarr;
                         </a>
                     <?php endif; ?>
@@ -484,16 +484,16 @@ include __DIR__ . '/../includes/header.php';
 <!-- ===================================================================== -->
 <!-- EDIT USER MODAL                                                       -->
 <!-- ===================================================================== -->
-<div id="edit-user-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl border border-slate-200 max-w-md w-full p-5 sm:p-6 space-y-4 shadow-sm animate-in fade-in duration-100">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+<div id="edit-user-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl border border-zinc-200 max-w-md w-full p-5 sm:p-6 space-y-4 shadow-sm animate-in fade-in duration-100">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
             <div>
-                <h3 class="text-xs font-semibold text-slate-900 uppercase tracking-wider">
+                <h3 class="text-xs font-semibold text-black uppercase tracking-wider">
                     Edit Staff Account
                 </h3>
-                <span id="edit-staff-code-badge" class="text-[10px] font-mono text-slate-400"></span>
+                <span id="edit-staff-code-badge" class="text-[10px] font-mono text-zinc-500"></span>
             </div>
-            <button type="button" onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 p-1">
+            <button type="button" onclick="closeEditModal()" class="text-zinc-500 hover:text-zinc-800 p-1">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
         </div>
@@ -504,21 +504,21 @@ include __DIR__ . '/../includes/header.php';
             <input type="hidden" id="edit-user-id" name="user_id" value="">
 
             <div>
-                <label for="edit-name" class="block text-[11px] font-medium text-slate-700 mb-1">Full Name *</label>
+                <label for="edit-name" class="block text-[11px] font-medium text-zinc-800 mb-1">Full Name *</label>
                 <input type="text" id="edit-name" name="name" required 
-                    class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                    class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
             </div>
 
             <div class="grid grid-cols-2 gap-2.5">
                 <div>
-                    <label for="edit-username" class="block text-[11px] font-medium text-slate-700 mb-1">Username *</label>
+                    <label for="edit-username" class="block text-[11px] font-medium text-zinc-800 mb-1">Username *</label>
                     <input type="text" id="edit-username" name="username" required 
-                        class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-mono text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                        class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-mono text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
                 </div>
                 <div>
-                    <label for="edit-role" class="block text-[11px] font-medium text-slate-700 mb-1">System Role *</label>
+                    <label for="edit-role" class="block text-[11px] font-medium text-zinc-800 mb-1">System Role *</label>
                     <select id="edit-role" name="role" 
-                        class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                        class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
                         <option value="agent">Field Agent</option>
                         <option value="admin">Administrator</option>
                     </select>
@@ -527,40 +527,40 @@ include __DIR__ . '/../includes/header.php';
 
             <div class="grid grid-cols-2 gap-2.5">
                 <div>
-                    <label for="edit-status" class="block text-[11px] font-medium text-slate-700 mb-1">Account Status *</label>
+                    <label for="edit-status" class="block text-[11px] font-medium text-zinc-800 mb-1">Account Status *</label>
                     <select id="edit-status" name="status" 
-                        class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                        class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
                         <option value="active">Active (Can Sign In)</option>
                         <option value="inactive">Inactive / Deactivated</option>
                         <option value="suspended">Suspended</option>
                     </select>
                 </div>
                 <div>
-                    <label for="edit-phone" class="block text-[11px] font-medium text-slate-700 mb-1">Phone Number *</label>
+                    <label for="edit-phone" class="block text-[11px] font-medium text-zinc-800 mb-1">Phone Number *</label>
                     <input type="text" id="edit-phone" name="phone" required 
-                        class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-mono text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition" placeholder="+233241234567">
+                        class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-mono text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition" placeholder="+233241234567">
                 </div>
             </div>
 
             <div>
-                <label for="edit-email" class="block text-[11px] font-medium text-slate-700 mb-1">Email Address *</label>
+                <label for="edit-email" class="block text-[11px] font-medium text-zinc-800 mb-1">Email Address *</label>
                 <input type="email" id="edit-email" name="email" required 
-                    class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                    class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
             </div>
 
-            <div class="pt-2 border-t border-slate-100">
-                <label for="edit-password" class="block text-[11px] font-medium text-slate-700 mb-0.5">
-                    Reset Password <span class="text-slate-400 font-normal">(Optional)</span>
+            <div class="pt-2 border-t border-zinc-100">
+                <label for="edit-password" class="block text-[11px] font-medium text-zinc-800 mb-0.5">
+                    Reset Password <span class="text-zinc-500 font-normal">(Optional)</span>
                 </label>
-                <p class="text-[10px] text-slate-400 mb-1.5">Leave completely blank to retain user's current password.</p>
+                <p class="text-[10px] text-zinc-500 mb-1.5">Leave completely blank to retain user's current password.</p>
                 <input type="password" id="edit-password" name="password" minlength="4" 
                     placeholder="Enter new password or leave blank"
-                    class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                    class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
             </div>
 
-            <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+            <div class="flex items-center justify-end gap-2 pt-3 border-t border-zinc-100">
                 <button type="button" onclick="closeEditModal()" 
-                    class="px-3 py-1.5 bg-purple-50 text-slate-700 rounded-lg text-xs font-medium hover:bg-purple-100 transition">
+                    class="px-3 py-1.5 bg-zinc-100 text-zinc-800 rounded-lg text-xs font-medium hover:bg-zinc-200 transition">
                     Cancel
                 </button>
                 <button type="submit" 
@@ -575,13 +575,13 @@ include __DIR__ . '/../includes/header.php';
 <!-- ===================================================================== -->
 <!-- ADD STAFF ACCOUNT MODAL                                               -->
 <!-- ===================================================================== -->
-<div id="add-agent-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl border border-slate-200 max-w-md w-full p-5 sm:p-6 space-y-4 shadow-sm animate-in fade-in duration-100">
-        <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-            <h3 class="text-xs font-semibold text-slate-900 uppercase tracking-wider">
+<div id="add-agent-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl border border-zinc-200 max-w-md w-full p-5 sm:p-6 space-y-4 shadow-sm animate-in fade-in duration-100">
+        <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
+            <h3 class="text-xs font-semibold text-black uppercase tracking-wider">
                 Create Staff Account
             </h3>
-            <button type="button" onclick="closeAddModal()" class="text-slate-400 hover:text-slate-600 p-1">
+            <button type="button" onclick="closeAddModal()" class="text-zinc-500 hover:text-zinc-800 p-1">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
         </div>
@@ -591,23 +591,23 @@ include __DIR__ . '/../includes/header.php';
             <input type="hidden" name="action" value="create">
 
             <div>
-                <label for="new-name" class="block text-[11px] font-medium text-slate-700 mb-1">Full Name *</label>
+                <label for="new-name" class="block text-[11px] font-medium text-zinc-800 mb-1">Full Name *</label>
                 <input type="text" id="new-name" name="name" required 
-                    class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition" 
+                    class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition" 
                     placeholder="e.g. John Mensah">
             </div>
 
             <div class="grid grid-cols-2 gap-2.5">
                 <div>
-                    <label for="new-username" class="block text-[11px] font-medium text-slate-700 mb-1">Username *</label>
+                    <label for="new-username" class="block text-[11px] font-medium text-zinc-800 mb-1">Username *</label>
                     <input type="text" id="new-username" name="username" required 
-                        class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-mono text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition" 
+                        class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-mono text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition" 
                         placeholder="e.g. jmensah">
                 </div>
                 <div>
-                    <label for="new-role" class="block text-[11px] font-medium text-slate-700 mb-1">System Role *</label>
+                    <label for="new-role" class="block text-[11px] font-medium text-zinc-800 mb-1">System Role *</label>
                     <select id="new-role" name="role" 
-                        class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                        class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
                         <option value="agent" selected>Field Agent</option>
                         <option value="admin">Administrator</option>
                     </select>
@@ -615,29 +615,29 @@ include __DIR__ . '/../includes/header.php';
             </div>
 
             <div>
-                <label for="new-email" class="block text-[11px] font-medium text-slate-700 mb-1">Email Address *</label>
+                <label for="new-email" class="block text-[11px] font-medium text-zinc-800 mb-1">Email Address *</label>
                 <input type="email" id="new-email" name="email" required 
-                    class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition" 
+                    class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition" 
                     placeholder="john@elfaith.com">
             </div>
 
             <div>
-                <label for="new-phone" class="block text-[11px] font-medium text-slate-700 mb-1">Phone Number *</label>
+                <label for="new-phone" class="block text-[11px] font-medium text-zinc-800 mb-1">Phone Number *</label>
                 <input type="text" id="new-phone" name="phone" required 
-                    class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-mono text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition" 
+                    class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-mono text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition" 
                     placeholder="+233241234567">
             </div>
 
             <div>
-                <label for="new-password" class="block text-[11px] font-medium text-slate-700 mb-1">Initial Password *</label>
+                <label for="new-password" class="block text-[11px] font-medium text-zinc-800 mb-1">Initial Password *</label>
                 <input type="password" id="new-password" name="password" required minlength="4" 
-                    class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition" 
+                    class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition" 
                     placeholder="Initial sign-in password">
             </div>
 
-            <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+            <div class="flex items-center justify-end gap-2 pt-3 border-t border-zinc-100">
                 <button type="button" onclick="closeAddModal()" 
-                    class="px-3 py-1.5 bg-purple-50 text-slate-700 rounded-lg text-xs font-medium hover:bg-purple-100 transition">
+                    class="px-3 py-1.5 bg-zinc-100 text-zinc-800 rounded-lg text-xs font-medium hover:bg-zinc-200 transition">
                     Cancel
                 </button>
                 <button type="submit" 

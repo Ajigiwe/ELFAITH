@@ -16,80 +16,80 @@
         $isAdminRecon = strpos($currPage, 'reconciliation.php') !== false;
         $isCalculatorNav = strpos($currPage, 'calculator.php') !== false;
     ?>
-    <nav class="md:hidden no-print fixed bottom-0 left-0 right-0 bg-white border-t border-purple-100 z-40 py-1.5 shadow-sm">
+    <nav class="md:hidden no-print fixed bottom-0 left-0 right-0 bg-white border-t border-zinc-200 z-40 py-1.5 shadow-sm">
         <div class="flex items-center justify-around text-center max-w-md mx-auto">
             <?php if ($role === 'agent'): ?>
                 <!-- Route Tab -->
-                <a href="<?= BASE_URL ?>/agent/index.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isRoute ? 'text-blue-600' : 'text-slate-400 hover:text-purple-600' ?>">
+                <a href="<?= BASE_URL ?>/agent/index.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isRoute ? 'text-blue-600' : 'text-zinc-500 hover:text-black' ?>">
                     <i data-lucide="map-pin" class="w-5 h-5"></i>
-                    <span class="text-[10px] mt-1 <?= $isRoute ? 'font-semibold text-blue-600' : 'text-slate-400' ?>">Route</span>
-                    <span class="w-1 h-1 rounded-full bg-purple-600 mt-0.5 <?= $isRoute ? 'opacity-100' : 'opacity-0' ?>"></span>
+                    <span class="text-[10px] mt-1 <?= $isRoute ? 'font-semibold text-blue-600' : 'text-zinc-500' ?>">Route</span>
+                    <span class="w-1 h-1 rounded-full bg-black mt-0.5 <?= $isRoute ? 'opacity-100' : 'opacity-0' ?>"></span>
                 </a>
 
                 <!-- Collect Tab -->
-                <a href="<?= BASE_URL ?>/agent/collect.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isCollect ? 'text-blue-600' : 'text-slate-400 hover:text-purple-600' ?>">
+                <a href="<?= BASE_URL ?>/agent/collect.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isCollect ? 'text-blue-600' : 'text-zinc-500 hover:text-black' ?>">
                     <i data-lucide="plus-circle" class="w-5 h-5"></i>
-                    <span class="text-[10px] mt-1 <?= $isCollect ? 'font-semibold text-blue-600' : 'text-slate-400' ?>">Collect</span>
-                    <span class="w-1 h-1 rounded-full bg-purple-600 mt-0.5 <?= $isCollect ? 'opacity-100' : 'opacity-0' ?>"></span>
+                    <span class="text-[10px] mt-1 <?= $isCollect ? 'font-semibold text-blue-600' : 'text-zinc-500' ?>">Collect</span>
+                    <span class="w-1 h-1 rounded-full bg-black mt-0.5 <?= $isCollect ? 'opacity-100' : 'opacity-0' ?>"></span>
                 </a>
 
                 <!-- Clients Tab -->
-                <a href="<?= BASE_URL ?>/agent/my_customers.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isClients ? 'text-blue-600' : 'text-slate-400 hover:text-purple-600' ?>">
+                <a href="<?= BASE_URL ?>/agent/my_customers.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isClients ? 'text-blue-600' : 'text-zinc-500 hover:text-black' ?>">
                     <i data-lucide="users" class="w-5 h-5"></i>
-                    <span class="text-[10px] mt-1 <?= $isClients ? 'font-semibold text-blue-600' : 'text-slate-400' ?>">Clients</span>
-                    <span class="w-1 h-1 rounded-full bg-purple-600 mt-0.5 <?= $isClients ? 'opacity-100' : 'opacity-0' ?>"></span>
+                    <span class="text-[10px] mt-1 <?= $isClients ? 'font-semibold text-blue-600' : 'text-zinc-500' ?>">Clients</span>
+                    <span class="w-1 h-1 rounded-full bg-black mt-0.5 <?= $isClients ? 'opacity-100' : 'opacity-0' ?>"></span>
                 </a>
 
                 <!-- History Tab -->
-                <a href="<?= BASE_URL ?>/agent/history.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isHistory ? 'text-blue-600' : 'text-slate-400 hover:text-purple-600' ?>">
+                <a href="<?= BASE_URL ?>/agent/history.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isHistory ? 'text-blue-600' : 'text-zinc-500 hover:text-black' ?>">
                     <i data-lucide="receipt" class="w-5 h-5"></i>
-                    <span class="text-[10px] mt-1 <?= $isHistory ? 'font-semibold text-blue-600' : 'text-slate-400' ?>">History</span>
-                    <span class="w-1 h-1 rounded-full bg-purple-600 mt-0.5 <?= $isHistory ? 'opacity-100' : 'opacity-0' ?>"></span>
+                    <span class="text-[10px] mt-1 <?= $isHistory ? 'font-semibold text-blue-600' : 'text-zinc-500' ?>">History</span>
+                    <span class="w-1 h-1 rounded-full bg-black mt-0.5 <?= $isHistory ? 'opacity-100' : 'opacity-0' ?>"></span>
                 </a>
 
                 <!-- Queue Tab -->
-                <a href="<?= BASE_URL ?>/agent/offline_queue.php" class="flex flex-col items-center justify-center flex-1 py-1 relative transition <?= $isQueue ? 'text-blue-600' : 'text-slate-400 hover:text-purple-600' ?>">
+                <a href="<?= BASE_URL ?>/agent/offline_queue.php" class="flex flex-col items-center justify-center flex-1 py-1 relative transition <?= $isQueue ? 'text-blue-600' : 'text-zinc-500 hover:text-black' ?>">
                     <div class="relative">
                         <i data-lucide="cloud-sync" class="w-5 h-5"></i>
-                        <span id="mobile-offline-badge" class="hidden absolute -top-1 -right-1 w-2 h-2 bg-purple-600 rounded-full"></span>
+                        <span id="mobile-offline-badge" class="hidden absolute -top-1 -right-1 w-2 h-2 bg-blue-600 rounded-full"></span>
                     </div>
-                    <span class="text-[10px] mt-1 <?= $isQueue ? 'font-semibold text-blue-600' : 'text-slate-400' ?>">Queue</span>
-                    <span class="w-1 h-1 rounded-full bg-purple-600 mt-0.5 <?= $isQueue ? 'opacity-100' : 'opacity-0' ?>"></span>
+                    <span class="text-[10px] mt-1 <?= $isQueue ? 'font-semibold text-blue-600' : 'text-zinc-500' ?>">Queue</span>
+                    <span class="w-1 h-1 rounded-full bg-black mt-0.5 <?= $isQueue ? 'opacity-100' : 'opacity-0' ?>"></span>
                 </a>
             <?php else: ?>
                 <!-- Admin Dashboard Tab -->
-                <a href="<?= BASE_URL ?>/admin/index.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isAdminDash ? 'text-blue-600' : 'text-slate-400 hover:text-purple-600' ?>">
+                <a href="<?= BASE_URL ?>/admin/index.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isAdminDash ? 'text-blue-600' : 'text-zinc-500 hover:text-black' ?>">
                     <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                    <span class="text-[10px] mt-1 <?= $isAdminDash ? 'font-semibold text-blue-600' : 'text-slate-400' ?>">Dashboard</span>
-                    <span class="w-1 h-1 rounded-full bg-purple-600 mt-0.5 <?= $isAdminDash ? 'opacity-100' : 'opacity-0' ?>"></span>
+                    <span class="text-[10px] mt-1 <?= $isAdminDash ? 'font-semibold text-blue-600' : 'text-zinc-500' ?>">Dashboard</span>
+                    <span class="w-1 h-1 rounded-full bg-black mt-0.5 <?= $isAdminDash ? 'opacity-100' : 'opacity-0' ?>"></span>
                 </a>
 
                 <!-- Admin Payments Tab -->
-                <a href="<?= BASE_URL ?>/admin/collections.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isAdminPay ? 'text-blue-600' : 'text-slate-400 hover:text-purple-600' ?>">
+                <a href="<?= BASE_URL ?>/admin/collections.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isAdminPay ? 'text-blue-600' : 'text-zinc-500 hover:text-black' ?>">
                     <i data-lucide="wallet" class="w-5 h-5"></i>
-                    <span class="text-[10px] mt-1 <?= $isAdminPay ? 'font-semibold text-blue-600' : 'text-slate-400' ?>">Payments</span>
-                    <span class="w-1 h-1 rounded-full bg-purple-600 mt-0.5 <?= $isAdminPay ? 'opacity-100' : 'opacity-0' ?>"></span>
+                    <span class="text-[10px] mt-1 <?= $isAdminPay ? 'font-semibold text-blue-600' : 'text-zinc-500' ?>">Payments</span>
+                    <span class="w-1 h-1 rounded-full bg-black mt-0.5 <?= $isAdminPay ? 'opacity-100' : 'opacity-0' ?>"></span>
                 </a>
 
                 <!-- Admin Clients Tab -->
-                <a href="<?= BASE_URL ?>/admin/customers.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isAdminCust ? 'text-blue-600' : 'text-slate-400 hover:text-purple-600' ?>">
+                <a href="<?= BASE_URL ?>/admin/customers.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isAdminCust ? 'text-blue-600' : 'text-zinc-500 hover:text-black' ?>">
                     <i data-lucide="users" class="w-5 h-5"></i>
-                    <span class="text-[10px] mt-1 <?= $isAdminCust ? 'font-semibold text-blue-600' : 'text-slate-400' ?>">Clients</span>
-                    <span class="w-1 h-1 rounded-full bg-purple-600 mt-0.5 <?= $isAdminCust ? 'opacity-100' : 'opacity-0' ?>"></span>
+                    <span class="text-[10px] mt-1 <?= $isAdminCust ? 'font-semibold text-blue-600' : 'text-zinc-500' ?>">Clients</span>
+                    <span class="w-1 h-1 rounded-full bg-black mt-0.5 <?= $isAdminCust ? 'opacity-100' : 'opacity-0' ?>"></span>
                 </a>
 
                 <!-- Admin Reconcile Tab -->
-                <a href="<?= BASE_URL ?>/admin/reconciliation.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isAdminRecon ? 'text-blue-600' : 'text-slate-400 hover:text-purple-600' ?>">
+                <a href="<?= BASE_URL ?>/admin/reconciliation.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isAdminRecon ? 'text-blue-600' : 'text-zinc-500 hover:text-black' ?>">
                     <i data-lucide="scale" class="w-5 h-5"></i>
-                    <span class="text-[10px] mt-1 <?= $isAdminRecon ? 'font-semibold text-blue-600' : 'text-slate-400' ?>">Reconcile</span>
-                    <span class="w-1 h-1 rounded-full bg-purple-600 mt-0.5 <?= $isAdminRecon ? 'opacity-100' : 'opacity-0' ?>"></span>
+                    <span class="text-[10px] mt-1 <?= $isAdminRecon ? 'font-semibold text-blue-600' : 'text-zinc-500' ?>">Reconcile</span>
+                    <span class="w-1 h-1 rounded-full bg-black mt-0.5 <?= $isAdminRecon ? 'opacity-100' : 'opacity-0' ?>"></span>
                 </a>
 
                 <!-- Admin Calculator Tab -->
-                <a href="<?= BASE_URL ?>/calculator.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isCalculatorNav ? 'text-blue-600' : 'text-slate-400 hover:text-purple-600' ?>">
+                <a href="<?= BASE_URL ?>/calculator.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isCalculatorNav ? 'text-blue-600' : 'text-zinc-500 hover:text-black' ?>">
                     <i data-lucide="calculator" class="w-5 h-5"></i>
-                    <span class="text-[10px] mt-1 <?= $isCalculatorNav ? 'font-semibold text-blue-600' : 'text-slate-400' ?>">Calc</span>
-                    <span class="w-1 h-1 rounded-full bg-purple-600 mt-0.5 <?= $isCalculatorNav ? 'opacity-100' : 'opacity-0' ?>"></span>
+                    <span class="text-[10px] mt-1 <?= $isCalculatorNav ? 'font-semibold text-blue-600' : 'text-zinc-500' ?>">Calc</span>
+                    <span class="w-1 h-1 rounded-full bg-black mt-0.5 <?= $isCalculatorNav ? 'opacity-100' : 'opacity-0' ?>"></span>
                 </a>
             <?php endif; ?>
         </div>
@@ -97,10 +97,10 @@
     <?php endif; ?>
 
     <!-- Standard Footer -->
-    <footer class="no-print bg-white border-t border-purple-100 mt-auto py-5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2">
+    <footer class="no-print bg-white border-t border-zinc-200 mt-auto py-5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 gap-2">
             <div>
-                &copy; <?= date('Y') ?> <span class="text-slate-600 font-medium"><?= htmlspecialchars(COMPANY_NAME) ?></span> &bull; <span class="text-purple-600"><?= htmlspecialchars(BRANCH_NAME) ?></span>
+                &copy; <?= date('Y') ?> <span class="text-black font-semibold"><?= htmlspecialchars(COMPANY_NAME) ?></span> &bull; <span class="text-blue-600 font-medium"><?= htmlspecialchars(BRANCH_NAME) ?></span>
             </div>
             <div class="flex items-center gap-3 text-[11px]">
                 <span>Currency: <strong class="text-blue-700"><?= htmlspecialchars(CURRENCY_CODE) ?> (<?= htmlspecialchars(safeCurrencySymbol()) ?>)</strong></span>

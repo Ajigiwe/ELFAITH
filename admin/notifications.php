@@ -53,16 +53,16 @@ include __DIR__ . '/../includes/header.php';
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-lg font-bold text-slate-900 tracking-tight">SMS & Notification Logs</h1>
-            <p class="text-xs text-slate-400 mt-0.5">Automated SMS receipts, reminders & gateway proof</p>
+            <h1 class="text-lg font-bold text-black tracking-tight">SMS & Notification Logs</h1>
+            <p class="text-xs text-zinc-500 mt-0.5">Automated SMS receipts, reminders & gateway proof</p>
         </div>
     </div>
 
     <!-- Filter Bar (Minimal) -->
-    <div class="bg-white rounded-xl border border-slate-200 p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+    <div class="bg-white rounded-xl border border-zinc-200 p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
         <form method="GET" class="flex flex-wrap items-center gap-2.5">
             <div>
-                <select name="status" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                <select name="status" class="px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-950 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                     <option value="">All Statuses</option>
                     <option value="delivered" <?= $statusFilter === 'delivered' ? 'selected' : '' ?>>Delivered</option>
                     <option value="queued" <?= $statusFilter === 'queued' ? 'selected' : '' ?>>Queued</option>
@@ -70,7 +70,7 @@ include __DIR__ . '/../includes/header.php';
                 </select>
             </div>
             <div>
-                <select name="channel" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                <select name="channel" class="px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-950 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                     <option value="">All Channels</option>
                     <option value="sms" <?= $channelFilter === 'sms' ? 'selected' : '' ?>>SMS Only</option>
                     <option value="email" <?= $channelFilter === 'email' ? 'selected' : '' ?>>Email Only</option>
@@ -80,14 +80,14 @@ include __DIR__ . '/../includes/header.php';
                 Filter
             </button>
         </form>
-        <span class="text-slate-400 text-xs"><?= count($logs) ?> Records</span>
+        <span class="text-zinc-500 text-xs"><?= count($logs) ?> Records</span>
     </div>
 
     <!-- Notifications Table (Minimal) -->
-    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+    <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
-                <thead class="bg-slate-50 text-slate-400 uppercase font-medium text-[10px] tracking-wider border-b border-slate-100">
+                <thead class="bg-zinc-50 text-zinc-500 uppercase font-medium text-[10px] tracking-wider border-b border-zinc-100">
                     <tr>
                         <th class="py-2.5 px-4 font-normal">Date Time</th>
                         <th class="py-2.5 px-4 font-normal">Channel</th>
@@ -98,46 +98,46 @@ include __DIR__ . '/../includes/header.php';
                         <th class="py-2.5 px-4 text-center font-normal">Action</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-zinc-100">
                     <?php if (empty($logs)): ?>
                         <tr>
-                            <td colspan="7" class="py-8 text-center text-slate-400">
+                            <td colspan="7" class="py-8 text-center text-zinc-500">
                                 No notification logs found.
                             </td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($logs as $l): ?>
-                            <tr class="hover:bg-purple-50/30 transition">
-                                <td class="py-2.5 px-4 text-slate-500 font-mono text-[11px]">
+                            <tr class="hover:bg-blue-50/30 transition">
+                                <td class="py-2.5 px-4 text-zinc-600 font-mono text-[11px]">
                                     <?= date('d M Y, h:i A', strtotime($l['created_at'])) ?>
                                 </td>
                                 <td class="py-2.5 px-4">
-                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase bg-purple-50 text-slate-700">
+                                    <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase bg-zinc-100 text-zinc-800">
                                         <?= strtoupper($l['channel']) ?>
                                     </span>
                                 </td>
-                                <td class="py-2.5 px-4 font-mono text-slate-800">
+                                <td class="py-2.5 px-4 font-mono text-zinc-950">
                                     <?= htmlspecialchars($l['recipient']) ?>
                                     <?php if ($l['customer_name']): ?>
-                                        <span class="block font-sans text-[10px] text-slate-400"><?= htmlspecialchars($l['customer_name']) ?></span>
+                                        <span class="block font-sans text-[10px] text-zinc-500"><?= htmlspecialchars($l['customer_name']) ?></span>
                                     <?php endif; ?>
                                 </td>
-                                <td class="py-2.5 px-4 max-w-sm text-slate-600 text-[11px]">
+                                <td class="py-2.5 px-4 max-w-sm text-zinc-700 text-[11px]">
                                     <?= htmlspecialchars($l['message']) ?>
                                     <?php if ($l['receipt_number']): ?>
-                                        <span class="block font-mono text-[10px] text-slate-400 mt-0.5">Ref: <?= htmlspecialchars($l['receipt_number']) ?></span>
+                                        <span class="block font-mono text-[10px] text-zinc-500 mt-0.5">Ref: <?= htmlspecialchars($l['receipt_number']) ?></span>
                                     <?php endif; ?>
                                 </td>
-                                <td class="py-2.5 px-4 text-[11px] text-slate-500">
-                                    <span class="text-slate-700 uppercase block font-medium"><?= htmlspecialchars($l['provider']) ?></span>
-                                    <span class="text-slate-400 font-mono text-[10px]"><?= htmlspecialchars($l['provider_response'] ?? 'Pending Response') ?></span>
+                                <td class="py-2.5 px-4 text-[11px] text-zinc-600">
+                                    <span class="text-zinc-800 uppercase block font-medium"><?= htmlspecialchars($l['provider']) ?></span>
+                                    <span class="text-zinc-500 font-mono text-[10px]"><?= htmlspecialchars($l['provider_response'] ?? 'Pending Response') ?></span>
                                 </td>
                                 <td class="py-2.5 px-4 text-center">
                                     <?php
-                                        $sc = 'bg-purple-50 text-slate-700';
-                                        if ($l['status'] === 'delivered') $sc = 'bg-purple-50 text-slate-900 font-medium';
-                                        elseif ($l['status'] === 'failed') $sc = 'bg-slate-200 text-slate-900 font-bold';
-                                        elseif ($l['status'] === 'queued') $sc = 'bg-slate-50 text-slate-500';
+                                        $sc = 'bg-zinc-100 text-zinc-800';
+                                        if ($l['status'] === 'delivered') $sc = 'bg-zinc-100 text-black font-medium';
+                                        elseif ($l['status'] === 'failed') $sc = 'bg-zinc-200 text-black font-bold';
+                                        elseif ($l['status'] === 'queued') $sc = 'bg-zinc-50 text-zinc-600';
                                     ?>
                                     <span class="px-1.5 py-0.5 rounded text-[10px] uppercase <?= $sc ?>">
                                         <?= htmlspecialchars($l['status']) ?>
@@ -145,7 +145,7 @@ include __DIR__ . '/../includes/header.php';
                                 </td>
                                 <td class="py-2.5 px-4 text-center">
                                     <?php if ($l['status'] === 'failed' || $l['status'] === 'queued'): ?>
-                                        <a href="<?= BASE_URL ?>/admin/notifications.php?retry_id=<?= $l['id'] ?>" class="text-[11px] text-slate-900 font-medium underline">
+                                        <a href="<?= BASE_URL ?>/admin/notifications.php?retry_id=<?= $l['id'] ?>" class="text-[11px] text-black font-medium underline">
                                             Retry
                                         </a>
                                     <?php else: ?>

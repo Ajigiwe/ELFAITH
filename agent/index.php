@@ -78,15 +78,15 @@ include __DIR__ . '/../includes/header.php';
 
 <div class="space-y-6">
     <!-- Header Card -->
-    <div class="bg-white rounded-xl border border-slate-200 border-t-2 border-t-purple-600 p-5 space-y-4 shadow-sm">
+    <div class="bg-white rounded-xl border border-zinc-200 border-t-2 border-t-black p-5 space-y-4 shadow-sm">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-                <h1 class="text-lg font-bold text-slate-900 tracking-tight">Today's Route</h1>
-                <p class="text-xs text-purple-600 font-medium mt-0.5"><?= htmlspecialchars(currentUser()['name']) ?> &bull; <?= date('l, d F Y') ?></p>
+                <h1 class="text-lg font-bold text-black tracking-tight">Today's Route</h1>
+                <p class="text-xs text-blue-600 font-medium mt-0.5"><?= htmlspecialchars(currentUser()['name']) ?> &bull; <?= date('l, d F Y') ?></p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
-                <a href="<?= BASE_URL ?>/calculator.php" class="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-white border border-purple-200 hover:bg-purple-50 text-purple-700 font-medium text-xs rounded-lg transition">
-                    <i data-lucide="calculator" class="w-3.5 h-3.5 text-purple-500"></i> Loan Calculator
+                <a href="<?= BASE_URL ?>/calculator.php" class="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-white border border-zinc-300 hover:bg-zinc-100 text-black font-medium text-xs rounded-lg transition">
+                    <i data-lucide="calculator" class="w-3.5 h-3.5 text-zinc-700"></i> Loan Calculator
                 </a>
                 <a href="<?= BASE_URL ?>/agent/collect.php" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition shadow-sm">
                     <i data-lucide="plus" class="w-3.5 h-3.5"></i> Record Collection
@@ -95,50 +95,50 @@ include __DIR__ . '/../includes/header.php';
         </div>
 
         <!-- Metric Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-slate-100 text-xs">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-zinc-200 text-xs">
             <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-3.5 shadow-sm">
                 <span class="text-[10px] font-semibold text-blue-100 uppercase tracking-wider block">Collected Today</span>
                 <span class="text-lg font-bold text-white mt-0.5 block"><?= formatMoney((int)$todayStats['total_today']) ?></span>
                 <span class="text-[10px] text-blue-100"><?= (int)$todayStats['count_today'] ?> receipts</span>
             </div>
-            <div class="bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-xl p-3.5 shadow-sm">
-                <span class="text-[10px] font-semibold text-purple-100 uppercase tracking-wider block">Cash in Hand</span>
+            <div class="bg-gradient-to-br from-zinc-900 via-zinc-950 to-black text-white rounded-xl p-3.5 shadow-sm border border-zinc-800">
+                <span class="text-[10px] font-semibold text-zinc-300 uppercase tracking-wider block">Cash in Hand</span>
                 <span class="text-lg font-bold text-white mt-0.5 block"><?= formatMoney((int)$todayStats['cash_today']) ?></span>
-                <span class="text-[10px] text-purple-100">Office Hand-in</span>
+                <span class="text-[10px] text-blue-400">Office Hand-in</span>
             </div>
-            <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-xl p-3.5 shadow-sm">
+            <div class="bg-gradient-to-br from-blue-700 to-blue-900 text-white rounded-xl p-3.5 shadow-sm">
                 <span class="text-[10px] font-semibold text-blue-100 uppercase tracking-wider block">Mobile Money</span>
                 <span class="text-lg font-bold text-white mt-0.5 block"><?= formatMoney((int)$todayStats['momo_today']) ?></span>
                 <span class="text-[10px] text-blue-100">Electronic MoMo</span>
             </div>
-            <div class="bg-gradient-to-br from-purple-700 to-purple-800 text-white rounded-xl p-3.5 shadow-sm">
-                <span class="text-[10px] font-semibold text-purple-100 uppercase tracking-wider block">Overdue</span>
+            <div class="bg-gradient-to-br from-neutral-900 via-zinc-950 to-black text-white rounded-xl p-3.5 shadow-sm border border-zinc-800">
+                <span class="text-[10px] font-semibold text-zinc-300 uppercase tracking-wider block">Overdue</span>
                 <span class="text-lg font-bold text-white mt-0.5 block"><?= count($overdueList) ?></span>
-                <span class="text-[10px] text-purple-100">Pending recovery</span>
+                <span class="text-[10px] text-blue-400">Pending recovery</span>
             </div>
         </div>
     </div>
 
     <!-- OVERDUE LIST -->
     <?php if (!empty($overdueList)): ?>
-        <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-            <div class="px-5 py-3 border-b border-purple-100 bg-purple-50/40 flex items-center justify-between">
-                <span class="text-xs font-semibold text-purple-900 uppercase tracking-wider">Overdue (<?= count($overdueList) ?>)</span>
-                <span class="text-[11px] text-purple-600 font-medium">Priority</span>
+        <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm">
+            <div class="px-5 py-3 border-b border-zinc-200 bg-zinc-50 flex items-center justify-between">
+                <span class="text-xs font-bold text-black uppercase tracking-wider">Overdue (<?= count($overdueList) ?>)</span>
+                <span class="text-[11px] text-blue-600 font-semibold">Priority</span>
             </div>
 
-            <div class="divide-y divide-slate-100">
+            <div class="divide-y divide-zinc-100">
                 <?php foreach ($overdueList as $item): ?>
-                    <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:bg-purple-50/30 transition">
+                    <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:bg-blue-50/30 transition">
                         <div class="space-y-0.5">
                             <div class="flex items-center gap-2">
-                                <h3 class="font-semibold text-slate-900"><?= htmlspecialchars($item['full_name']) ?></h3>
-                                <span class="px-1.5 py-0.5 rounded text-[10px] bg-purple-100 text-purple-700 font-mono">
+                                <h3 class="font-semibold text-black"><?= htmlspecialchars($item['full_name']) ?></h3>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] bg-black text-white font-mono">
                                     <?= $item['days_overdue'] ?>d late
                                 </span>
                             </div>
-                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-400 text-[11px]">
-                                <span class="font-mono text-slate-700"><?= htmlspecialchars($item['loan_code']) ?></span>
+                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-zinc-500 text-[11px]">
+                                <span class="font-mono text-zinc-800"><?= htmlspecialchars($item['loan_code']) ?></span>
                                 <span>&bull;</span>
                                 <span><?= htmlspecialchars($item['location_landmark']) ?></span>
                                 <span>&bull;</span>
@@ -148,10 +148,10 @@ include __DIR__ . '/../includes/header.php';
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-zinc-100">
                             <div class="text-left sm:text-right">
-                                <span class="text-sm font-bold text-slate-900"><?= formatMoney((int)$item['balance_due_pesewas']) ?></span>
-                                <span class="text-[10px] text-slate-400 block">Bal: <?= formatMoney((int)$item['remaining_balance_pesewas']) ?></span>
+                                <span class="text-sm font-bold text-black"><?= formatMoney((int)$item['balance_due_pesewas']) ?></span>
+                                <span class="text-[10px] text-zinc-500 block">Bal: <?= formatMoney((int)$item['remaining_balance_pesewas']) ?></span>
                             </div>
                             <a href="<?= BASE_URL ?>/agent/collect.php?loan_id=<?= $item['loan_id'] ?>&customer_id=<?= $item['customer_id'] ?>&amount=<?= pesewasToGHS($item['balance_due_pesewas']) ?>" 
                                class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition shadow-sm">
@@ -165,31 +165,31 @@ include __DIR__ . '/../includes/header.php';
     <?php endif; ?>
 
     <!-- DUE TODAY LIST -->
-    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-        <div class="px-5 py-3 border-b border-purple-100 bg-purple-50/40 flex items-center justify-between">
-            <span class="text-xs font-semibold text-purple-900 uppercase tracking-wider">Due Today (<?= count($dueTodayList) ?>)</span>
-            <span class="text-xs text-slate-600">
+    <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm">
+        <div class="px-5 py-3 border-b border-zinc-200 bg-zinc-50 flex items-center justify-between">
+            <span class="text-xs font-bold text-black uppercase tracking-wider">Due Today (<?= count($dueTodayList) ?>)</span>
+            <span class="text-xs text-zinc-700">
                 Target: <strong class="text-blue-700"><?= formatMoney($totalExpectedToday) ?></strong>
             </span>
         </div>
 
         <?php if (empty($dueTodayList)): ?>
-            <div class="p-8 text-center text-slate-400 text-xs">
+            <div class="p-8 text-center text-zinc-500 text-xs">
                 All scheduled route collections completed.
             </div>
         <?php else: ?>
-            <div class="divide-y divide-slate-100">
+            <div class="divide-y divide-zinc-100">
                 <?php foreach ($dueTodayList as $item): ?>
-                    <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:bg-purple-50/30 transition">
+                    <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:bg-blue-50/30 transition">
                         <div class="space-y-0.5">
                             <div class="flex items-center gap-2">
-                                <h3 class="font-semibold text-slate-900"><?= htmlspecialchars($item['full_name']) ?></h3>
+                                <h3 class="font-semibold text-black"><?= htmlspecialchars($item['full_name']) ?></h3>
                                 <span class="px-1.5 py-0.5 rounded text-[10px] bg-blue-50 text-blue-700 font-mono">
                                     Inst #<?= $item['installment_number'] ?>
                                 </span>
                             </div>
-                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-400 text-[11px]">
-                                <span class="font-mono text-slate-700"><?= htmlspecialchars($item['loan_code']) ?></span>
+                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-zinc-500 text-[11px]">
+                                <span class="font-mono text-zinc-800"><?= htmlspecialchars($item['loan_code']) ?></span>
                                 <span>&bull;</span>
                                 <span><?= htmlspecialchars($item['location_landmark']) ?></span>
                                 <span>&bull;</span>
@@ -199,10 +199,10 @@ include __DIR__ . '/../includes/header.php';
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-zinc-100">
                             <div class="text-left sm:text-right">
-                                <span class="text-sm font-bold text-slate-900"><?= formatMoney((int)$item['balance_due_pesewas']) ?></span>
-                                <span class="text-[10px] text-slate-400 block">Bal: <?= formatMoney((int)$item['remaining_balance_pesewas']) ?></span>
+                                <span class="text-sm font-bold text-black"><?= formatMoney((int)$item['balance_due_pesewas']) ?></span>
+                                <span class="text-[10px] text-zinc-500 block">Bal: <?= formatMoney((int)$item['remaining_balance_pesewas']) ?></span>
                             </div>
                             <a href="<?= BASE_URL ?>/agent/collect.php?loan_id=<?= $item['loan_id'] ?>&customer_id=<?= $item['customer_id'] ?>&amount=<?= pesewasToGHS($item['balance_due_pesewas']) ?>" 
                                class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition shadow-sm">

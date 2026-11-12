@@ -24,17 +24,17 @@ include __DIR__ . '/includes/header.php';
     <!-- Page Header -->
     <div class="no-print flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-lg font-bold text-slate-900 tracking-tight">Loan Calculator</h1>
-            <p class="text-xs text-purple-600 font-medium mt-0.5">Instant repayment projection with editable interest rate &amp; installments (works online &amp; offline)</p>
+            <h1 class="text-lg font-bold text-black tracking-tight">Loan Calculator</h1>
+            <p class="text-xs text-blue-600 font-medium mt-0.5">Instant repayment projection with editable interest rate &amp; installments (works online &amp; offline)</p>
         </div>
         <div class="flex items-center gap-2">
             <button type="button" onclick="copyQuoteSummary()" 
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-purple-200 hover:bg-purple-50 text-purple-700 font-medium text-xs rounded-lg transition">
-                <i data-lucide="copy" class="w-3.5 h-3.5 text-purple-500"></i> Copy Quote
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-zinc-300 hover:bg-zinc-100 text-black font-medium text-xs rounded-lg transition">
+                <i data-lucide="copy" class="w-3.5 h-3.5 text-zinc-700"></i> Copy Quote
             </button>
             <button type="button" onclick="window.print()" 
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-purple-200 hover:bg-purple-50 text-purple-700 font-medium text-xs rounded-lg transition">
-                <i data-lucide="printer" class="w-3.5 h-3.5 text-purple-500"></i> Print
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-zinc-300 hover:bg-zinc-100 text-black font-medium text-xs rounded-lg transition">
+                <i data-lucide="printer" class="w-3.5 h-3.5 text-zinc-700"></i> Print
             </button>
             <a href="<?= $backUrl ?>" 
                 class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition shadow-sm">
@@ -44,37 +44,37 @@ include __DIR__ . '/includes/header.php';
     </div>
 
     <!-- Print-only Header -->
-    <div class="print-only pb-4 border-b border-slate-300 mb-4">
+    <div class="print-only pb-4 border-b border-zinc-300 mb-4">
         <div class="flex items-center gap-3">
             <?= renderCompanyLogo('print') ?>
             <div>
-                <h1 class="text-base font-bold uppercase text-slate-900"><?= htmlspecialchars(COMPANY_NAME) ?> — Loan Repayment Quotation</h1>
-                <p class="text-xs text-slate-600"><?= htmlspecialchars(BRANCH_NAME) ?> &bull; <?= htmlspecialchars(BRANCH_REGION) ?> &bull; Generated <?= date('d M Y, h:i A') ?></p>
+                <h1 class="text-base font-bold uppercase text-black"><?= htmlspecialchars(COMPANY_NAME) ?> — Loan Repayment Quotation</h1>
+                <p class="text-xs text-zinc-600"><?= htmlspecialchars(BRANCH_NAME) ?> &bull; <?= htmlspecialchars(BRANCH_REGION) ?> &bull; Generated <?= date('d M Y, h:i A') ?></p>
             </div>
         </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <!-- LEFT COLUMN: Calculator Inputs -->
-        <div class="no-print lg:col-span-5 bg-white rounded-xl border border-slate-200 border-t-2 border-t-blue-600 p-5 space-y-4 shadow-sm">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+        <div class="no-print lg:col-span-5 bg-white rounded-xl border border-zinc-200 border-t-2 border-t-blue-600 p-5 space-y-4 shadow-sm">
+            <div class="flex items-center justify-between pb-3 border-b border-zinc-200">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-black flex items-center gap-1.5">
                     <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-blue-600"></i> Loan Parameters
                 </h2>
-                <span id="calc-rate-badge" class="px-2 py-0.5 rounded text-[10px] font-semibold bg-purple-600 text-white"><?= htmlspecialchars($defaultRateShort) ?>% Rate</span>
+                <span id="calc-rate-badge" class="px-2 py-0.5 rounded text-[10px] font-semibold bg-black text-white"><?= htmlspecialchars($defaultRateShort) ?>% Rate</span>
             </div>
 
             <!-- Principal Input & Presets -->
             <div class="space-y-2">
-                <label for="calc-principal" class="block text-[11px] font-medium text-slate-700">
+                <label for="calc-principal" class="block text-[11px] font-medium text-zinc-800">
                     Principal Amount (<?= htmlspecialchars(safeCurrencySymbol()) ?>) *
                 </label>
                 <div class="relative">
-                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none font-bold text-purple-600 text-xs">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none font-bold text-blue-600 text-xs">
                         <?= htmlspecialchars(safeCurrencySymbol()) ?>
                     </span>
                     <input type="number" id="calc-principal" min="1" step="0.01" value="1000" oninput="onParameterInput()"
-                        class="w-full pl-11 pr-3 py-2 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                        class="w-full pl-11 pr-3 py-2 bg-white border border-zinc-300 rounded-lg text-sm font-bold text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
                 </div>
                 <div class="grid grid-cols-5 gap-1.5">
                     <button type="button" onclick="setPrincipal(500)" class="py-1 text-[11px] font-medium bg-blue-50/70 hover:bg-blue-600 text-blue-700 hover:text-white border border-blue-200 rounded transition">500</button>
@@ -86,39 +86,39 @@ include __DIR__ . '/includes/header.php';
             </div>
 
             <!-- Editable Interest Rate Input -->
-            <div class="p-3 rounded-lg bg-purple-50/60 border border-purple-200/80 flex items-center justify-between gap-3 text-xs">
+            <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200 flex items-center justify-between gap-3 text-xs">
                 <div>
-                    <label for="calc-interest-rate" class="block text-[11px] font-semibold text-purple-900">Interest Rate (% Flat) *</label>
-                    <span class="text-[10px] text-purple-600">Default policy rate: <?= htmlspecialchars($defaultRateFormatted) ?>%</span>
+                    <label for="calc-interest-rate" class="block text-[11px] font-semibold text-black">Interest Rate (% Flat) *</label>
+                    <span class="text-[10px] text-blue-600 font-medium">Default policy rate: <?= htmlspecialchars($defaultRateFormatted) ?>%</span>
                 </div>
                 <div class="relative w-28 shrink-0">
                     <input type="number" id="calc-interest-rate" min="0" max="500" step="0.01"
                         value="<?= htmlspecialchars($defaultRateFormatted) ?>"
                         oninput="onParameterInput()"
-                        class="w-full pl-3 pr-7 py-1.5 bg-white border border-purple-200 rounded-lg text-sm font-bold text-slate-900 text-right focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
-                    <span class="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none font-semibold text-purple-500 text-xs">%</span>
+                        class="w-full pl-3 pr-7 py-1.5 bg-white border border-zinc-300 rounded-lg text-sm font-bold text-black text-right focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                    <span class="absolute inset-y-0 right-0 pr-2.5 flex items-center pointer-events-none font-semibold text-zinc-600 text-xs">%</span>
                 </div>
             </div>
 
             <!-- Quick Term Presets -->
             <div class="space-y-1.5">
-                <span class="block text-[11px] font-medium text-slate-700">Quick Plan Presets</span>
+                <span class="block text-[11px] font-medium text-zinc-800">Quick Plan Presets</span>
                 <div class="grid grid-cols-2 gap-1.5 text-[11px]">
                     <button type="button" onclick="applyPlan(22, 'days', 'daily')" class="p-2 text-left rounded-lg border border-blue-200/80 bg-blue-50/40 hover:bg-blue-600 hover:text-white group transition">
-                        <span class="font-semibold text-slate-900 group-hover:text-white block">22 Days Daily</span>
-                        <span class="text-[10px] text-slate-500 group-hover:text-blue-100">Mon–Sat collection cycle</span>
+                        <span class="font-semibold text-black group-hover:text-white block">22 Days Daily</span>
+                        <span class="text-[10px] text-zinc-500 group-hover:text-blue-100">Mon–Sat collection cycle</span>
                     </button>
                     <button type="button" onclick="applyPlan(1, 'months', 'daily')" class="p-2 text-left rounded-lg border border-blue-200/80 bg-blue-50/40 hover:bg-blue-600 hover:text-white group transition">
-                        <span class="font-semibold text-slate-900 group-hover:text-white block">1 Month Daily</span>
-                        <span class="text-[10px] text-slate-500 group-hover:text-blue-100">22 working days</span>
+                        <span class="font-semibold text-black group-hover:text-white block">1 Month Daily</span>
+                        <span class="text-[10px] text-zinc-500 group-hover:text-blue-100">22 working days</span>
                     </button>
                     <button type="button" onclick="applyPlan(4, 'weeks', 'weekly')" class="p-2 text-left rounded-lg border border-blue-200/80 bg-blue-50/40 hover:bg-blue-600 hover:text-white group transition">
-                        <span class="font-semibold text-slate-900 group-hover:text-white block">4 Weeks Weekly</span>
-                        <span class="text-[10px] text-slate-500 group-hover:text-blue-100">4 weekly installments</span>
+                        <span class="font-semibold text-black group-hover:text-white block">4 Weeks Weekly</span>
+                        <span class="text-[10px] text-zinc-500 group-hover:text-blue-100">4 weekly installments</span>
                     </button>
                     <button type="button" onclick="applyPlan(3, 'months', 'monthly')" class="p-2 text-left rounded-lg border border-blue-200/80 bg-blue-50/40 hover:bg-blue-600 hover:text-white group transition">
-                        <span class="font-semibold text-slate-900 group-hover:text-white block">3 Months Monthly</span>
-                        <span class="text-[10px] text-slate-500 group-hover:text-blue-100">3 monthly installments</span>
+                        <span class="font-semibold text-black group-hover:text-white block">3 Months Monthly</span>
+                        <span class="text-[10px] text-zinc-500 group-hover:text-blue-100">3 monthly installments</span>
                     </button>
                 </div>
             </div>
@@ -126,12 +126,12 @@ include __DIR__ . '/includes/header.php';
             <!-- Term Duration & Period -->
             <div class="grid grid-cols-2 gap-3 text-xs">
                 <div>
-                    <label for="calc-duration" class="block text-[11px] font-medium text-slate-700 mb-1">Term Duration *</label>
+                    <label for="calc-duration" class="block text-[11px] font-medium text-zinc-800 mb-1">Term Duration *</label>
                     <div class="flex gap-1.5">
                         <input type="number" id="calc-duration" min="1" max="1095" value="22" oninput="onParameterInput()"
-                            class="w-16 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                            class="w-16 px-2.5 py-1.5 bg-white border border-zinc-300 rounded-lg text-xs font-semibold text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                         <select id="calc-period" onchange="onParameterInput()"
-                            class="flex-1 px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                            class="flex-1 px-2.5 py-1.5 bg-white border border-zinc-300 rounded-lg text-xs text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                             <option value="days" selected>Days</option>
                             <option value="weeks">Weeks</option>
                             <option value="months">Months</option>
@@ -140,9 +140,9 @@ include __DIR__ . '/includes/header.php';
                 </div>
 
                 <div>
-                    <label for="calc-frequency" class="block text-[11px] font-medium text-slate-700 mb-1">Repayment Frequency *</label>
+                    <label for="calc-frequency" class="block text-[11px] font-medium text-zinc-800 mb-1">Repayment Frequency *</label>
                     <select id="calc-frequency" onchange="onParameterInput()"
-                        class="w-full px-2.5 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                        class="w-full px-2.5 py-1.5 bg-white border border-zinc-300 rounded-lg text-xs text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                         <option value="daily" selected>Daily (Mon–Sat)</option>
                         <option value="weekly">Weekly</option>
                         <option value="monthly">Monthly</option>
@@ -152,13 +152,13 @@ include __DIR__ . '/includes/header.php';
 
             <!-- First Due Date -->
             <div>
-                <label for="calc-start-date" class="block text-[11px] font-medium text-slate-700 mb-1">First Repayment Due Date</label>
+                <label for="calc-start-date" class="block text-[11px] font-medium text-zinc-800 mb-1">First Repayment Due Date</label>
                 <input type="date" id="calc-start-date" value="<?= date('Y-m-d') ?>" onchange="calculateLoan(customInstallmentActive)"
-                    class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
+                    class="w-full px-3 py-1.5 bg-white border border-zinc-300 rounded-lg text-xs font-medium text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
             </div>
 
             <?php if ($role === 'admin'): ?>
-                <div class="pt-2 border-t border-slate-100">
+                <div class="pt-2 border-t border-zinc-200">
                     <a id="admin-issue-loan-link" href="<?= BASE_URL ?>/admin/loans.php?action=new"
                         class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition flex items-center justify-center gap-1.5 shadow-sm">
                         <span>Proceed to Disburse This Loan</span>
@@ -171,37 +171,37 @@ include __DIR__ . '/includes/header.php';
         <!-- RIGHT COLUMN: Summary Breakdown & Repayment Schedule -->
         <div class="lg:col-span-7 space-y-4">
             <!-- Top Summary Metrics -->
-            <div class="bg-white rounded-xl border border-slate-200 border-t-2 border-t-purple-600 p-5 space-y-4 shadow-sm">
-                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-purple-900">Repayment Summary (<span id="res-summary-rate"><?= htmlspecialchars($defaultRateShort) ?></span>% Interest)</span>
-                    <span id="res-installments-badge" class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-purple-50 text-purple-700 border border-purple-200">22 Installments</span>
+            <div class="bg-white rounded-xl border border-zinc-200 border-t-2 border-t-black p-5 space-y-4 shadow-sm">
+                <div class="flex items-center justify-between pb-3 border-b border-zinc-200">
+                    <span class="text-xs font-bold uppercase tracking-wider text-black">Repayment Summary (<span id="res-summary-rate"><?= htmlspecialchars($defaultRateShort) ?></span>% Interest)</span>
+                    <span id="res-installments-badge" class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-black text-white">22 Installments</span>
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 items-start">
                     <div>
-                        <span class="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">Principal</span>
-                        <div id="res-principal" class="text-base font-bold text-slate-900 mt-0.5"><?= htmlspecialchars(safeCurrencySymbol()) ?> 1,000.00</div>
+                        <span class="text-[10px] font-medium text-zinc-500 uppercase tracking-wider block">Principal</span>
+                        <div id="res-principal" class="text-base font-bold text-black mt-0.5"><?= htmlspecialchars(safeCurrencySymbol()) ?> 1,000.00</div>
                     </div>
                     <div>
-                        <span class="text-[10px] font-medium text-purple-600 uppercase tracking-wider block">Interest (<span id="res-interest-rate-label"><?= htmlspecialchars($defaultRateShort) ?></span>%)</span>
-                        <div id="res-interest" class="text-base font-bold text-purple-700 mt-0.5"><?= htmlspecialchars(safeCurrencySymbol()) ?> 100.00</div>
+                        <span class="text-[10px] font-medium text-zinc-600 uppercase tracking-wider block">Interest (<span id="res-interest-rate-label"><?= htmlspecialchars($defaultRateShort) ?></span>%)</span>
+                        <div id="res-interest" class="text-base font-bold text-black mt-0.5"><?= htmlspecialchars(safeCurrencySymbol()) ?> 100.00</div>
                     </div>
                     <div>
                         <span class="text-[10px] font-medium text-blue-600 uppercase tracking-wider block">Total Payable</span>
                         <div id="res-total" class="text-base font-bold text-blue-700 mt-0.5"><?= htmlspecialchars(safeCurrencySymbol()) ?> 1,100.00</div>
                     </div>
                     <div>
-                        <label for="calc-installment" class="text-[10px] font-medium text-slate-400 uppercase tracking-wider block">Installment</label>
+                        <label for="calc-installment" class="text-[10px] font-medium text-zinc-500 uppercase tracking-wider block">Installment</label>
                         <div class="relative mt-0.5">
-                            <span class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none font-bold text-purple-600 text-[11px]">
+                            <span class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none font-bold text-blue-600 text-[11px]">
                                 <?= htmlspecialchars(safeCurrencySymbol()) ?>
                             </span>
                             <input type="number" id="calc-installment" min="0.01" step="0.01" value="50.00"
                                 oninput="onInstallmentInput()"
-                                class="w-full pl-9 pr-1.5 py-0.5 bg-white border border-slate-200 rounded-lg text-sm font-bold text-slate-900 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
+                                class="w-full pl-9 pr-1.5 py-0.5 bg-white border border-zinc-300 rounded-lg text-sm font-bold text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
                         </div>
                         <div class="flex items-center justify-between gap-1 mt-1">
-                            <span id="res-freq-label" class="text-[10px] text-slate-400 leading-tight">per day (Mon–Sat)</span>
+                            <span id="res-freq-label" class="text-[10px] text-zinc-500 leading-tight">per day (Mon–Sat)</span>
                             <button type="button" id="installment-solve-toggle" onclick="toggleInstallmentSolveMode()"
                                 title="Switch whether editing installment adjusts Term or Principal"
                                 class="no-print text-[9px] font-medium px-1.5 py-0.5 rounded bg-blue-50 hover:bg-blue-600 text-blue-700 hover:text-white border border-blue-200 transition shrink-0">
@@ -211,22 +211,22 @@ include __DIR__ . '/includes/header.php';
                     </div>
                 </div>
 
-                <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
-                    <span>First Due: <strong id="res-first-date" class="text-slate-800">—</strong></span>
-                    <span>Maturity Date: <strong id="res-maturity-date" class="text-purple-700">—</strong></span>
+                <div class="pt-3 border-t border-zinc-200 flex flex-wrap items-center justify-between gap-2 text-[11px] text-zinc-600">
+                    <span>First Due: <strong id="res-first-date" class="text-black">—</strong></span>
+                    <span>Maturity Date: <strong id="res-maturity-date" class="text-blue-700">—</strong></span>
                 </div>
             </div>
 
             <!-- Full Schedule Breakdown Table -->
-            <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-                <div class="px-5 py-3 border-b border-purple-100 bg-purple-50/30 flex items-center justify-between">
-                    <h2 class="text-xs font-semibold uppercase tracking-wider text-purple-900">Repayment Schedule Preview</h2>
-                    <span id="schedule-note" class="text-[11px] text-slate-400">Exact pesewa-safe breakdown</span>
+            <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm">
+                <div class="px-5 py-3 border-b border-zinc-200 bg-zinc-50 flex items-center justify-between">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-black">Repayment Schedule Preview</h2>
+                    <span id="schedule-note" class="text-[11px] text-zinc-500">Exact pesewa-safe breakdown</span>
                 </div>
 
                 <div class="overflow-x-auto max-h-[460px] overflow-y-auto">
                     <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-50 text-slate-500 uppercase font-medium text-[10px] tracking-wider border-b border-slate-100 sticky top-0">
+                        <thead class="bg-zinc-100/80 text-zinc-700 uppercase font-medium text-[10px] tracking-wider border-b border-zinc-200 sticky top-0">
                             <tr>
                                 <th class="py-2.5 px-4 font-normal">#</th>
                                 <th class="py-2.5 px-4 font-normal">Due Date</th>
@@ -236,7 +236,7 @@ include __DIR__ . '/includes/header.php';
                                 <th class="py-2.5 px-4 text-right font-normal">Balance Left</th>
                             </tr>
                         </thead>
-                        <tbody id="schedule-tbody" class="divide-y divide-slate-100">
+                        <tbody id="schedule-tbody" class="divide-y divide-zinc-100">
                             <!-- Populated cleanly via JS -->
                         </tbody>
                     </table>
@@ -456,14 +456,14 @@ include __DIR__ . '/includes/header.php';
 
             if (i <= maxRenderedRows) {
                 const tr = document.createElement('tr');
-                tr.className = 'hover:bg-purple-50/30 transition';
+                tr.className = 'hover:bg-blue-50/30 transition';
                 tr.innerHTML = `
-                    <td class="py-2 px-4 font-mono text-purple-600">${i}</td>
-                    <td class="py-2 px-4 font-medium text-slate-900">${formatShortDate(currentDate)}</td>
-                    <td class="py-2 px-4 text-right text-slate-600">${formatMoneyGHS(pPortion)}</td>
-                    <td class="py-2 px-4 text-right text-purple-700">${formatMoneyGHS(iPortion)}</td>
+                    <td class="py-2 px-4 font-mono text-zinc-600">${i}</td>
+                    <td class="py-2 px-4 font-medium text-black">${formatShortDate(currentDate)}</td>
+                    <td class="py-2 px-4 text-right text-zinc-700">${formatMoneyGHS(pPortion)}</td>
+                    <td class="py-2 px-4 text-right text-zinc-800">${formatMoneyGHS(iPortion)}</td>
                     <td class="py-2 px-4 text-right font-semibold text-blue-700">${formatMoneyGHS(instTotal)}</td>
-                    <td class="py-2 px-4 text-right font-mono text-slate-500">${formatMoneyGHS(balanceLeft)}</td>
+                    <td class="py-2 px-4 text-right font-mono text-zinc-500">${formatMoneyGHS(balanceLeft)}</td>
                 `;
                 tbody.appendChild(tr);
             }

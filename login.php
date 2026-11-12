@@ -44,26 +44,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-slate-50">
+<html lang="en" class="h-full bg-zinc-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sign In — <?= htmlspecialchars(COMPANY_NAME) ?></title>
-    <meta name="theme-color" content="#2563eb">
+    <meta name="theme-color" content="#000000">
     <link rel="icon" type="image/png" href="<?= htmlspecialchars(getFaviconUrl()) ?>">
     <link rel="apple-touch-icon" href="<?= htmlspecialchars(getCompanyLogoUrl() ?: (BASE_URL . '/assets/icons/apple-touch-icon.png')) ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="h-full flex items-center justify-center p-4 antialiased text-slate-900 bg-gradient-to-br from-slate-50 via-white to-purple-50/60 font-sans">
-    <div class="max-w-sm w-full bg-white rounded-xl border border-purple-100 shadow-sm overflow-hidden my-auto">
-        <div class="h-1.5 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600"></div>
+<body class="h-full flex items-center justify-center p-4 antialiased text-black bg-zinc-50 font-sans">
+    <div class="max-w-sm w-full bg-white rounded-xl border border-zinc-200 shadow-sm overflow-hidden my-auto">
+        <div class="h-1.5 bg-gradient-to-r from-black via-blue-600 to-black"></div>
         <div class="p-6 sm:p-7">
         <!-- Brand Header -->
         <div class="text-center mb-6">
             <?= renderCompanyLogo('auth') ?>
-            <h1 class="text-sm font-bold tracking-tight uppercase text-slate-900"><?= htmlspecialchars(COMPANY_NAME) ?></h1>
-            <p class="text-[11px] text-purple-600 font-medium mt-0.5"><?= htmlspecialchars(BRANCH_NAME) ?> &bull; <?= htmlspecialchars(BRANCH_REGION) ?></p>
+            <h1 class="text-sm font-bold tracking-tight uppercase text-black"><?= htmlspecialchars(COMPANY_NAME) ?></h1>
+            <p class="text-[11px] text-blue-600 font-medium mt-0.5"><?= htmlspecialchars(BRANCH_NAME) ?> &bull; <?= htmlspecialchars(BRANCH_REGION) ?></p>
         </div>
 
         <?php if (!empty($error)): ?>
@@ -77,20 +77,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?= csrfField() ?>
 
             <div>
-                <label for="username" class="block text-[11px] font-medium text-slate-700 mb-1">
+                <label for="username" class="block text-[11px] font-medium text-zinc-800 mb-1">
                     Username / Staff Code
                 </label>
                 <input type="text" id="username" name="username" required autofocus 
-                    class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition"
+                    class="w-full px-3 py-2 bg-white border border-zinc-300 rounded-lg text-xs text-black placeholder-zinc-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition"
                     placeholder="Enter username or staff email">
             </div>
 
             <div>
-                <label for="password" class="block text-[11px] font-medium text-slate-700 mb-1">
+                <label for="password" class="block text-[11px] font-medium text-zinc-800 mb-1">
                     Password
                 </label>
                 <input type="password" id="password" name="password" required 
-                    class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition"
+                    class="w-full px-3 py-2 bg-white border border-zinc-300 rounded-lg text-xs text-black placeholder-zinc-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition"
                     placeholder="Enter password">
             </div>
 
