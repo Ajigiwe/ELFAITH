@@ -1,11 +1,11 @@
 /**
  * EL-FAITH MICROFINANCE - Progressive Web App Service Worker
- * Version: 2.6.0-PROD
+ * Version: 2.7.0-PROD
  * Scope: Auto-detected from registration scope (portable across root domains & subfolders)
  * Provides offline navigation, app shell caching, and offline fallback
  */
 
-const CACHE_NAME = 'elfaith-pwa-v2.6';
+const CACHE_NAME = 'elfaith-pwa-v2.7';
 
 // Base path detection
 const BASE_PATH = self.registration.scope;
@@ -85,8 +85,15 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // Bypass backend dynamic APIs or backup downloads to avoid stale caches
-    if (url.pathname.includes('/api/') || url.pathname.includes('/backup.php') || url.pathname.includes('/backups/')) {
+    // Bypass backend dynamic APIs, backup downloads, auth endpoints, and admin pages so admin views always show live DB state
+    if (
+        url.pathname.includes('/api/') ||
+        url.pathname.includes('/backup.php') ||
+        url.pathname.includes('/backups/') ||
+        url.pathname.includes('/admin/') ||
+        url.pathname.endsWith('/login.php') ||
+        url.pathname.endsWith('/logout.php')
+    ) {
         return;
     }
 
