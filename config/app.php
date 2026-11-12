@@ -62,7 +62,7 @@ define('COMPANY_LOGO', $system_settings['company_logo'] ?? '');
 define('BRANCH_NAME', $system_settings['branch_name'] ?? 'Wassa Powuako');
 define('BRANCH_REGION', $system_settings['branch_region'] ?? 'Western Region, Ghana');
 define('COMPANY_PHONE', $system_settings['company_phone'] ?? '+233 24 556 7890');
-define('COMPANY_EMAIL', $system_settings['company_email'] ?? 'admin@elfaithmicrofinance.com');
+define('COMPANY_EMAIL', $system_settings['company_email'] ?? 'admin@el-faithgroupofcompanies.com');
 define('CURRENCY_CODE', $system_settings['currency_code'] ?? 'GHS');
 define('CURRENCY_SYMBOL', $system_settings['currency_symbol'] ?? 'GH₵');
 define('DEFAULT_INTEREST_RATE', (float)($system_settings['default_interest_rate'] ?? 10.00));

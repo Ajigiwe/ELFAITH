@@ -11,7 +11,7 @@ INSERT INTO `system_settings` (`setting_key`, `setting_value`) VALUES
 ('branch_name', 'Wassa Powuako'),
 ('branch_region', 'Western Region, Ghana'),
 ('company_phone', '+233 24 556 7890'),
-('company_email', 'admin@elfaithmicrofinance.com'),
+('company_email', 'admin@el-faithgroupofcompanies.com'),
 ('currency_code', 'GHS'),
 ('currency_symbol', CONCAT('GH', UNHEX('E282B5'))),
 ('default_interest_rate', '10.00'),
@@ -21,7 +21,7 @@ INSERT INTO `system_settings` (`setting_key`, `setting_value`) VALUES
 ('sms_api_key', ''),
 ('email_provider', 'simulated'), -- 'brevo', 'resend', 'smtp', or 'simulated'
 ('email_api_key', ''),
-('admin_notification_email', 'admin@elfaithmicrofinance.com'),
+('admin_notification_email', 'admin@el-faithgroupofcompanies.com'),
 ('admin_email_frequency', 'per_collection') -- 'per_collection' or 'daily_digest'
 ON DUPLICATE KEY UPDATE `setting_value` = VALUES(`setting_value`);
 
