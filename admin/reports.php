@@ -97,6 +97,7 @@ include __DIR__ . '/../includes/header.php';
     <div class="bg-white rounded-xl border border-zinc-200 p-6 space-y-6">
         <!-- Branded Report Header -->
         <div class="text-center pb-5 border-b border-zinc-200">
+            <?= renderCompanyLogo('report') ?>
             <h1 class="text-base font-bold uppercase tracking-tight text-zinc-900"><?= htmlspecialchars(COMPANY_NAME) ?></h1>
             <p class="text-xs text-zinc-500 mt-0.5"><?= htmlspecialchars(BRANCH_NAME) ?> Branch &bull; <?= htmlspecialchars(BRANCH_REGION) ?></p>
             <p class="text-[11px] text-zinc-400 mt-0.5"><?= htmlspecialchars(COMPANY_PHONE) ?></p>

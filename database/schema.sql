@@ -1,15 +1,24 @@
 -- =====================================================================
 -- EL-FAITH MICROFINANCE - LOAN COLLECTION & MANAGEMENT SYSTEM
--- Raw PHP + MySQL Database Schema
+-- Raw PHP + MySQL Database Schema (Shared cPanel & Local Compatible)
 -- Location: Wassa Powuako, Western Region, Ghana
 -- Currency: Ghana Cedis (GH₵) - Stored in Integer Pesewas (100 pesewas = GH₵ 1.00)
 -- =====================================================================
 
-DROP DATABASE IF EXISTS `elfaith_microfinance`;
-CREATE DATABASE `elfaith_microfinance` 
-CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+SET FOREIGN_KEY_CHECKS = 0;
+SET SQL_MODE = 'NO_AUTO_VALUE_ON_ZERO';
+SET NAMES utf8mb4;
 
-USE `elfaith_microfinance`;
+DROP TABLE IF EXISTS `audit_log`;
+DROP TABLE IF EXISTS `notifications_log`;
+DROP TABLE IF EXISTS `cash_reconciliations`;
+DROP TABLE IF EXISTS `agent_assignments`;
+DROP TABLE IF EXISTS `payments`;
+DROP TABLE IF EXISTS `repayment_schedule`;
+DROP TABLE IF EXISTS `loans`;
+DROP TABLE IF EXISTS `customers`;
+DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `system_settings`;
 
 -- ---------------------------------------------------------------------
 -- 1. USERS TABLE (Admin & Field Agents)
@@ -253,3 +262,5 @@ CREATE TABLE IF NOT EXISTS `system_settings` (
   `setting_value` TEXT NOT NULL,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+SET FOREIGN_KEY_CHECKS = 1;

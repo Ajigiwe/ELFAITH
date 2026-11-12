@@ -26,9 +26,10 @@ $page_title = $page_title ?? COMPANY_NAME;
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="EL-FAITH">
     <link rel="manifest" href="<?= BASE_URL ?>/assets/manifest.json">
-    <link rel="apple-touch-icon" href="<?= BASE_URL ?>/assets/icons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="<?= BASE_URL ?>/assets/icons/icon-192.png">
-    <link rel="icon" type="image/png" sizes="64x64" href="<?= BASE_URL ?>/assets/icons/favicon.png">
+    <?php $companyLogoUrl = getCompanyLogoUrl(); $faviconUrl = getFaviconUrl(); ?>
+    <link rel="apple-touch-icon" href="<?= htmlspecialchars($companyLogoUrl ?: (BASE_URL . '/assets/icons/apple-touch-icon.png')) ?>">
+    <link rel="icon" type="image/png" sizes="192x192" href="<?= htmlspecialchars($companyLogoUrl ?: (BASE_URL . '/assets/icons/icon-192.png')) ?>">
+    <link rel="icon" type="image/png" sizes="64x64" href="<?= htmlspecialchars($faviconUrl) ?>">
     
     <!-- Tailwind CSS (CDN for zero-build standalone portability) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -48,6 +49,10 @@ $page_title = $page_title ?? COMPANY_NAME;
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <!-- Core Application Library (Offline Storage, GPS, UUID) -->
+    <script>
+        window.COMPANY_LOGO_URL = <?= json_encode($companyLogoUrl) ?>;
+        window.COMPANY_DISPLAY_NAME = <?= json_encode(COMPANY_NAME) ?>;
+    </script>
     <script src="<?= BASE_URL ?>/assets/app.js"></script>
     
     <style>
@@ -79,9 +84,7 @@ $page_title = $page_title ?? COMPANY_NAME;
                 <!-- Brand -->
                 <div class="flex items-center gap-3">
                     <a href="<?= BASE_URL ?>" class="flex items-center gap-2.5">
-                        <div class="w-7 h-7 rounded-lg bg-zinc-900 flex items-center justify-center text-white text-xs font-bold tracking-tight">
-                            EF
-                        </div>
+                        <?= renderCompanyLogo('navbar') ?>
                         <div class="leading-none">
                             <span class="text-xs font-bold tracking-wide uppercase text-zinc-900">EL-FAITH</span>
                             <span class="text-[10px] block text-zinc-400 font-normal uppercase tracking-wider mt-0.5"><?= htmlspecialchars(BRANCH_NAME) ?></span>
@@ -91,32 +94,41 @@ $page_title = $page_title ?? COMPANY_NAME;
 
                 <!-- Desktop Role Navigation (Minimal) -->
                 <?php if ($user): ?>
-                    <nav class="hidden md:flex items-center gap-1">
+                    <?php $isCalculator = strpos($_SERVER['PHP_SELF'], 'calculator.php') !== false; ?>
+                    <nav class="hidden md:flex items-center gap-0.5 flex-wrap">
                         <?php if ($role === 'admin'): ?>
-                            <a href="<?= BASE_URL ?>/admin/index.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'admin/index.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Dashboard</a>
-                            <a href="<?= BASE_URL ?>/admin/customers.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'customer') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Customers</a>
-                            <a href="<?= BASE_URL ?>/admin/loans.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'loan') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Loans</a>
-                            <a href="<?= BASE_URL ?>/admin/collections.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'collections.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Payments</a>
-                            <a href="<?= BASE_URL ?>/admin/reconciliation.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'reconciliation.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Reconciliation</a>
-                            <a href="<?= BASE_URL ?>/admin/overdue.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'overdue.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Overdue</a>
-                            <a href="<?= BASE_URL ?>/admin/agents.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'agents.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Staff</a>
-                            <a href="<?= BASE_URL ?>/admin/reports.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'reports.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Reports</a>
-                            <a href="<?= BASE_URL ?>/admin/notifications.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'notifications.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">SMS Logs</a>
-                            <a href="<?= BASE_URL ?>/admin/audit_logs.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'audit') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Audit</a>
-                            <a href="<?= BASE_URL ?>/admin/backup.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'backup') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Backup</a>
-                            <a href="<?= BASE_URL ?>/admin/settings.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'settings.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Settings</a>
+                            <a href="<?= BASE_URL ?>/admin/index.php" class="px-2 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'admin/index.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Dashboard</a>
+                            <a href="<?= BASE_URL ?>/admin/customers.php" class="px-2 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'customer') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Customers</a>
+                            <a href="<?= BASE_URL ?>/admin/loans.php" class="px-2 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'loan') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Loans</a>
+                            <a href="<?= BASE_URL ?>/calculator.php" class="px-2 py-1.5 rounded-lg text-xs whitespace-nowrap <?= $isCalculator ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Calculator</a>
+                            <a href="<?= BASE_URL ?>/admin/collections.php" class="px-2 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'collections.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Payments</a>
+                            <a href="<?= BASE_URL ?>/admin/reconciliation.php" class="px-2 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'reconciliation.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Reconciliation</a>
+                            <a href="<?= BASE_URL ?>/admin/overdue.php" class="px-2 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'overdue.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Overdue</a>
+                            <a href="<?= BASE_URL ?>/admin/agents.php" class="px-2 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'agents.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Staff</a>
+                            <a href="<?= BASE_URL ?>/admin/reports.php" class="px-2 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'reports.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Reports</a>
+                            <a href="<?= BASE_URL ?>/admin/notifications.php" class="px-2 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'notifications.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">SMS Logs</a>
+                            <a href="<?= BASE_URL ?>/admin/audit_logs.php" class="px-2 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'audit') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Audit</a>
+                            <a href="<?= BASE_URL ?>/admin/backup.php" class="px-2 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'backup') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Backup</a>
+                            <a href="<?= BASE_URL ?>/admin/settings.php" class="px-2 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'settings.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Settings</a>
                         <?php else: ?>
-                            <a href="<?= BASE_URL ?>/agent/index.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'agent/index.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Route</a>
-                            <a href="<?= BASE_URL ?>/agent/collect.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'collect.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Collect</a>
-                            <a href="<?= BASE_URL ?>/agent/my_customers.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'my_customers.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Clients</a>
-                            <a href="<?= BASE_URL ?>/agent/customer_new.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'customer_new.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">New Client</a>
-                            <a href="<?= BASE_URL ?>/agent/history.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'history.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">History</a>
-                            <a href="<?= BASE_URL ?>/agent/offline_queue.php" class="px-2.5 py-1.5 rounded-lg text-xs <?= strpos($_SERVER['PHP_SELF'], 'offline_queue.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Queue</a>
+                            <a href="<?= BASE_URL ?>/agent/index.php" class="px-2.5 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'agent/index.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Route</a>
+                            <a href="<?= BASE_URL ?>/agent/collect.php" class="px-2.5 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'collect.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Collect</a>
+                            <a href="<?= BASE_URL ?>/agent/my_customers.php" class="px-2.5 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'my_customers.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Clients</a>
+                            <a href="<?= BASE_URL ?>/agent/customer_new.php" class="px-2.5 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'customer_new.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">New Client</a>
+                            <a href="<?= BASE_URL ?>/calculator.php" class="px-2.5 py-1.5 rounded-lg text-xs whitespace-nowrap <?= $isCalculator ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Calculator</a>
+                            <a href="<?= BASE_URL ?>/agent/history.php" class="px-2.5 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'history.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">History</a>
+                            <a href="<?= BASE_URL ?>/agent/offline_queue.php" class="px-2.5 py-1.5 rounded-lg text-xs whitespace-nowrap <?= strpos($_SERVER['PHP_SELF'], 'offline_queue.php') !== false ? 'bg-zinc-100 font-semibold text-zinc-900' : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50' ?>">Queue</a>
                         <?php endif; ?>
                     </nav>
 
                     <!-- User Profile & Sign Out -->
-                    <div class="flex items-center gap-2.5">
+                    <div class="flex items-center gap-2">
+                        <!-- Quick Loan Calculator Access (Desktop & Mobile) -->
+                        <a href="<?= BASE_URL ?>/calculator.php" title="Loan Calculator" 
+                            class="p-1.5 rounded-lg transition <?= $isCalculator ? 'bg-zinc-100 text-zinc-900' : 'text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100' ?>">
+                            <i data-lucide="calculator" class="w-4 h-4"></i>
+                        </a>
+
                         <!-- PWA Install Button (reveals on mobile/desktop beforeinstallprompt) -->
                         <button type="button" onclick="promptPwaInstall()" 
                             class="pwa-install-trigger hidden inline-flex items-center gap-1 px-2.5 py-1 bg-zinc-900 hover:bg-zinc-800 text-white text-[11px] font-medium rounded-lg transition shadow-sm">

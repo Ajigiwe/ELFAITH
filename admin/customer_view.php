@@ -54,6 +54,17 @@ include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="space-y-6">
+    <!-- Print-only Brand Header -->
+    <div class="print-only pb-4 border-b border-zinc-300 mb-4">
+        <div class="flex items-center gap-3">
+            <?= renderCompanyLogo('print') ?>
+            <div>
+                <h1 class="text-base font-bold uppercase text-zinc-900"><?= htmlspecialchars(COMPANY_NAME) ?> — Borrower Profile</h1>
+                <p class="text-xs text-zinc-600"><?= htmlspecialchars(BRANCH_NAME) ?> &bull; <?= htmlspecialchars(BRANCH_REGION) ?> &bull; Generated <?= date('d M Y, h:i A') ?></p>
+            </div>
+        </div>
+    </div>
+
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>

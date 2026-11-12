@@ -1,9 +1,9 @@
 -- =====================================================================
--- EL-FAITH MICROFINANCE - SEED DATA
+-- EL-FAITH MICROFINANCE - SEED DATA (Shared cPanel & Local Compatible)
 -- Default Admin & Agents, System Settings, Initial Customers & Schedules
 -- =====================================================================
 
-USE `elfaith_microfinance`;
+SET NAMES utf8mb4;
 
 -- 1. SYSTEM SETTINGS
 INSERT INTO `system_settings` (`setting_key`, `setting_value`) VALUES

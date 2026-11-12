@@ -12,6 +12,14 @@ $db_name = 'elfaith_microfinance';
 $db_user = 'root';
 $db_pass = '';
 
+// Optional production override for shared cPanel hosting (excluded from Git; skipped on localhost)
+$reqHost = strtolower(preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'] ?? 'localhost'));
+$isLocalEnv = (PHP_SAPI === 'cli') || in_array($reqHost, ['localhost', '127.0.0.1', '::1', '[::1]'], true);
+$prodDbConfig = __DIR__ . '/database.prod.php';
+if (!$isLocalEnv && is_file($prodDbConfig)) {
+    require $prodDbConfig;
+}
+
 if (!defined('DB_HOST')) define('DB_HOST', $db_host);
 if (!defined('DB_PORT')) define('DB_PORT', $db_port);
 if (!defined('DB_NAME')) define('DB_NAME', $db_name);
@@ -25,11 +33,18 @@ try {
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES   => false,
-        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"
+        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci, time_zone = '+00:00'"
     ];
     $pdo = new PDO($dsn, $db_user, $db_pass, $options);
 } catch (PDOException $e) {
-    die("Database Connection Error: " . htmlspecialchars($e->getMessage()));
+    error_log('[EL-FAITH DB ERROR] ' . $e->getMessage());
+    if (!headers_sent()) {
+        http_response_code(503);
+    }
+    if ($isLocalEnv) {
+        die("Database Connection Error: " . htmlspecialchars($e->getMessage()));
+    }
+    die("Service temporarily unavailable. Please verify your database connection or contact system support.");
 }
 
 // Function helper to get PDO instance

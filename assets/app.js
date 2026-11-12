@@ -245,6 +245,18 @@ function initNetworkMonitor(baseUrl) {
         }
     }
 
+    // Sync company branding for offline fallback views
+    try {
+        if (window.COMPANY_LOGO_URL) {
+            localStorage.setItem('elfaith_company_logo', window.COMPANY_LOGO_URL);
+        } else if (window.COMPANY_LOGO_URL === null) {
+            localStorage.removeItem('elfaith_company_logo');
+        }
+        if (window.COMPANY_DISPLAY_NAME) {
+            localStorage.setItem('elfaith_company_name', window.COMPANY_DISPLAY_NAME);
+        }
+    } catch (e) {}
+
     window.addEventListener('online', updateNetworkStatus);
     window.addEventListener('offline', updateNetworkStatus);
     updateNetworkStatus();

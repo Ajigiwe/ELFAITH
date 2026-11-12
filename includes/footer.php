@@ -14,6 +14,7 @@
         $isAdminPay = strpos($currPage, 'collections.php') !== false;
         $isAdminCust = strpos($currPage, 'customer') !== false;
         $isAdminRecon = strpos($currPage, 'reconciliation.php') !== false;
+        $isCalculatorNav = strpos($currPage, 'calculator.php') !== false;
     ?>
     <nav class="md:hidden no-print fixed bottom-0 left-0 right-0 bg-white border-t border-zinc-200 z-40 py-1.5 shadow-sm">
         <div class="flex items-center justify-around text-center max-w-md mx-auto">
@@ -82,6 +83,13 @@
                     <i data-lucide="scale" class="w-5 h-5"></i>
                     <span class="text-[10px] mt-1 <?= $isAdminRecon ? 'font-semibold text-zinc-900' : 'text-zinc-400' ?>">Reconcile</span>
                     <span class="w-1 h-1 rounded-full bg-zinc-900 mt-0.5 <?= $isAdminRecon ? 'opacity-100' : 'opacity-0' ?>"></span>
+                </a>
+
+                <!-- Admin Calculator Tab -->
+                <a href="<?= BASE_URL ?>/calculator.php" class="flex flex-col items-center justify-center flex-1 py-1 transition <?= $isCalculatorNav ? 'text-zinc-900' : 'text-zinc-400 hover:text-zinc-700' ?>">
+                    <i data-lucide="calculator" class="w-5 h-5"></i>
+                    <span class="text-[10px] mt-1 <?= $isCalculatorNav ? 'font-semibold text-zinc-900' : 'text-zinc-400' ?>">Calc</span>
+                    <span class="w-1 h-1 rounded-full bg-zinc-900 mt-0.5 <?= $isCalculatorNav ? 'opacity-100' : 'opacity-0' ?>"></span>
                 </a>
             <?php endif; ?>
         </div>

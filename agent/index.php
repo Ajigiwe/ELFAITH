@@ -84,7 +84,10 @@ include __DIR__ . '/../includes/header.php';
                 <h1 class="text-lg font-bold text-zinc-900 tracking-tight">Today's Route</h1>
                 <p class="text-xs text-zinc-400 mt-0.5"><?= htmlspecialchars(currentUser()['name']) ?> &bull; <?= date('l, d F Y') ?></p>
             </div>
-            <div>
+            <div class="flex flex-wrap items-center gap-2">
+                <a href="<?= BASE_URL ?>/calculator.php" class="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-white border border-zinc-200 hover:bg-zinc-50 text-zinc-700 font-medium text-xs rounded-lg transition">
+                    <i data-lucide="calculator" class="w-3.5 h-3.5 text-zinc-400"></i> Loan Calculator
+                </a>
                 <a href="<?= BASE_URL ?>/agent/collect.php" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs rounded-lg transition">
                     <i data-lucide="plus" class="w-3.5 h-3.5"></i> Record Collection
                 </a>

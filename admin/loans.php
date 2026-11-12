@@ -13,6 +13,13 @@ requireAdmin();
 $page_title = "Loans";
 $action = $_GET['action'] ?? 'list';
 $preselectedCustomerId = (int)($_GET['customer_id'] ?? 0);
+$prefillPrincipal = isset($_GET['principal']) && (float)$_GET['principal'] > 0 ? (float)$_GET['principal'] : 1000;
+$prefillInterestRate = isset($_GET['interest_rate']) && (float)$_GET['interest_rate'] >= 0 ? (float)$_GET['interest_rate'] : DEFAULT_INTEREST_RATE;
+$prefillDuration = isset($_GET['term_duration']) && (int)$_GET['term_duration'] > 0 ? (int)$_GET['term_duration'] : 22;
+$prefillPeriod = in_array($_GET['term_period'] ?? '', ['days', 'weeks', 'months']) ? $_GET['term_period'] : 'days';
+$prefillFreq = in_array($_GET['repayment_frequency'] ?? '', ['daily', 'weekly', 'monthly']) ? $_GET['repayment_frequency'] : 'daily';
+$prefillFirstDue = !empty($_GET['first_due_date']) ? $_GET['first_due_date'] : date('Y-m-d');
+$prefillCustomInstallment = isset($_GET['custom_installment']) && (float)$_GET['custom_installment'] > 0 ? (float)$_GET['custom_installment'] : '';
 
 $error = '';
 $success = '';
@@ -26,12 +33,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'new') {
         $agentId = !empty($_POST['agent_id']) ? (int)$_POST['agent_id'] : null;
         $principalInput = (float)($_POST['principal'] ?? 0);
         $principalPesewas = ghsToPesewas($principalInput);
-        $interestRate = (float)($_POST['interest_rate'] ?? DEFAULT_INTEREST_RATE);
+        $interestRate = max(0.0, (float)($_POST['interest_rate'] ?? DEFAULT_INTEREST_RATE));
         $interestMethod = in_array($_POST['interest_method'] ?? '', ['flat', 'reducing_balance']) ? $_POST['interest_method'] : 'flat';
         $termDuration = (int)($_POST['term_duration'] ?? 22);
         $termPeriod = in_array($_POST['term_period'] ?? '', ['days', 'weeks', 'months']) ? $_POST['term_period'] : 'days';
         $frequency = in_array($_POST['repayment_frequency'] ?? '', ['daily', 'weekly', 'monthly']) ? $_POST['repayment_frequency'] : 'daily';
         $firstDueDate = !empty($_POST['first_due_date']) ? $_POST['first_due_date'] : date('Y-m-d');
+        $customInstallmentInput = isset($_POST['custom_installment']) && $_POST['custom_installment'] !== '' ? (float)$_POST['custom_installment'] : 0;
+        $customInstallmentPesewas = $customInstallmentInput > 0 ? ghsToPesewas($customInstallmentInput) : null;
         $notes = trim($_POST['notes'] ?? '');
 
         if ($customerId <= 0) {
@@ -52,8 +61,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'new') {
                     $termDuration, 
                     $termPeriod, 
                     $frequency, 
-                    $firstDueDate
+                    $firstDueDate,
+                    $customInstallmentPesewas
                 );
+                if ($customInstallmentPesewas !== null && $customInstallmentPesewas > 0) {
+                    $termDuration = $calc['num_installments'];
+                    $termPeriod = ($frequency === 'daily') ? 'days' : (($frequency === 'weekly') ? 'weeks' : 'months');
+                }
 
                 // 2. Generate unique sequential loan code: EF-LN-XXXX
                 $stmtCount = $pdo->query("SELECT COUNT(id) FROM loans");
@@ -98,8 +112,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'new') {
                 // 4. Insert each installment in repayment_schedule
                 $stmtSched = $pdo->prepare("
                     INSERT INTO repayment_schedule (
-                        loan_id, installment_number, due_date, principal_component_pesewas,
-                        interest_component_pesewas, expected_amount_pesewas, paid_amount_pesewas,
+                        loan_id, installment_number, due_date, principal_portion_pesewas,
+                        interest_portion_pesewas, expected_amount_pesewas, paid_amount_pesewas,
                         status, created_at
                     ) VALUES (?, ?, ?, ?, ?, ?, 0, 'pending', NOW())
                 ");
@@ -109,8 +123,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'new') {
                         $loanId,
                         $row['installment_number'],
                         $row['due_date'],
-                        $row['principal_component_pesewas'],
-                        $row['interest_component_pesewas'],
+                        $row['principal_portion_pesewas'],
+                        $row['interest_portion_pesewas'],
                         $row['expected_amount_pesewas']
                     ]);
                 }
@@ -191,6 +205,9 @@ include __DIR__ . '/../includes/header.php';
             <p class="text-xs text-zinc-400 mt-0.5">Loan facilities, terms, amortization & portfolio balance</p>
         </div>
         <div class="flex items-center gap-2">
+            <a href="<?= BASE_URL ?>/calculator.php" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-zinc-200 hover:bg-zinc-50 text-zinc-700 font-medium text-xs rounded-lg transition">
+                <i data-lucide="calculator" class="w-3.5 h-3.5 text-zinc-400"></i> Loan Calculator
+            </a>
             <?php if ($action === 'new'): ?>
                 <a href="<?= BASE_URL ?>/admin/loans.php" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-zinc-200 hover:bg-zinc-50 text-zinc-700 font-medium text-xs rounded-lg transition">
                     <i data-lucide="list" class="w-3.5 h-3.5"></i> View All Loans
@@ -257,18 +274,18 @@ include __DIR__ . '/../includes/header.php';
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none font-bold text-zinc-400 text-xs">
                                 <?= CURRENCY_SYMBOL ?>
                             </span>
-                            <input type="number" step="10" min="10" id="principal" name="principal" required 
+                            <input type="number" step="0.01" min="1" id="principal" name="principal" required 
                                 class="w-full pl-9 pr-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs font-semibold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
-                                placeholder="1000.00" value="1000">
+                                placeholder="1000.00" value="<?= htmlspecialchars((string)$prefillPrincipal) ?>">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-medium text-zinc-700 mb-1">Fixed Interest Rate (%) *</label>
+                        <label class="block text-[11px] font-medium text-zinc-700 mb-1">Interest Rate (%) *</label>
                         <div class="relative">
-                            <input type="number" step="0.5" min="0" max="100" id="interest_rate" name="interest_rate" required 
+                            <input type="number" step="0.01" min="0" max="500" id="interest_rate" name="interest_rate" required 
                                 class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs font-semibold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
-                                value="<?= DEFAULT_INTEREST_RATE ?>">
+                                value="<?= htmlspecialchars((string)$prefillInterestRate) ?>">
                             <span class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-zinc-400 text-xs">
                                 %
                             </span>
@@ -289,9 +306,9 @@ include __DIR__ . '/../includes/header.php';
                     <div>
                         <label class="block text-[11px] font-medium text-zinc-700 mb-1">Repayment Frequency</label>
                         <select id="frequency" name="repayment_frequency" class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900">
-                            <option value="daily" selected>Daily Collections (Mon - Sat)</option>
-                            <option value="weekly">Weekly</option>
-                            <option value="monthly">Monthly</option>
+                            <option value="daily" <?= $prefillFreq === 'daily' ? 'selected' : '' ?>>Daily Collections (Mon - Sat)</option>
+                            <option value="weekly" <?= $prefillFreq === 'weekly' ? 'selected' : '' ?>>Weekly</option>
+                            <option value="monthly" <?= $prefillFreq === 'monthly' ? 'selected' : '' ?>>Monthly</option>
                         </select>
                     </div>
                 </div>
@@ -303,11 +320,11 @@ include __DIR__ . '/../includes/header.php';
                         <div class="flex gap-2">
                             <input type="number" min="1" id="term_duration" name="term_duration" required 
                                 class="w-20 px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs font-semibold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
-                                value="22">
+                                value="<?= (int)$prefillDuration ?>">
                             <select id="term_period" name="term_period" class="flex-1 px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900">
-                                <option value="days" selected>Days</option>
-                                <option value="weeks">Weeks</option>
-                                <option value="months">Months</option>
+                                <option value="days" <?= $prefillPeriod === 'days' ? 'selected' : '' ?>>Days</option>
+                                <option value="weeks" <?= $prefillPeriod === 'weeks' ? 'selected' : '' ?>>Weeks</option>
+                                <option value="months" <?= $prefillPeriod === 'months' ? 'selected' : '' ?>>Months</option>
                             </select>
                         </div>
                     </div>
@@ -316,14 +333,17 @@ include __DIR__ . '/../includes/header.php';
                         <label class="block text-[11px] font-medium text-zinc-700 mb-1">First Repayment Due Date *</label>
                         <input type="date" name="first_due_date" required 
                             class="w-full px-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs font-medium text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
-                            value="<?= date('Y-m-d') ?>">
+                            value="<?= htmlspecialchars($prefillFirstDue) ?>">
                     </div>
                 </div>
 
                 <!-- Minimal Projection Box -->
-                <div class="p-3.5 rounded-lg bg-zinc-50 border border-zinc-200 text-xs space-y-1.5">
-                    <span class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider block">Projection Summary</span>
-                    <div class="grid grid-cols-3 gap-2 pt-1 text-zinc-800">
+                <div class="p-3.5 rounded-lg bg-zinc-50 border border-zinc-200 text-xs space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider block">Projection Summary</span>
+                        <span class="text-[10px] text-zinc-400">Installment editable below</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 pt-1 text-zinc-800 items-end">
                         <div>
                             <span class="text-zinc-400 block text-[10px] uppercase">Interest</span>
                             <span id="proj-interest" class="font-semibold text-zinc-900">GH₵ 100.00</span>
@@ -333,8 +353,13 @@ include __DIR__ . '/../includes/header.php';
                             <span id="proj-total" class="font-semibold text-zinc-900">GH₵ 1,100.00</span>
                         </div>
                         <div>
-                            <span class="text-zinc-400 block text-[10px] uppercase">Est. Installment</span>
-                            <span id="proj-installment" class="font-semibold text-zinc-900">GH₵ 50.00 / day</span>
+                            <label for="custom_installment_input" class="text-zinc-400 block text-[10px] uppercase">Installment (<?= CURRENCY_SYMBOL ?>)</label>
+                            <input type="number" step="0.01" min="0.01" id="custom_installment_input"
+                                oninput="onLoanFormInstallmentEdit()"
+                                value="<?= htmlspecialchars((string)$prefillCustomInstallment) ?>"
+                                class="mt-0.5 w-full px-2 py-1 bg-white border border-zinc-200 rounded text-xs font-semibold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900">
+                            <input type="hidden" name="custom_installment" id="custom_installment" value="<?= htmlspecialchars((string)$prefillCustomInstallment) ?>">
+                            <span id="proj-installment-count" class="text-[10px] text-zinc-400 block mt-0.5">22 installments</span>
                         </div>
                     </div>
                 </div>
@@ -364,26 +389,69 @@ include __DIR__ . '/../includes/header.php';
                 }
             });
 
-            function updateProjection() {
+            function updateProjection(preserveCustomInstallment = false) {
                 const p = parseFloat(document.getElementById('principal').value) || 0;
-                const r = parseFloat(document.getElementById('interest_rate').value) || 0;
-                const d = parseInt(document.getElementById('term_duration').value) || 1;
+                const r = Math.max(0, parseFloat(document.getElementById('interest_rate').value) || 0);
+                const d = Math.max(1, parseInt(document.getElementById('term_duration').value) || 1);
+                const period = document.getElementById('term_period').value;
                 const freq = document.getElementById('frequency').value;
+
+                let numInstallments = d;
+                if (period === 'months') {
+                    if (freq === 'daily') numInstallments = d * 22;
+                    else if (freq === 'weekly') numInstallments = d * 4;
+                    else numInstallments = d;
+                } else if (period === 'weeks') {
+                    if (freq === 'daily') numInstallments = d * 6;
+                    else numInstallments = d;
+                }
+                if (numInstallments <= 0) numInstallments = 1;
 
                 const interest = p * (r / 100);
                 const total = p + interest;
-                const inst = total / d;
+
+                const customHidden = document.getElementById('custom_installment');
+                const customInput = document.getElementById('custom_installment_input');
+                let instVal = total / numInstallments;
+
+                if (preserveCustomInstallment && customHidden && customHidden.value && parseFloat(customHidden.value) > 0) {
+                    instVal = parseFloat(customHidden.value);
+                    numInstallments = Math.max(1, Math.ceil(total / instVal));
+                } else {
+                    if (customHidden) customHidden.value = '';
+                    if (customInput) customInput.value = instVal.toFixed(2);
+                }
 
                 document.getElementById('proj-interest').textContent = 'GH₵ ' + interest.toFixed(2);
                 document.getElementById('proj-total').textContent = 'GH₵ ' + total.toFixed(2);
-                document.getElementById('proj-installment').textContent = 'GH₵ ' + inst.toFixed(2) + ' / ' + freq;
+                document.getElementById('proj-installment-count').textContent = '× ' + numInstallments + ' installments';
             }
 
-            document.getElementById('principal').addEventListener('input', updateProjection);
-            document.getElementById('interest_rate').addEventListener('input', updateProjection);
-            document.getElementById('term_duration').addEventListener('input', updateProjection);
-            document.getElementById('frequency').addEventListener('change', updateProjection);
-            updateProjection();
+            function onLoanFormInstallmentEdit() {
+                const p = parseFloat(document.getElementById('principal').value) || 0;
+                const r = Math.max(0, parseFloat(document.getElementById('interest_rate').value) || 0);
+                const freq = document.getElementById('frequency').value;
+                const inst = parseFloat(document.getElementById('custom_installment_input').value);
+                const customHidden = document.getElementById('custom_installment');
+                if (!inst || inst <= 0) {
+                    if (customHidden) customHidden.value = '';
+                    return;
+                }
+                const total = p + (p * (r / 100));
+                const numInstallments = Math.max(1, Math.ceil(total / inst));
+                if (customHidden) customHidden.value = inst.toFixed(2);
+
+                document.getElementById('term_duration').value = numInstallments;
+                document.getElementById('term_period').value = (freq === 'daily') ? 'days' : (freq === 'weekly' ? 'weeks' : 'months');
+                document.getElementById('proj-installment-count').textContent = '× ' + numInstallments + ' installments';
+            }
+
+            document.getElementById('principal').addEventListener('input', () => updateProjection(false));
+            document.getElementById('interest_rate').addEventListener('input', () => updateProjection(false));
+            document.getElementById('term_duration').addEventListener('input', () => updateProjection(false));
+            document.getElementById('term_period').addEventListener('change', () => updateProjection(false));
+            document.getElementById('frequency').addEventListener('change', () => updateProjection(false));
+            updateProjection(true);
         </script>
 
     <?php else: ?>

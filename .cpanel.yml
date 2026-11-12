@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/elfaithg/public_html/
+    - /bin/mkdir -p $DEPLOYPATH/backups $DEPLOYPATH/assets/uploads
+    - /bin/tar --exclude='.git' --exclude='.cpanel.yml' --exclude='config/database.prod.php' --exclude='backups/*.sql' --exclude='assets/uploads/company_logo_*' -cf - . | /bin/tar -xf - -C $DEPLOYPATH
+    - /bin/chmod 755 $DEPLOYPATH/backups $DEPLOYPATH/assets/uploads

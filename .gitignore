@@ -3,9 +3,13 @@
 # Exclude live/generated database backup dumps (keep security wrappers)
 backups/*.sql
 
+# Exclude uploaded runtime company logos (keep .htaccess / index.php)
+assets/uploads/company_logo_*
+
 # Environment & Secrets
 .env
 *.local.php
+config/database.prod.php
 
 # Logs & Temporary Files
 *.log
@@ -19,3 +23,4 @@ Thumbs.db
 desktop.ini
 .vscode/
 .idea/
+

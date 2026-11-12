@@ -1,11 +1,11 @@
 /**
  * EL-FAITH MICROFINANCE - Progressive Web App Service Worker
- * Version: 2.1.0-PROD
- * Scope: /ELFAITH%20MICROFINANCE/
+ * Version: 2.5.0-PROD
+ * Scope: Auto-detected from registration scope (portable across root domains & subfolders)
  * Provides offline navigation, app shell caching, and offline fallback
  */
 
-const CACHE_NAME = 'elfaith-pwa-v2.1';
+const CACHE_NAME = 'elfaith-pwa-v2.5';
 
 // Base path detection
 const BASE_PATH = self.registration.scope;
@@ -25,6 +25,7 @@ const PRECACHE_ASSETS = [
 
 // App pages to attempt caching during install/first run
 const PRECACHE_PAGES = [
+    BASE_PATH + 'calculator.php',
     BASE_PATH + 'agent/index.php',
     BASE_PATH + 'agent/collect.php',
     BASE_PATH + 'agent/offline_queue.php',

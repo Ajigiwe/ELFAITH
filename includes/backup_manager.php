@@ -194,11 +194,11 @@ function formatBytes(int $bytes, int $precision = 1): string {
  * Create a fresh multi-statement PDO connection for running complete batch SQL files
  */
 function getMultiStatementPdo(): PDO {
-    $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
+    $dsn = 'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET;
     return new PDO($dsn, DB_USER, DB_PASS, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::MYSQL_ATTR_MULTI_STATEMENTS => true,
-        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4"
+        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci, time_zone = '+00:00'"
     ]);
 }
 

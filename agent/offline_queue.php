@@ -95,9 +95,12 @@ include __DIR__ . '/../includes/header.php';
 <div id="offline-receipt-modal" class="hidden fixed inset-0 bg-zinc-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-xl border border-zinc-200 max-w-sm w-full p-5 space-y-4 shadow-sm animate-in fade-in duration-100">
         <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
-            <div class="flex items-center gap-2">
-                <div class="w-6 h-6 rounded bg-zinc-900 text-white text-[10px] font-bold flex items-center justify-center">EF</div>
-                <h3 class="text-xs font-semibold text-zinc-900 uppercase tracking-wider">Offline Field Receipt</h3>
+            <div class="flex items-center gap-2.5">
+                <?= renderCompanyLogo('compact') ?>
+                <div class="leading-tight">
+                    <span class="block text-[10px] font-bold uppercase tracking-wide text-zinc-900"><?= htmlspecialchars(COMPANY_NAME) ?></span>
+                    <h3 class="text-[11px] font-medium text-zinc-500 uppercase tracking-wider">Offline Field Receipt</h3>
+                </div>
             </div>
             <button type="button" onclick="closeReceiptModal()" class="text-zinc-400 hover:text-zinc-600 p-1">
                 <i data-lucide="x" class="w-4 h-4"></i>

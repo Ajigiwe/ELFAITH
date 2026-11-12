@@ -58,6 +58,17 @@ include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="space-y-6">
+    <!-- Print-only Brand Header -->
+    <div class="print-only pb-4 border-b border-zinc-300 mb-4">
+        <div class="flex items-center gap-3">
+            <?= renderCompanyLogo('print') ?>
+            <div>
+                <h1 class="text-base font-bold uppercase text-zinc-900"><?= htmlspecialchars(COMPANY_NAME) ?> — Loan Facility Statement</h1>
+                <p class="text-xs text-zinc-600"><?= htmlspecialchars(BRANCH_NAME) ?> &bull; <?= htmlspecialchars(BRANCH_REGION) ?> &bull; Generated <?= date('d M Y, h:i A') ?></p>
+            </div>
+        </div>
+    </div>
+
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
@@ -151,10 +162,10 @@ include __DIR__ . '/../includes/header.php';
                                 <?= formatDate($row['due_date']) ?>
                             </td>
                             <td class="py-2.5 px-4 text-right text-zinc-500">
-                                <?= formatMoney((int)$row['principal_component_pesewas']) ?>
+                                <?= formatMoney((int)$row['principal_portion_pesewas']) ?>
                             </td>
                             <td class="py-2.5 px-4 text-right text-zinc-500">
-                                <?= formatMoney((int)$row['interest_component_pesewas']) ?>
+                                <?= formatMoney((int)$row['interest_portion_pesewas']) ?>
                             </td>
                             <td class="py-2.5 px-4 text-right font-medium text-zinc-900">
                                 <?= formatMoney((int)$row['expected_amount_pesewas']) ?>

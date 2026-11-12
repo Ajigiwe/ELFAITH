@@ -61,6 +61,8 @@ $waUrl = "https://api.whatsapp.com/send?phone={$cleanPhone}&text={$waMsg}";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Receipt #<?= htmlspecialchars($payment['receipt_number']) ?> — <?= htmlspecialchars(COMPANY_NAME) ?></title>
+    <link rel="icon" type="image/png" href="<?= htmlspecialchars(getFaviconUrl()) ?>">
+    <link rel="apple-touch-icon" href="<?= htmlspecialchars(getCompanyLogoUrl() ?: (BASE_URL . '/assets/icons/apple-touch-icon.png')) ?>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -92,9 +94,7 @@ $waUrl = "https://api.whatsapp.com/send?phone={$cleanPhone}&text={$waMsg}";
     <div class="receipt-card max-w-sm w-full bg-white rounded-xl border border-zinc-200 p-6 sm:p-7 space-y-4">
         <!-- Brand Header -->
         <div class="text-center pb-4 border-b border-zinc-100">
-            <div class="w-8 h-8 bg-zinc-900 text-white rounded-lg flex items-center justify-center mx-auto mb-2 font-bold text-xs">
-                EF
-            </div>
+            <?= renderCompanyLogo('receipt') ?>
             <h1 class="text-sm font-bold uppercase tracking-tight text-zinc-900"><?= htmlspecialchars(COMPANY_NAME) ?></h1>
             <p class="text-[11px] text-zinc-400 mt-0.5"><?= htmlspecialchars(BRANCH_NAME) ?> &bull; <?= htmlspecialchars(BRANCH_REGION) ?></p>
             <div class="mt-2 inline-block px-2 py-0.5 bg-zinc-100 rounded text-[10px] font-medium uppercase tracking-wider text-zinc-600">

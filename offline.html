@@ -38,6 +38,14 @@
             margin: 0 auto 1rem auto;
             color: #71717a;
         }
+        .company-logo-offline {
+            max-height: 3.5rem;
+            max-width: 11rem;
+            width: auto;
+            object-fit: contain;
+            display: none;
+            margin: 0 auto 0.75rem auto;
+        }
         h1 { font-size: 1.125rem; font-weight: 700; letter-spacing: -0.025em; margin-bottom: 0.35rem; }
         p { font-size: 0.8125rem; color: #71717a; line-height: 1.4; margin-bottom: 1.5rem; }
         .btn-group { display: flex; flex-direction: column; gap: 0.5rem; }
@@ -63,7 +71,8 @@
 </head>
 <body>
     <div class="card">
-        <div class="icon-circle">
+        <img id="offline-company-logo" class="company-logo-offline" alt="Company Logo">
+        <div class="icon-circle" id="offline-fallback-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="1" y1="1" x2="23" y2="23"></line>
                 <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
@@ -92,10 +101,28 @@
             </button>
         </div>
 
-        <div class="brand">
+        <div class="brand" id="offline-brand-label">
             EL-FAITH MICROFINANCE &bull; FIELD PWA
         </div>
     </div>
+    <script>
+        try {
+            const logoUrl = localStorage.getItem('elfaith_company_logo');
+            const companyName = localStorage.getItem('elfaith_company_name');
+            if (logoUrl) {
+                const img = document.getElementById('offline-company-logo');
+                if (img) {
+                    img.src = logoUrl;
+                    img.style.display = 'block';
+                    img.onerror = function() { this.style.display = 'none'; };
+                }
+            }
+            if (companyName) {
+                const brand = document.getElementById('offline-brand-label');
+                if (brand) brand.innerHTML = companyName.replace(/</g, '&lt;') + ' &bull; FIELD PWA';
+            }
+        } catch (e) {}
+    </script>
 </body>
 </html>
 

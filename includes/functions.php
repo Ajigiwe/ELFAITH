@@ -135,7 +135,8 @@ function generateLoanSchedule(
     int $termDuration, 
     string $termPeriod, 
     string $frequency, 
-    string $firstDueDate
+    string $firstDueDate,
+    ?int $customInstallmentPesewas = null
 ): array {
     // Determine number of installments based on frequency and term duration
     $numInstallments = $termDuration; // default mapping for daily loans: duration in days = duration installments
@@ -160,10 +161,16 @@ function generateLoanSchedule(
 
     // Calculate Total Interest in Pesewas
     // Standard Flat Rate policy: Interest = Principal * (Rate / 100)
-    // If term is multi-month, can scale if requested, but by default flat rate is total fixed markup (e.g. 10%)
     $interestPesewas = (int)round($principalPesewas * ($interestRatePercent / 100));
     $totalPayablePesewas = $principalPesewas + $interestPesewas;
-    $installmentAmountPesewas = (int)ceil($totalPayablePesewas / $numInstallments);
+
+    $useCustomInstallment = ($customInstallmentPesewas !== null && $customInstallmentPesewas > 0 && $totalPayablePesewas > 0);
+    if ($useCustomInstallment) {
+        $numInstallments = max(1, (int)ceil($totalPayablePesewas / $customInstallmentPesewas));
+        $installmentAmountPesewas = min($totalPayablePesewas, $customInstallmentPesewas);
+    } else {
+        $installmentAmountPesewas = (int)ceil($totalPayablePesewas / $numInstallments);
+    }
 
     $principalPerInstallment = (int)floor($principalPesewas / $numInstallments);
     $interestPerInstallment = (int)floor($interestPesewas / $numInstallments);
@@ -180,6 +187,21 @@ function generateLoanSchedule(
             $pPortion = $principalPesewas - $accumPrincipal;
             $iPortion = $interestPesewas - $accumInterest;
             $instAmount = $pPortion + $iPortion;
+        } elseif ($useCustomInstallment) {
+            $remainingTotal = $totalPayablePesewas - ($accumPrincipal + $accumInterest);
+            $targetRow = min($installmentAmountPesewas, $remainingTotal);
+            $pPortion = min($principalPesewas - $accumPrincipal, (int)round($targetRow * ($principalPesewas / $totalPayablePesewas)));
+            $iPortion = min($interestPesewas - $accumInterest, max(0, $targetRow - $pPortion));
+            if ($pPortion + $iPortion < $targetRow) {
+                $shortfall = $targetRow - ($pPortion + $iPortion);
+                $extraP = min(($principalPesewas - $accumPrincipal) - $pPortion, $shortfall);
+                $pPortion += $extraP;
+                $extraI = min(($interestPesewas - $accumInterest) - $iPortion, $shortfall - $extraP);
+                $iPortion += $extraI;
+            }
+            $instAmount = $pPortion + $iPortion;
+            $accumPrincipal += $pPortion;
+            $accumInterest += $iPortion;
         } else {
             $pPortion = $principalPerInstallment;
             $iPortion = $interestPerInstallment;
@@ -535,6 +557,222 @@ function recordPaymentTransaction(PDO $pdo, array $params): array {
             $pdo->rollBack();
         }
         throw $e;
+    }
+}
+
+/**
+ * Resolve validated relative path of the uploaded company logo, or null if none exists.
+ */
+function getCompanyLogoRelativePath(): ?string {
+    $raw = $GLOBALS['system_settings']['company_logo'] ?? (defined('COMPANY_LOGO') ? COMPANY_LOGO : '');
+    $raw = trim((string)$raw);
+    if ($raw === '') {
+        return null;
+    }
+    if (!preg_match('/^assets\/uploads\/company_logo_[A-Za-z0-9_]+\.(png|jpe?g|webp|gif)$/', $raw)) {
+        return null;
+    }
+    $fullPath = __DIR__ . '/../' . $raw;
+    if (!is_file($fullPath)) {
+        return null;
+    }
+    return $raw;
+}
+
+/**
+ * Get public URL of the uploaded company logo, or null if fallback badge should be used.
+ */
+function getCompanyLogoUrl(): ?string {
+    $rel = getCompanyLogoRelativePath();
+    if ($rel === null) {
+        return null;
+    }
+    $base = defined('BASE_URL') ? rtrim(BASE_URL, '/') : '';
+    return $base . '/' . $rel;
+}
+
+/**
+ * Get public favicon URL (uses uploaded company logo when present, otherwise default icon).
+ */
+function getFaviconUrl(): string {
+    $logoUrl = getCompanyLogoUrl();
+    if ($logoUrl !== null) {
+        return $logoUrl;
+    }
+    $base = defined('BASE_URL') ? rtrim(BASE_URL, '/') : '';
+    return $base . '/assets/icons/favicon.png';
+}
+
+/**
+ * Render the company logo image (when uploaded) or clean minimalist EF fallback mark.
+ * Variants: 'navbar', 'receipt', 'auth', 'report', 'compact', 'print'
+ */
+function renderCompanyLogo(string $variant = 'navbar'): string {
+    $url = getCompanyLogoUrl();
+    $alt = htmlspecialchars(defined('COMPANY_NAME') ? COMPANY_NAME : 'Company Logo');
+
+    if ($url !== null) {
+        $escUrl = htmlspecialchars($url);
+        switch ($variant) {
+            case 'receipt':
+                return '<img src="' . $escUrl . '" alt="' . $alt . ' Logo" class="h-14 w-auto max-w-[180px] object-contain mx-auto mb-2.5">';
+            case 'auth':
+                return '<img src="' . $escUrl . '" alt="' . $alt . ' Logo" class="h-14 w-auto max-w-[180px] object-contain mx-auto mb-3">';
+            case 'report':
+                return '<img src="' . $escUrl . '" alt="' . $alt . ' Logo" class="h-12 w-auto max-w-[160px] object-contain mx-auto mb-2">';
+            case 'compact':
+                return '<img src="' . $escUrl . '" alt="' . $alt . ' Logo" class="h-6 w-auto max-w-[72px] object-contain rounded shrink-0">';
+            case 'print':
+                return '<img src="' . $escUrl . '" alt="' . $alt . ' Logo" class="h-10 w-auto max-w-[140px] object-contain shrink-0">';
+            case 'navbar':
+            default:
+                return '<img src="' . $escUrl . '" alt="' . $alt . ' Logo" class="h-8 w-auto max-w-[110px] object-contain rounded shrink-0">';
+        }
+    }
+
+    switch ($variant) {
+        case 'receipt':
+            return '<div class="w-8 h-8 bg-zinc-900 text-white rounded-lg flex items-center justify-center mx-auto mb-2 font-bold text-xs">EF</div>';
+        case 'auth':
+            return '<div class="w-8 h-8 bg-zinc-900 rounded-lg flex items-center justify-center mx-auto mb-2.5 text-white font-bold text-xs tracking-tight">EF</div>';
+        case 'compact':
+            return '<div class="w-6 h-6 rounded bg-zinc-900 text-white text-[10px] font-bold flex items-center justify-center shrink-0">EF</div>';
+        case 'report':
+        case 'print':
+            return '';
+        case 'navbar':
+        default:
+            return '<div class="w-7 h-7 rounded-lg bg-zinc-900 flex items-center justify-center text-white text-xs font-bold tracking-tight shrink-0">EF</div>';
+    }
+}
+
+/**
+ * Validate, normalize (re-encode to PNG & resize up to 600px), and store uploaded company logo.
+ * Returns the relative path (e.g. 'assets/uploads/company_logo_xxx.png').
+ */
+function saveUploadedCompanyLogo(array $file): string {
+    if (!isset($file['error']) || is_array($file['error'])) {
+        throw new Exception('Invalid file upload payload.');
+    }
+
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        $errMap = [
+            UPLOAD_ERR_INI_SIZE => 'Uploaded logo exceeds server upload size limit.',
+            UPLOAD_ERR_FORM_SIZE => 'Uploaded logo exceeds maximum allowed size.',
+            UPLOAD_ERR_PARTIAL => 'File was only partially uploaded. Please retry.',
+            UPLOAD_ERR_NO_FILE => 'Please choose a logo image file to upload.',
+        ];
+        throw new Exception($errMap[$file['error']] ?? 'File upload failed with error code ' . $file['error'] . '.');
+    }
+
+    $tmpPath = $file['tmp_name'] ?? '';
+    if (empty($tmpPath) || !is_uploaded_file($tmpPath)) {
+        throw new Exception('Invalid uploaded file source.');
+    }
+
+    $maxBytes = 2 * 1024 * 1024; // 2 MB
+    if ((int)($file['size'] ?? 0) <= 0 || (int)$file['size'] > $maxBytes) {
+        throw new Exception('Logo image must be smaller than 2 MB.');
+    }
+
+    $allowedMimes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+    $detectedMime = '';
+    if (class_exists('finfo')) {
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $detectedMime = (string)$finfo->file($tmpPath);
+    }
+
+    $imgInfo = @getimagesize($tmpPath);
+    if ($imgInfo === false || empty($imgInfo[0]) || empty($imgInfo[1])) {
+        throw new Exception('The uploaded file is not a valid image.');
+    }
+    $imgMime = $imgInfo['mime'] ?? $detectedMime;
+    if (!in_array($imgMime, $allowedMimes, true) || (!empty($detectedMime) && !in_array($detectedMime, $allowedMimes, true))) {
+        throw new Exception('Unsupported image format. Please upload a PNG, JPG, WebP, or GIF file.');
+    }
+
+    $srcWidth = (int)$imgInfo[0];
+    $srcHeight = (int)$imgInfo[1];
+    if ($srcWidth > 5000 || $srcHeight > 5000) {
+        throw new Exception('Image dimensions are too large (maximum 5000x5000px).');
+    }
+
+    if (!extension_loaded('gd')) {
+        throw new Exception('GD image extension is required to process uploaded logos safely.');
+    }
+
+    switch ($imgMime) {
+        case 'image/png':
+            $srcImg = @imagecreatefrompng($tmpPath);
+            break;
+        case 'image/jpeg':
+            $srcImg = @imagecreatefromjpeg($tmpPath);
+            break;
+        case 'image/webp':
+            $srcImg = function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($tmpPath) : false;
+            break;
+        case 'image/gif':
+            $srcImg = @imagecreatefromgif($tmpPath);
+            break;
+        default:
+            $srcImg = false;
+    }
+
+    if (!$srcImg) {
+        throw new Exception('Could not decode uploaded image. Please try another PNG or JPG file.');
+    }
+
+    $maxDim = 600;
+    $dstWidth = $srcWidth;
+    $dstHeight = $srcHeight;
+    if ($srcWidth > $maxDim || $srcHeight > $maxDim) {
+        $scale = min($maxDim / $srcWidth, $maxDim / $srcHeight);
+        $dstWidth = max(1, (int)round($srcWidth * $scale));
+        $dstHeight = max(1, (int)round($srcHeight * $scale));
+    }
+
+    $dstImg = imagecreatetruecolor($dstWidth, $dstHeight);
+    imagealphablending($dstImg, false);
+    imagesavealpha($dstImg, true);
+    $transparent = imagecolorallocatealpha($dstImg, 0, 0, 0, 127);
+    imagefilledrectangle($dstImg, 0, 0, $dstWidth, $dstHeight, $transparent);
+    imagecopyresampled($dstImg, $srcImg, 0, 0, 0, 0, $dstWidth, $dstHeight, $srcWidth, $srcHeight);
+
+    $uploadDir = __DIR__ . '/../assets/uploads';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+
+    $filename = 'company_logo_' . date('YmdHis') . '_' . bin2hex(random_bytes(4)) . '.png';
+    $destPath = $uploadDir . '/' . $filename;
+
+    $saved = imagepng($dstImg, $destPath, 6);
+    imagedestroy($srcImg);
+    imagedestroy($dstImg);
+
+    if (!$saved || !is_file($destPath)) {
+        throw new Exception('Failed to save processed logo image on server.');
+    }
+
+    return 'assets/uploads/' . $filename;
+}
+
+/**
+ * Delete stored company logo files inside assets/uploads directory.
+ */
+function cleanupOldCompanyLogos(?string $keepRelativePath = null): void {
+    $uploadDir = __DIR__ . '/../assets/uploads';
+    if (!is_dir($uploadDir)) {
+        return;
+    }
+    $keepBase = $keepRelativePath ? basename($keepRelativePath) : null;
+    foreach (glob($uploadDir . '/company_logo_*') ?: [] as $filePath) {
+        if ($keepBase !== null && basename($filePath) === $keepBase) {
+            continue;
+        }
+        if (is_file($filePath)) {
+            @unlink($filePath);
+        }
     }
 }
 
