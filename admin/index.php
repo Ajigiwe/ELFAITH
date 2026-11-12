@@ -114,67 +114,67 @@ include __DIR__ . '/../includes/header.php';
         </div>
     </div>
 
-    <!-- 4 Clean Blue/White/Purple Metric Cards -->
+    <!-- 4 Blue & Purple KPI Metric Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- Collected Today -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-2 border-t-blue-600 p-4 space-y-3 shadow-sm">
+        <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-4 space-y-3 shadow-sm">
             <div class="flex items-center justify-between">
-                <span class="text-[11px] font-semibold text-blue-600 uppercase tracking-wider">Collected Today</span>
-                <span class="w-6 h-6 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center"><i data-lucide="wallet" class="w-3.5 h-3.5"></i></span>
+                <span class="text-[11px] font-semibold text-blue-100 uppercase tracking-wider">Collected Today</span>
+                <span class="w-7 h-7 rounded-lg bg-white/15 text-white flex items-center justify-center"><i data-lucide="wallet" class="w-3.5 h-3.5"></i></span>
             </div>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight">
+            <div class="text-2xl font-bold text-white tracking-tight">
                 <?= formatMoney((int)$todayStats['total_today']) ?>
             </div>
-            <div class="text-[11px] text-slate-500 flex justify-between pt-2.5 border-t border-slate-100">
-                <span>Cash: <strong class="text-slate-800"><?= formatMoney((int)$todayStats['cash_today']) ?></strong></span>
-                <span>MoMo: <strong class="text-slate-800"><?= formatMoney((int)$todayStats['momo_today']) ?></strong></span>
+            <div class="text-[11px] text-blue-100 flex justify-between pt-2.5 border-t border-white/15">
+                <span>Cash: <strong class="text-white"><?= formatMoney((int)$todayStats['cash_today']) ?></strong></span>
+                <span>MoMo: <strong class="text-white"><?= formatMoney((int)$todayStats['momo_today']) ?></strong></span>
             </div>
         </div>
 
         <!-- Expected Today -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-2 border-t-purple-600 p-4 space-y-3 shadow-sm">
+        <div class="bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-xl p-4 space-y-3 shadow-sm">
             <div class="flex items-center justify-between">
-                <span class="text-[11px] font-semibold text-purple-600 uppercase tracking-wider">Expected Today</span>
-                <span class="w-6 h-6 rounded-md bg-purple-50 text-purple-600 flex items-center justify-center"><i data-lucide="calendar-check" class="w-3.5 h-3.5"></i></span>
+                <span class="text-[11px] font-semibold text-purple-100 uppercase tracking-wider">Expected Today</span>
+                <span class="w-7 h-7 rounded-lg bg-white/15 text-white flex items-center justify-center"><i data-lucide="calendar-check" class="w-3.5 h-3.5"></i></span>
             </div>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight">
+            <div class="text-2xl font-bold text-white tracking-tight">
                 <?= formatMoney($expectedToday) ?>
             </div>
-            <div class="text-[11px] text-slate-500 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <div class="text-[11px] text-purple-100 pt-2.5 border-t border-white/15 flex items-center justify-between">
                 <span>Realized:</span>
-                <span class="font-semibold text-purple-700">
+                <span class="font-semibold text-white">
                     <?= $expectedToday > 0 ? round(($todayStats['total_today'] / $expectedToday) * 100, 1) : 0 ?>%
                 </span>
             </div>
         </div>
 
         <!-- Active Portfolio -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-2 border-t-blue-600 p-4 space-y-3 shadow-sm">
+        <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-xl p-4 space-y-3 shadow-sm">
             <div class="flex items-center justify-between">
-                <span class="text-[11px] font-semibold text-blue-600 uppercase tracking-wider">Active Portfolio</span>
-                <span class="w-6 h-6 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center"><i data-lucide="briefcase" class="w-3.5 h-3.5"></i></span>
+                <span class="text-[11px] font-semibold text-blue-100 uppercase tracking-wider">Active Portfolio</span>
+                <span class="w-7 h-7 rounded-lg bg-white/15 text-white flex items-center justify-center"><i data-lucide="briefcase" class="w-3.5 h-3.5"></i></span>
             </div>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight">
+            <div class="text-2xl font-bold text-white tracking-tight">
                 <?= formatMoney((int)$portfolioStats['total_outstanding']) ?>
             </div>
-            <div class="text-[11px] text-slate-500 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <div class="text-[11px] text-blue-100 pt-2.5 border-t border-white/15 flex items-center justify-between">
                 <span>Active Loans:</span>
-                <span class="font-semibold text-blue-700"><?= (int)$portfolioStats['active_loans_count'] ?></span>
+                <span class="font-semibold text-white"><?= (int)$portfolioStats['active_loans_count'] ?></span>
             </div>
         </div>
 
         <!-- Total Overdue -->
-        <div class="bg-white rounded-xl border border-slate-200 border-t-2 border-t-purple-600 p-4 space-y-3 shadow-sm">
+        <div class="bg-gradient-to-br from-purple-700 to-purple-800 text-white rounded-xl p-4 space-y-3 shadow-sm">
             <div class="flex items-center justify-between">
-                <span class="text-[11px] font-semibold text-purple-600 uppercase tracking-wider">Total Overdue</span>
-                <span class="w-6 h-6 rounded-md bg-purple-50 text-purple-600 flex items-center justify-center"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i></span>
+                <span class="text-[11px] font-semibold text-purple-100 uppercase tracking-wider">Total Overdue</span>
+                <span class="w-7 h-7 rounded-lg bg-white/15 text-white flex items-center justify-center"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i></span>
             </div>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight">
+            <div class="text-2xl font-bold text-white tracking-tight">
                 <?= formatMoney((int)$overdueStats['total_overdue']) ?>
             </div>
-            <div class="text-[11px] text-slate-500 pt-2.5 border-t border-slate-100 flex items-center justify-between">
-                <span>PAR 30+: <strong class="text-purple-700"><?= $parPercentage ?>%</strong></span>
-                <span class="text-slate-400"><?= (int)$overdueStats['overdue_installments_count'] ?> items</span>
+            <div class="text-[11px] text-purple-100 pt-2.5 border-t border-white/15 flex items-center justify-between">
+                <span>PAR 30+: <strong class="text-white"><?= $parPercentage ?>%</strong></span>
+                <span class="text-purple-200"><?= (int)$overdueStats['overdue_installments_count'] ?> items</span>
             </div>
         </div>
     </div>

@@ -70,46 +70,46 @@ include __DIR__ . '/../includes/header.php';
         </div>
     </div>
 
-    <!-- Aging Analysis Cards (Minimal) -->
+    <!-- Aging Analysis Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <!-- 1 - 7 Days -->
-        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-2">
-            <div class="flex items-center justify-between text-[11px] font-medium text-slate-400 uppercase tracking-wider">
+        <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-4 space-y-2 shadow-sm">
+            <div class="flex items-center justify-between text-[11px] font-semibold text-blue-100 uppercase tracking-wider">
                 <span>1 — 7 Days</span>
-                <span class="text-slate-500 font-normal"><?= (int)$aging['count_1_7'] ?> items</span>
+                <span class="text-white font-medium"><?= (int)$aging['count_1_7'] ?> items</span>
             </div>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight">
+            <div class="text-2xl font-bold text-white tracking-tight">
                 <?= formatMoney((int)$aging['bucket_1_7']) ?>
             </div>
-            <div class="text-[11px] text-slate-400 pt-2 border-t border-slate-100">
+            <div class="text-[11px] text-blue-100 pt-2 border-t border-white/15">
                 Early warning bucket
             </div>
         </div>
 
         <!-- 8 - 30 Days -->
-        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-2">
-            <div class="flex items-center justify-between text-[11px] font-medium text-slate-400 uppercase tracking-wider">
+        <div class="bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-xl p-4 space-y-2 shadow-sm">
+            <div class="flex items-center justify-between text-[11px] font-semibold text-purple-100 uppercase tracking-wider">
                 <span>8 — 30 Days</span>
-                <span class="text-slate-500 font-normal"><?= (int)$aging['count_8_30'] ?> items</span>
+                <span class="text-white font-medium"><?= (int)$aging['count_8_30'] ?> items</span>
             </div>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight">
+            <div class="text-2xl font-bold text-white tracking-tight">
                 <?= formatMoney((int)$aging['bucket_8_30']) ?>
             </div>
-            <div class="text-[11px] text-slate-400 pt-2 border-t border-slate-100">
+            <div class="text-[11px] text-purple-100 pt-2 border-t border-white/15">
                 Moderate risk exposure
             </div>
         </div>
 
         <!-- 30+ Days (PAR) -->
-        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-2">
-            <div class="flex items-center justify-between text-[11px] font-medium text-slate-400 uppercase tracking-wider">
+        <div class="bg-gradient-to-br from-purple-700 to-purple-800 text-white rounded-xl p-4 space-y-2 shadow-sm">
+            <div class="flex items-center justify-between text-[11px] font-semibold text-purple-100 uppercase tracking-wider">
                 <span>30+ Days (PAR 30+)</span>
-                <span class="text-slate-900 font-semibold"><?= (int)$aging['count_30_plus'] ?> items</span>
+                <span class="text-white font-semibold"><?= (int)$aging['count_30_plus'] ?> items</span>
             </div>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight">
+            <div class="text-2xl font-bold text-white tracking-tight">
                 <?= formatMoney((int)$aging['bucket_30_plus']) ?>
             </div>
-            <div class="text-[11px] text-slate-400 pt-2 border-t border-slate-100">
+            <div class="text-[11px] text-purple-100 pt-2 border-t border-white/15">
                 High default risk
             </div>
         </div>

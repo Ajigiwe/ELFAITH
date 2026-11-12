@@ -287,33 +287,33 @@ include __DIR__ . '/../includes/header.php';
         </div>
     <?php endif; ?>
 
-    <!-- Summary Statistics Bar (Minimal) -->
+    <!-- Summary Statistics Bar -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div class="bg-white rounded-xl border border-slate-200 p-3.5">
-            <span class="text-[10px] uppercase font-medium text-slate-400 tracking-wider block">Total Personnel</span>
-            <div class="text-xl font-bold text-slate-900 mt-1"><?= $totalUsers ?></div>
-            <span class="text-[10px] text-slate-500 mt-0.5 block"><?= $adminCount ?> Admin &bull; <?= $agentCount ?> Agents</span>
+        <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-3.5 shadow-sm">
+            <span class="text-[10px] uppercase font-semibold text-blue-100 tracking-wider block">Total Personnel</span>
+            <div class="text-xl font-bold text-white mt-1"><?= $totalUsers ?></div>
+            <span class="text-[10px] text-blue-100 mt-0.5 block"><?= $adminCount ?> Admin &bull; <?= $agentCount ?> Agents</span>
         </div>
-        <div class="bg-white rounded-xl border border-slate-200 p-3.5">
-            <span class="text-[10px] uppercase font-medium text-slate-400 tracking-wider block">Active Users</span>
-            <div class="text-xl font-bold text-slate-900 mt-1 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        <div class="bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-xl p-3.5 shadow-sm">
+            <span class="text-[10px] uppercase font-semibold text-purple-100 tracking-wider block">Active Users</span>
+            <div class="text-xl font-bold text-white mt-1 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-300"></span>
                 <?= $activeCount ?>
             </div>
-            <span class="text-[10px] text-slate-500 mt-0.5 block">Can sign in & collect</span>
+            <span class="text-[10px] text-purple-100 mt-0.5 block">Can sign in & collect</span>
         </div>
-        <div class="bg-white rounded-xl border border-slate-200 p-3.5">
-            <span class="text-[10px] uppercase font-medium text-slate-400 tracking-wider block">Deactivated</span>
-            <div class="text-xl font-bold text-slate-900 mt-1 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-zinc-400"></span>
+        <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-xl p-3.5 shadow-sm">
+            <span class="text-[10px] uppercase font-semibold text-blue-100 tracking-wider block">Deactivated</span>
+            <div class="text-xl font-bold text-white mt-1 flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-white/60"></span>
                 <?= $inactiveCount ?>
             </div>
-            <span class="text-[10px] text-slate-500 mt-0.5 block">Sign in blocked</span>
+            <span class="text-[10px] text-blue-100 mt-0.5 block">Sign in blocked</span>
         </div>
-        <div class="bg-white rounded-xl border border-slate-200 p-3.5">
-            <span class="text-[10px] uppercase font-medium text-slate-400 tracking-wider block">Security Rule</span>
-            <div class="text-xs font-medium text-slate-700 mt-1 leading-snug">Strict Self-Guard & Single Admin Lock</div>
-            <span class="text-[10px] text-slate-400 mt-0.5 block">Tamper-evident audit</span>
+        <div class="bg-gradient-to-br from-purple-700 to-purple-800 text-white rounded-xl p-3.5 shadow-sm">
+            <span class="text-[10px] uppercase font-semibold text-purple-100 tracking-wider block">Security Rule</span>
+            <div class="text-xs font-semibold text-white mt-1 leading-snug">Strict Self-Guard & Single Admin Lock</div>
+            <span class="text-[10px] text-purple-200 mt-0.5 block">Tamper-evident audit</span>
         </div>
     </div>
 

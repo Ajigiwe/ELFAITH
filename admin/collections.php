@@ -167,22 +167,22 @@ include __DIR__ . '/../includes/header.php';
         </div>
     <?php endif; ?>
 
-    <!-- Summary Statistics (Minimal Cards) -->
+    <!-- Summary Statistics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-1">
-            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Filtered Collections</span>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight"><?= formatMoney($totalSum) ?></div>
-            <span class="text-[11px] text-slate-400 block"><?= count($payments) ?> transactions in view</span>
+        <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-4 space-y-1 shadow-sm">
+            <span class="text-[11px] font-semibold text-blue-100 uppercase tracking-wider block">Filtered Collections</span>
+            <div class="text-2xl font-bold text-white tracking-tight"><?= formatMoney($totalSum) ?></div>
+            <span class="text-[11px] text-blue-100 block"><?= count($payments) ?> transactions in view</span>
         </div>
-        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-1">
-            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Physical Cash</span>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight"><?= formatMoney($cashSum) ?></div>
-            <span class="text-[11px] text-slate-400 block">Handed in at office</span>
+        <div class="bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-xl p-4 space-y-1 shadow-sm">
+            <span class="text-[11px] font-semibold text-purple-100 uppercase tracking-wider block">Physical Cash</span>
+            <div class="text-2xl font-bold text-white tracking-tight"><?= formatMoney($cashSum) ?></div>
+            <span class="text-[11px] text-purple-100 block">Handed in at office</span>
         </div>
-        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-1">
-            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Mobile Money</span>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight"><?= formatMoney($momoSum) ?></div>
-            <span class="text-[11px] text-slate-400 block">Electronic MoMo</span>
+        <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-xl p-4 space-y-1 shadow-sm">
+            <span class="text-[11px] font-semibold text-blue-100 uppercase tracking-wider block">Mobile Money</span>
+            <div class="text-2xl font-bold text-white tracking-tight"><?= formatMoney($momoSum) ?></div>
+            <span class="text-[11px] text-blue-100 block">Electronic MoMo</span>
         </div>
     </div>
 

@@ -96,25 +96,25 @@ include __DIR__ . '/../includes/header.php';
 
         <!-- Metric Grid -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-slate-100 text-xs">
-            <div>
-                <span class="text-[10px] font-semibold text-blue-600 uppercase tracking-wider block">Collected Today</span>
-                <span class="text-lg font-bold text-slate-900 mt-0.5 block"><?= formatMoney((int)$todayStats['total_today']) ?></span>
-                <span class="text-[10px] text-slate-400"><?= (int)$todayStats['count_today'] ?> receipts</span>
+            <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-3.5 shadow-sm">
+                <span class="text-[10px] font-semibold text-blue-100 uppercase tracking-wider block">Collected Today</span>
+                <span class="text-lg font-bold text-white mt-0.5 block"><?= formatMoney((int)$todayStats['total_today']) ?></span>
+                <span class="text-[10px] text-blue-100"><?= (int)$todayStats['count_today'] ?> receipts</span>
             </div>
-            <div>
-                <span class="text-[10px] font-semibold text-purple-600 uppercase tracking-wider block">Cash in Hand</span>
-                <span class="text-lg font-bold text-slate-900 mt-0.5 block"><?= formatMoney((int)$todayStats['cash_today']) ?></span>
-                <span class="text-[10px] text-slate-400">Office Hand-in</span>
+            <div class="bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-xl p-3.5 shadow-sm">
+                <span class="text-[10px] font-semibold text-purple-100 uppercase tracking-wider block">Cash in Hand</span>
+                <span class="text-lg font-bold text-white mt-0.5 block"><?= formatMoney((int)$todayStats['cash_today']) ?></span>
+                <span class="text-[10px] text-purple-100">Office Hand-in</span>
             </div>
-            <div>
-                <span class="text-[10px] font-semibold text-blue-600 uppercase tracking-wider block">Mobile Money</span>
-                <span class="text-lg font-bold text-slate-900 mt-0.5 block"><?= formatMoney((int)$todayStats['momo_today']) ?></span>
-                <span class="text-[10px] text-slate-400">Electronic MoMo</span>
+            <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-xl p-3.5 shadow-sm">
+                <span class="text-[10px] font-semibold text-blue-100 uppercase tracking-wider block">Mobile Money</span>
+                <span class="text-lg font-bold text-white mt-0.5 block"><?= formatMoney((int)$todayStats['momo_today']) ?></span>
+                <span class="text-[10px] text-blue-100">Electronic MoMo</span>
             </div>
-            <div>
-                <span class="text-[10px] font-semibold text-purple-600 uppercase tracking-wider block">Overdue</span>
-                <span class="text-lg font-bold text-slate-900 mt-0.5 block"><?= count($overdueList) ?></span>
-                <span class="text-[10px] text-slate-400">Pending recovery</span>
+            <div class="bg-gradient-to-br from-purple-700 to-purple-800 text-white rounded-xl p-3.5 shadow-sm">
+                <span class="text-[10px] font-semibold text-purple-100 uppercase tracking-wider block">Overdue</span>
+                <span class="text-lg font-bold text-white mt-0.5 block"><?= count($overdueList) ?></span>
+                <span class="text-[10px] text-purple-100">Pending recovery</span>
             </div>
         </div>
     </div>

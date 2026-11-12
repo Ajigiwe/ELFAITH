@@ -209,30 +209,30 @@ include __DIR__ . '/../includes/header.php';
         </div>
     <?php endif; ?>
 
-    <!-- Summary Metrics Bar (Minimal) -->
+    <!-- Summary Metrics Bar -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-1">
-            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Database Size</span>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight"><?= $dbStats['size_formatted'] ?></div>
-            <span class="text-[11px] text-slate-400 block"><?= htmlspecialchars(DB_NAME) ?></span>
+        <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-4 space-y-1 shadow-sm">
+            <span class="text-[11px] font-semibold text-blue-100 uppercase tracking-wider block">Database Size</span>
+            <div class="text-2xl font-bold text-white tracking-tight"><?= $dbStats['size_formatted'] ?></div>
+            <span class="text-[11px] text-blue-100 block"><?= htmlspecialchars(DB_NAME) ?></span>
         </div>
 
-        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-1">
-            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Total Ledger Records</span>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight"><?= number_format($dbStats['total_records']) ?></div>
-            <span class="text-[11px] text-slate-400 block">Across 10 relational tables</span>
+        <div class="bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-xl p-4 space-y-1 shadow-sm">
+            <span class="text-[11px] font-semibold text-purple-100 uppercase tracking-wider block">Total Ledger Records</span>
+            <div class="text-2xl font-bold text-white tracking-tight"><?= number_format($dbStats['total_records']) ?></div>
+            <span class="text-[11px] text-purple-100 block">Across 10 relational tables</span>
         </div>
 
-        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-1">
-            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Server Snapshots</span>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight"><?= count($backupFiles) ?></div>
-            <span class="text-[11px] text-slate-400 block">Saved in /backups</span>
+        <div class="bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-xl p-4 space-y-1 shadow-sm">
+            <span class="text-[11px] font-semibold text-blue-100 uppercase tracking-wider block">Server Snapshots</span>
+            <div class="text-2xl font-bold text-white tracking-tight"><?= count($backupFiles) ?></div>
+            <span class="text-[11px] text-blue-100 block">Saved in /backups</span>
         </div>
 
-        <div class="bg-white rounded-xl border border-slate-200 p-4 space-y-1">
-            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">Protection</span>
-            <div class="text-2xl font-bold text-slate-900 tracking-tight">Active</div>
-            <span class="text-[11px] text-slate-500 block">Auto safety snapshot on wipe/restore</span>
+        <div class="bg-gradient-to-br from-purple-700 to-purple-800 text-white rounded-xl p-4 space-y-1 shadow-sm">
+            <span class="text-[11px] font-semibold text-purple-100 uppercase tracking-wider block">Protection</span>
+            <div class="text-2xl font-bold text-white tracking-tight">Active</div>
+            <span class="text-[11px] text-purple-100 block">Auto safety snapshot on wipe/restore</span>
         </div>
     </div>
 
