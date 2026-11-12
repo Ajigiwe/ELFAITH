@@ -103,12 +103,13 @@
                 &copy; <?= date('Y') ?> <?= htmlspecialchars(COMPANY_NAME) ?> &bull; <?= htmlspecialchars(BRANCH_NAME) ?>
             </div>
             <div class="flex items-center gap-3 text-[11px]">
-                <span>Currency: <strong><?= htmlspecialchars(CURRENCY_CODE) ?> (<?= htmlspecialchars(CURRENCY_SYMBOL) ?>)</strong></span>
+                <span>Currency: <strong><?= htmlspecialchars(CURRENCY_CODE) ?> (<?= htmlspecialchars(safeCurrencySymbol()) ?>)</strong></span>
                 <span>&bull;</span>
                 <span>Integer-safe Ledger</span>
             </div>
         </div>
     </footer>
+    <!-- sys: <?= htmlspecialchars(APP_VERSION) ?> sym=<?= bin2hex(safeCurrencySymbol()) ?> -->
         </div><!-- /#app-main-shell -->
 <?php if ($user): ?>
     </div><!-- /.flex-1 flex min-h-0 -->

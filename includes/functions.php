@@ -6,6 +6,22 @@
 
 require_once __DIR__ . '/../config/app.php';
 
+if (function_exists('opcache_invalidate')) {
+    @opcache_invalidate(__DIR__ . '/../config/app.php', true);
+    @opcache_invalidate(__DIR__ . '/../config/database.php', true);
+}
+
+/**
+ * Return a validated currency symbol (never numeric garbage like 262145)
+ */
+function safeCurrencySymbol(): string {
+    $sym = defined('CURRENCY_SYMBOL') ? trim((string)CURRENCY_SYMBOL) : 'GH₵';
+    if ($sym === '' || strpos($sym, '262145') !== false || preg_match('/^[\d\s\x00-\x1F]+$/', $sym)) {
+        return 'GH₵';
+    }
+    return $sym;
+}
+
 /**
  * Convert integer pesewas to decimal Ghana Cedis (GHS)
  */
@@ -27,7 +43,7 @@ function ghsToPesewas($ghs): int {
  */
 function formatMoney(int $pesewas, bool $includeSymbol = true): string {
     $formatted = number_format($pesewas / 100, 2);
-    return $includeSymbol ? CURRENCY_SYMBOL . ' ' . $formatted : $formatted;
+    return $includeSymbol ? safeCurrencySymbol() . ' ' . $formatted : $formatted;
 }
 
 /**
