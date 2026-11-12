@@ -1,7 +1,9 @@
 # EL-FAITH Microfinance - Git Ignore Rules
 
-# Exclude live/generated database backup dumps (keep security wrappers)
+# Exclude live/generated database backup & deploy snapshots (keep security wrappers)
 backups/*.sql
+backups/*.zip
+backups/.deploy_*
 
 # Exclude uploaded runtime company logos (keep .htaccess / index.php)
 assets/uploads/company_logo_*

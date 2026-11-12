@@ -7,6 +7,7 @@
 require_once __DIR__ . '/../config/app.php';
 require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/deploy_manager.php';
 
 requireAdmin();
 
@@ -21,7 +22,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $formAction = $_POST['form_action'] ?? 'save_settings';
 
-        if ($formAction === 'upload_logo') {
+        if ($formAction === 'save_deploy_config') {
+            try {
+                $repo = normalizeDeployRepo($_POST['deploy_repo'] ?? 'Ajigiwe/ELFAITH');
+                $branch = normalizeDeployBranch($_POST['deploy_branch'] ?? 'main');
+                $newToken = trim((string)($_POST['deploy_github_token'] ?? ''));
+                $clearToken = !empty($_POST['clear_deploy_token']);
+
+                $upsert = $pdo->prepare("
+                    INSERT INTO system_settings (setting_key, setting_value)
+                    VALUES (?, ?)
+                    ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value), updated_at = NOW()
+                ");
+                $upsert->execute(['deploy_repo', $repo]);
+                $upsert->execute(['deploy_branch', $branch]);
+                if ($clearToken) {
+                    $upsert->execute(['deploy_github_token', '']);
+                } elseif ($newToken !== '') {
+                    $upsert->execute(['deploy_github_token', $newToken]);
+                }
+
+                logAudit($pdo, currentUserId(), 'UPDATE_DEPLOY_CONFIG', 'system_settings', null, null, ['repo' => $repo, 'branch' => $branch]);
+                setFlash('success', 'Deploy engine repository settings saved.');
+                header('Location: ' . BASE_URL . '/admin/settings.php#deploy-engine');
+                exit;
+            } catch (Exception $e) {
+                $error = 'Deploy config error: ' . $e->getMessage();
+            }
+        } elseif ($formAction === 'check_deploy_updates') {
+            try {
+                $envStatus = getDeployEnvironmentStatus($pdo);
+                $repo = trim((string)($_POST['deploy_repo'] ?? '')) !== ''
+                    ? normalizeDeployRepo($_POST['deploy_repo'])
+                    : $envStatus['repo'];
+                $branch = trim((string)($_POST['deploy_branch'] ?? '')) !== ''
+                    ? normalizeDeployBranch($_POST['deploy_branch'])
+                    : $envStatus['branch'];
+                $token = $envStatus['token'];
+
+                $remote = fetchRemoteDeployStatus($repo, $branch, $token);
+                $_SESSION['deploy_check_result'] = $remote;
+
+                $isNew = empty($envStatus['last_sha']) || ($envStatus['last_sha'] !== $remote['sha']);
+                setFlash('info', $isNew
+                    ? "Latest commit on {$repo}@{$branch}: {$remote['short_sha']} — \"{$remote['message']}\""
+                    : "Already on latest tracked commit {$remote['short_sha']}."
+                );
+                header('Location: ' . BASE_URL . '/admin/settings.php#deploy-engine');
+                exit;
+            } catch (Exception $e) {
+                $error = 'Update check failed: ' . $e->getMessage();
+            }
+        } elseif ($formAction === 'run_live_deploy') {
+            try {
+                @set_time_limit(180);
+                $envStatus = getDeployEnvironmentStatus($pdo);
+                $repo = trim((string)($_POST['deploy_repo'] ?? '')) !== ''
+                    ? normalizeDeployRepo($_POST['deploy_repo'])
+                    : $envStatus['repo'];
+                $branch = trim((string)($_POST['deploy_branch'] ?? '')) !== ''
+                    ? normalizeDeployBranch($_POST['deploy_branch'])
+                    : $envStatus['branch'];
+                $allowLocal = !empty($_POST['allow_local_overwrite']);
+
+                $result = executeLiveDeploy($pdo, $repo, $branch, $envStatus['token'], currentUserId(), $allowLocal);
+                $_SESSION['deploy_run_result'] = $result;
+
+                setFlash('success', "Deployed commit {$result['short_sha']} ({$result['files_written']} file(s) updated). Pre-deploy backup: {$result['rollback_file']}");
+                header('Location: ' . BASE_URL . '/admin/settings.php#deploy-engine');
+                exit;
+            } catch (Exception $e) {
+                $error = 'Live deploy failed: ' . $e->getMessage();
+            }
+        } elseif ($formAction === 'rollback_deploy') {
+            try {
+                @set_time_limit(120);
+                $snapFile = trim((string)($_POST['rollback_file'] ?? ''));
+                $rb = executeDeployRollback($pdo, $snapFile, currentUserId());
+                setFlash('success', "Rolled back {$rb['files_restored']} file(s) from {$rb['snapshot']}.");
+                header('Location: ' . BASE_URL . '/admin/settings.php#deploy-engine');
+                exit;
+            } catch (Exception $e) {
+                $error = 'Rollback failed: ' . $e->getMessage();
+            }
+        } elseif ($formAction === 'upload_logo') {
             try {
                 $relPath = saveUploadedCompanyLogo($_FILES['company_logo_file'] ?? []);
 
@@ -101,22 +185,218 @@ while ($r = $stmt->fetch()) {
     $settings[$r['setting_key']] = $r['setting_value'];
 }
 $currentLogoUrl = getCompanyLogoUrl();
+$deployEnv = getDeployEnvironmentStatus($pdo);
+$deployCheckResult = $_SESSION['deploy_check_result'] ?? null;
+unset($_SESSION['deploy_check_result']);
+$deployRunResult = $_SESSION['deploy_run_result'] ?? null;
+unset($_SESSION['deploy_run_result']);
 
 include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="max-w-3xl mx-auto space-y-6">
-    <div>
-        <h1 class="text-lg font-bold text-black tracking-tight">System Settings</h1>
-        <p class="text-xs text-zinc-500 mt-0.5">Company branding, business profile, telecommunication gateways & configurations</p>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+            <h1 class="text-lg font-bold text-black tracking-tight">System Settings</h1>
+            <p class="text-xs text-zinc-500 mt-0.5">Live GitHub deploy engine, company branding, business profile &amp; gateways</p>
+        </div>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-black text-white font-mono text-[10px] font-semibold uppercase tracking-wider shrink-0">
+            Version <?= htmlspecialchars(APP_VERSION) ?>
+        </span>
     </div>
 
     <?php if (!empty($error)): ?>
-        <div class="p-3 rounded-lg bg-zinc-50 border border-zinc-200 text-black text-xs font-medium flex items-center gap-2">
-            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-zinc-800"></i>
+        <div class="p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-900 text-xs font-medium flex items-center gap-2">
+            <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0 text-rose-600"></i>
             <span><?= htmlspecialchars($error) ?></span>
         </div>
     <?php endif; ?>
+
+    <!-- Live Deploy Engine Card (cPanel-free GitHub Sync) -->
+    <div id="deploy-engine" class="bg-white rounded-xl border border-zinc-200 border-t-2 border-t-black p-5 sm:p-6 space-y-4 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-zinc-100">
+            <div>
+                <div class="flex items-center gap-2">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-black">Live Deploy Engine (GitHub Sync)</h2>
+                    <span class="px-1.5 py-0.5 rounded text-[9px] font-semibold uppercase tracking-wider <?= ($deployEnv['has_zip'] && $deployEnv['is_writable']) ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-rose-50 text-rose-700 border border-rose-200' ?>">
+                        <?= ($deployEnv['has_zip'] && $deployEnv['is_writable']) ? 'Ready' : 'Check Permissions' ?>
+                    </span>
+                </div>
+                <p class="text-[11px] text-zinc-500 mt-0.5">Pull &amp; deploy commits directly from GitHub to this server without opening cPanel</p>
+            </div>
+            <div class="text-[10px] font-mono text-zinc-600 bg-zinc-100 border border-zinc-200 px-2 py-1 rounded">
+                <?= htmlspecialchars($deployEnv['repo']) ?> @ <?= htmlspecialchars($deployEnv['branch']) ?>
+            </div>
+        </div>
+
+        <!-- Current Live Status Metrics -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+            <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-3.5 shadow-sm">
+                <span class="text-[10px] uppercase font-semibold text-blue-100 tracking-wider block">Running Release</span>
+                <div class="text-sm font-bold text-white mt-0.5 font-mono"><?= htmlspecialchars(APP_VERSION) ?></div>
+                <span class="text-[10px] text-blue-100 block mt-0.5">
+                    <?= $deployEnv['last_sha'] ? 'SHA: ' . htmlspecialchars(substr($deployEnv['last_sha'], 0, 7)) : 'Synced via cPanel / Manual' ?>
+                </span>
+            </div>
+            <div class="bg-gradient-to-br from-zinc-900 via-zinc-950 to-black text-white rounded-xl p-3.5 shadow-sm border border-zinc-800">
+                <span class="text-[10px] uppercase font-semibold text-zinc-300 tracking-wider block">Last Engine Deploy</span>
+                <div class="text-xs font-bold text-white mt-1 truncate">
+                    <?= $deployEnv['last_at'] ? htmlspecialchars(date('d M Y, h:i A', strtotime($deployEnv['last_at']))) : 'Not deployed via engine yet' ?>
+                </div>
+                <span class="text-[10px] text-blue-400 block mt-0.5 truncate">
+                    <?= $deployEnv['last_message'] ? htmlspecialchars($deployEnv['last_message']) : 'First pull records commit SHA' ?>
+                </span>
+            </div>
+            <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-3.5">
+                <span class="text-[10px] uppercase font-semibold text-zinc-600 tracking-wider block">Protected Server Data</span>
+                <div class="text-xs font-bold text-black mt-1">
+                    <?= $deployEnv['has_prod_db_file'] ? 'Prod DB Config Preserved' : 'Safe Selective Overlay' ?>
+                </div>
+                <span class="text-[10px] text-zinc-500 block mt-0.5">Never touches <code class="font-mono">database.prod.php</code>, <code class="font-mono">backups/</code> &amp; <code class="font-mono">uploads/</code></span>
+            </div>
+        </div>
+
+        <?php if (is_array($deployCheckResult)): ?>
+            <?php $hasPendingUpdate = empty($deployEnv['last_sha']) || ($deployEnv['last_sha'] !== $deployCheckResult['sha']); ?>
+            <div class="p-3.5 rounded-lg border <?= $hasPendingUpdate ? 'bg-blue-50/70 border-blue-200' : 'bg-zinc-50 border-zinc-200' ?> text-xs space-y-1">
+                <div class="flex items-center justify-between gap-2">
+                    <span class="font-bold text-black uppercase text-[11px] tracking-wider">
+                        <?= $hasPendingUpdate ? 'Remote Commit Ready to Deploy' : 'Server Matches Latest Remote Commit' ?>
+                    </span>
+                    <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-black text-white">
+                        <?= htmlspecialchars($deployCheckResult['short_sha']) ?><?= !empty($deployCheckResult['remote_version']) ? ' • ' . htmlspecialchars($deployCheckResult['remote_version']) : '' ?>
+                    </span>
+                </div>
+                <p class="text-zinc-800 font-medium"><?= htmlspecialchars($deployCheckResult['message']) ?></p>
+                <p class="text-[11px] text-zinc-500">
+                    Author: <?= htmlspecialchars($deployCheckResult['author']) ?>
+                    <?php if (!empty($deployCheckResult['date'])): ?>
+                        &bull; <?= htmlspecialchars(date('d M Y, h:i A', strtotime($deployCheckResult['date']))) ?>
+                    <?php endif; ?>
+                </p>
+            </div>
+        <?php endif; ?>
+
+        <?php if (is_array($deployRunResult)): ?>
+            <div class="p-3.5 rounded-lg bg-zinc-950 text-white border border-zinc-800 text-xs space-y-2">
+                <div class="flex items-center justify-between">
+                    <span class="font-bold uppercase text-[11px] tracking-wider text-blue-400">
+                        Deploy Completed — <?= htmlspecialchars($deployRunResult['short_sha']) ?>
+                    </span>
+                    <span class="font-mono text-[10px] text-zinc-300">
+                        <?= (int)$deployRunResult['files_written'] ?> updated &bull; <?= (int)$deployRunResult['files_unchanged'] ?> unchanged
+                    </span>
+                </div>
+                <?php if (!empty($deployRunResult['updated_sample'])): ?>
+                    <div class="text-[10px] font-mono text-zinc-300 bg-black/60 rounded p-2 max-h-28 overflow-y-auto border border-zinc-800">
+                        <?php foreach ($deployRunResult['updated_sample'] as $uf): ?>
+                            <div>+ <?= htmlspecialchars($uf) ?></div>
+                        <?php endforeach; ?>
+                        <?php if ($deployRunResult['files_written'] > count($deployRunResult['updated_sample'])): ?>
+                            <div class="text-zinc-500">... and <?= $deployRunResult['files_written'] - count($deployRunResult['updated_sample']) ?> more files</div>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Action Buttons: Check Updates & Pull & Deploy -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+            <div class="flex flex-wrap items-center gap-2">
+                <form method="POST" action="settings.php#deploy-engine" class="inline">
+                    <?= csrfField() ?>
+                    <input type="hidden" name="form_action" value="check_deploy_updates">
+                    <button type="submit" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white border border-zinc-300 hover:bg-zinc-100 text-black font-medium text-xs rounded-lg transition">
+                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-zinc-700"></i> Check for Updates
+                    </button>
+                </form>
+
+                <form method="POST" action="settings.php#deploy-engine" id="run-deploy-form" class="inline-flex flex-wrap items-center gap-2"
+                      onsubmit="if (!confirm('Pull latest files from GitHub (<?= htmlspecialchars(addslashes($deployEnv['repo'] . '@' . $deployEnv['branch'])) ?>) and deploy to the live site now? A rollback snapshot will be created automatically.')) return false; const b = this.querySelector('button[type=submit]'); if (b) { b.disabled = true; b.innerHTML = 'Deploying...'; }">
+                    <?= csrfField() ?>
+                    <input type="hidden" name="form_action" value="run_live_deploy">
+                    <?php if ($deployEnv['has_local_git']): ?>
+                        <label class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-zinc-100 border border-zinc-200 text-[11px] text-zinc-700 cursor-pointer" title="Local .git folder detected">
+                            <input type="checkbox" name="allow_local_overwrite" value="1" class="rounded border-zinc-300 text-blue-600 focus:ring-blue-600">
+                            <span>Local Dev (.git): Force overwrite</span>
+                        </label>
+                    <?php endif; ?>
+                    <button type="submit"
+                        class="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition shadow-sm">
+                        <i data-lucide="rocket" class="w-3.5 h-3.5"></i> Pull &amp; Deploy Live Site
+                    </button>
+                </form>
+            </div>
+
+            <button type="button" onclick="document.getElementById('deploy-advanced-panel').classList.toggle('hidden')"
+                class="text-[11px] font-medium text-zinc-600 hover:text-black underline self-start sm:self-center">
+                Repository &amp; Rollback Options
+            </button>
+        </div>
+
+        <!-- Collapsible Repository Settings & Rollback Snapshots -->
+        <div id="deploy-advanced-panel" class="hidden pt-4 border-t border-zinc-100 space-y-4 text-xs">
+            <form method="POST" action="settings.php#deploy-engine" class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-zinc-50 p-3.5 rounded-lg border border-zinc-200">
+                <?= csrfField() ?>
+                <input type="hidden" name="form_action" value="save_deploy_config">
+
+                <div>
+                    <label class="block text-[10px] font-semibold uppercase tracking-wider text-zinc-600 mb-1">GitHub Repo (owner/repo)</label>
+                    <input type="text" name="deploy_repo" required value="<?= htmlspecialchars($deployEnv['repo']) ?>"
+                        class="w-full px-2.5 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-600">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold uppercase tracking-wider text-zinc-600 mb-1">Branch</label>
+                    <input type="text" name="deploy_branch" required value="<?= htmlspecialchars($deployEnv['branch']) ?>"
+                        class="w-full px-2.5 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-600">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-semibold uppercase tracking-wider text-zinc-600 mb-1">
+                        GitHub Token (Optional) <?= $deployEnv['has_token'] ? '<span class="text-blue-600">• Saved</span>' : '' ?>
+                    </label>
+                    <input type="password" name="deploy_github_token" placeholder="<?= $deployEnv['has_token'] ? '•••••••• (leave blank to keep)' : 'For private repo / higher rate limit' ?>"
+                        class="w-full px-2.5 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-mono focus:outline-none focus:border-blue-600">
+                </div>
+                <div class="sm:col-span-3 flex items-center justify-between pt-1">
+                    <?php if ($deployEnv['has_token']): ?>
+                        <label class="inline-flex items-center gap-1.5 text-[11px] text-zinc-600 cursor-pointer">
+                            <input type="checkbox" name="clear_deploy_token" value="1" class="rounded border-zinc-300">
+                            <span>Clear saved token</span>
+                        </label>
+                    <?php else: ?>
+                        <span class="text-[10px] text-zinc-500">Target Path: <code class="font-mono"><?= htmlspecialchars($deployEnv['app_root']) ?></code></span>
+                    <?php endif; ?>
+                    <button type="submit" class="px-3 py-1.5 bg-black hover:bg-zinc-800 text-white font-medium text-xs rounded-lg transition">
+                        Save Source Config
+                    </button>
+                </div>
+            </form>
+
+            <?php if (!empty($deployEnv['rollbacks'])): ?>
+                <div class="space-y-2">
+                    <span class="block text-[10px] font-semibold uppercase tracking-wider text-zinc-600">Pre-Deploy Rollback Snapshots (Latest 5)</span>
+                    <div class="divide-y divide-zinc-200 border border-zinc-200 rounded-lg bg-white">
+                        <?php foreach ($deployEnv['rollbacks'] as $rb): ?>
+                            <div class="px-3 py-2 flex items-center justify-between gap-2 text-[11px]">
+                                <div>
+                                    <span class="font-mono font-semibold text-black"><?= htmlspecialchars($rb['filename']) ?></span>
+                                    <span class="text-zinc-500 ml-2"><?= round($rb['size'] / 1024, 1) ?> KB &bull; <?= date('d M Y, h:i A', $rb['mtime']) ?></span>
+                                </div>
+                                <form method="POST" action="settings.php#deploy-engine" onsubmit="return confirm('Restore files from <?= htmlspecialchars($rb['filename']) ?>? Your database & uploads will NOT be affected.');">
+                                    <?= csrfField() ?>
+                                    <input type="hidden" name="form_action" value="rollback_deploy">
+                                    <input type="hidden" name="rollback_file" value="<?= htmlspecialchars($rb['filename']) ?>">
+                                    <button type="submit" class="px-2.5 py-1 bg-zinc-100 hover:bg-black text-black hover:text-white rounded font-medium transition">
+                                        Rollback
+                                    </button>
+                                </form>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
 
     <!-- Company Logo Upload Card -->
     <div class="bg-white rounded-xl border border-zinc-200 p-5 sm:p-6 space-y-4">
