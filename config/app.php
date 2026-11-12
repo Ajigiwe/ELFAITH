@@ -65,7 +65,7 @@ define('COMPANY_PHONE', $system_settings['company_phone'] ?? '+233 24 556 7890')
 define('COMPANY_EMAIL', $system_settings['company_email'] ?? 'admin@el-faithgroupofcompanies.com');
 define('CURRENCY_CODE', $system_settings['currency_code'] ?? 'GHS');
 $rawCurrencySymbol = trim((string)($system_settings['currency_symbol'] ?? 'GH₵'));
-if ($rawCurrencySymbol === '' || preg_match('/^\d+$/', $rawCurrencySymbol)) {
+if ($rawCurrencySymbol === '' || strpos($rawCurrencySymbol, '262145') !== false || preg_match('/^[\d\s\x00-\x1F]+$/', $rawCurrencySymbol)) {
     $rawCurrencySymbol = 'GH₵';
     if (isset($pdo)) {
         try {
