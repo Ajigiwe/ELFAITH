@@ -172,11 +172,11 @@ include __DIR__ . '/../includes/header.php';
                 <div class="grid grid-cols-2 gap-2 pt-2 border-t border-zinc-200 text-xs">
                     <div>
                         <span class="text-zinc-400 block text-[10px] uppercase">Installment Due</span>
-                        <span id="summary-installment" class="font-bold text-zinc-900 text-sm">GH₵ 0.00</span>
+                        <span id="summary-installment" class="font-bold text-zinc-900 text-sm"><?= htmlspecialchars(safeCurrencySymbol()) ?> 0.00</span>
                     </div>
                     <div class="text-right">
                         <span class="text-zinc-400 block text-[10px] uppercase">Remaining Balance</span>
-                        <span id="summary-balance" class="font-bold text-zinc-900 text-sm">GH₵ 0.00</span>
+                        <span id="summary-balance" class="font-bold text-zinc-900 text-sm"><?= htmlspecialchars(safeCurrencySymbol()) ?> 0.00</span>
                     </div>
                 </div>
             </div>
@@ -184,10 +184,10 @@ include __DIR__ . '/../includes/header.php';
             <!-- Repayment Amount Field -->
             <div>
                 <label for="amount" class="block text-[11px] font-medium text-zinc-700 mb-1">
-                    Amount Collected (<?= CURRENCY_SYMBOL ?>) *
+                    Amount Collected (<?= htmlspecialchars(safeCurrencySymbol()) ?>) *
                 </label>
                 <div class="relative">
-                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 font-semibold text-xs"><?= CURRENCY_SYMBOL ?></span>
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 font-semibold text-xs"><?= htmlspecialchars(safeCurrencySymbol()) ?></span>
                     <input type="number" step="0.50" min="0.50" id="amount" name="amount" required
                         value="<?= $preselectedAmount > 0 ? number_format($preselectedAmount, 2, '.', '') : '' ?>"
                         class="w-full pl-12 pr-3 py-2 bg-white border border-zinc-200 rounded-lg text-sm font-bold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition"
@@ -269,6 +269,7 @@ include __DIR__ . '/../includes/header.php';
 </div>
 
 <script>
+    const COLLECT_CURRENCY_SYM = <?= json_encode(safeCurrencySymbol()) ?>;
     // 1. Initialize Client UUID using universal generator
     document.getElementById('uuid').value = typeof generateUUID === 'function' ? generateUUID() : '<?= generateUuidV4() ?>';
 
@@ -295,7 +296,7 @@ include __DIR__ . '/../includes/header.php';
                     opt.dataset.installment = al.installment;
                     opt.dataset.balance = al.balance;
                     opt.dataset.balancePesewas = al.balance_pesewas;
-                    opt.textContent = `${al.customer_name} — ${al.loan_code} (Bal: GH₵ ${parseFloat(al.balance).toFixed(2)})`;
+                    opt.textContent = `${al.customer_name} — ${al.loan_code} (Bal: ${COLLECT_CURRENCY_SYM} ${parseFloat(al.balance).toFixed(2)})`;
                     select.appendChild(opt);
                 });
             }
@@ -346,8 +347,8 @@ include __DIR__ . '/../includes/header.php';
             currentInstallment = parseFloat(selected.dataset.installment) || 0;
             currentBalance = parseFloat(selected.dataset.balance) || 0;
 
-            document.getElementById('summary-installment').textContent = 'GH₵ ' + currentInstallment.toFixed(2);
-            document.getElementById('summary-balance').textContent = 'GH₵ ' + currentBalance.toFixed(2);
+            document.getElementById('summary-installment').textContent = COLLECT_CURRENCY_SYM + ' ' + currentInstallment.toFixed(2);
+            document.getElementById('summary-balance').textContent = COLLECT_CURRENCY_SYM + ' ' + currentBalance.toFixed(2);
 
             loanSummary.classList.remove('hidden');
 
@@ -431,7 +432,7 @@ include __DIR__ . '/../includes/header.php';
             if (typeof OfflineStorage !== 'undefined') {
                 OfflineStorage.add(payload);
             }
-            alert('✓ Payment Safely Saved Offline!\n\nReceipt # EF-OFFLINE-' + payload.uuid.substring(0, 8).toUpperCase() + '\nAmount: GH₵ ' + (payload.amount_pesewas / 100).toFixed(2) + '\n\nQueued locally on your phone. It will automatically synchronize as soon as internet connection is restored.');
+            alert('✓ Payment Safely Saved Offline!\n\nReceipt # EF-OFFLINE-' + payload.uuid.substring(0, 8).toUpperCase() + '\nAmount: ' + COLLECT_CURRENCY_SYM + ' ' + (payload.amount_pesewas / 100).toFixed(2) + '\n\nQueued locally on your phone. It will automatically synchronize as soon as internet connection is restored.');
             window.location.href = '<?= BASE_URL ?>/agent/offline_queue.php';
         };
 

@@ -71,11 +71,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 foreach ($allowedKeys as $key) {
                     if (isset($_POST[$key])) {
                         $val = trim($_POST[$key]);
-                        if ($key === 'currency_symbol' && ($val === '' || preg_match('/^\d+$/', $val))) {
+                        if ($key === 'currency_symbol' && ($val === '' || strpos($val, '262145') !== false || preg_match('/^[\d\s\x00-\x1F]+$/', $val))) {
                             $val = 'GH₵';
                         }
                         $stmtUpd->execute([$key, $val]);
                     }
+                }
+
+                if (function_exists('opcache_invalidate')) {
+                    @opcache_invalidate(__DIR__ . '/../config/app.php', true);
                 }
 
                 logAudit($pdo, currentUserId(), 'UPDATE_SETTINGS', 'system_settings', null, null, ['updated_by' => currentUserId()]);
@@ -223,7 +227,13 @@ include __DIR__ . '/../includes/header.php';
 
                     <div>
                         <label class="block text-[11px] font-medium text-zinc-700 mb-1">Currency Symbol</label>
-                        <input type="text" name="currency_symbol" required value="<?= htmlspecialchars($settings['currency_symbol'] ?? 'GH₵') ?>"
+                        <?php
+                            $rawSettingSym = trim((string)($settings['currency_symbol'] ?? ''));
+                            $displaySettingSym = ($rawSettingSym === '' || strpos($rawSettingSym, '262145') !== false || preg_match('/^[\d\s\x00-\x1F]+$/', $rawSettingSym))
+                                ? safeCurrencySymbol()
+                                : $rawSettingSym;
+                        ?>
+                        <input type="text" name="currency_symbol" required value="<?= htmlspecialchars($displaySettingSym) ?>"
                             class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs font-bold focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900">
                     </div>
 

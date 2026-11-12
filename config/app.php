@@ -44,7 +44,7 @@ $app_root = rtrim($app_root, '/');
 
 define('BASE_URL', $protocol . $host . $app_root);
 define('APP_NAME', 'EL-FAITH MICROFINANCE');
-define('APP_VERSION', '2.7.1-PROD');
+define('APP_VERSION', '2.8.0-PROD');
 
 // Load dynamic system settings from database
 $system_settings = [];

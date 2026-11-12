@@ -109,7 +109,7 @@
             </div>
         </div>
     </footer>
-    <!-- sys: <?= htmlspecialchars(APP_VERSION) ?> sym=<?= bin2hex(safeCurrencySymbol()) ?> -->
+    <!-- sys: <?= htmlspecialchars(APP_VERSION) ?> raw=<?= defined('CURRENCY_SYMBOL') ? bin2hex((string)CURRENCY_SYMBOL) : 'none' ?> sym=<?= bin2hex(safeCurrencySymbol()) ?> -->
         </div><!-- /#app-main-shell -->
 <?php if ($user): ?>
     </div><!-- /.flex-1 flex min-h-0 -->

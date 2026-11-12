@@ -216,14 +216,14 @@ include __DIR__ . '/../includes/header.php';
 
                 <div>
                     <label class="block text-[11px] font-medium text-zinc-700 mb-1">
-                        Physical Cash Handed In at Office (<?= CURRENCY_SYMBOL ?>) *
+                        Physical Cash Handed In at Office (<?= htmlspecialchars(safeCurrencySymbol()) ?>) *
                     </label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none font-bold text-zinc-400 text-xs">
-                            <?= CURRENCY_SYMBOL ?>
+                            <?= htmlspecialchars(safeCurrencySymbol()) ?>
                         </span>
                         <input type="number" step="0.50" min="0" id="handed_in_cash" name="handed_in_cash" required 
-                            class="w-full pl-9 pr-3 py-2 bg-white border border-zinc-200 rounded-lg text-lg font-bold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+                            class="w-full pl-10 pr-3 py-2 bg-white border border-zinc-200 rounded-lg text-lg font-bold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
                             placeholder="0.00" 
                             value="<?= $existingRecon ? pesewasToGHS((int)$existingRecon['handed_in_cash_pesewas']) : pesewasToGHS((int)$expectedData['expected_cash']) ?>">
                     </div>
@@ -233,7 +233,7 @@ include __DIR__ . '/../includes/header.php';
                 <div id="discrepancy-box" class="p-3.5 rounded-lg border border-zinc-200 bg-zinc-50 text-xs flex items-center justify-between">
                     <div>
                         <span class="text-[10px] uppercase font-medium text-zinc-400 block">Variance</span>
-                        <span id="discrepancy-amount" class="text-base font-bold text-zinc-900">GH₵ 0.00</span>
+                        <span id="discrepancy-amount" class="text-base font-bold text-zinc-900"><?= htmlspecialchars(safeCurrencySymbol()) ?> 0.00</span>
                     </div>
                     <div>
                         <span id="discrepancy-tag" class="px-2 py-0.5 rounded text-[10px] font-medium uppercase bg-zinc-200 text-zinc-800">
@@ -315,6 +315,7 @@ include __DIR__ . '/../includes/header.php';
 </div>
 
 <script>
+    const RECON_CURRENCY_SYM = <?= json_encode(safeCurrencySymbol()) ?>;
     const expectedPesewas = parseInt(document.getElementById('expected_cash_pesewas').value) || 0;
     const handedInput = document.getElementById('handed_in_cash');
     const discAmount = document.getElementById('discrepancy-amount');
@@ -325,7 +326,7 @@ include __DIR__ . '/../includes/header.php';
         const diff = handedPesewas - expectedPesewas;
         const diffGHS = (diff / 100).toFixed(2);
 
-        discAmount.textContent = 'GH₵ ' + diffGHS;
+        discAmount.textContent = RECON_CURRENCY_SYM + ' ' + diffGHS;
 
         if (diff === 0) {
             discTag.textContent = 'Balanced';

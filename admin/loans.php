@@ -269,13 +269,13 @@ include __DIR__ . '/../includes/header.php';
                 <!-- Principal Amount & Interest Rate -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-[11px] font-medium text-zinc-700 mb-1">Principal Amount (<?= CURRENCY_SYMBOL ?>) *</label>
+                        <label class="block text-[11px] font-medium text-zinc-700 mb-1">Principal Amount (<?= htmlspecialchars(safeCurrencySymbol()) ?>) *</label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none font-bold text-zinc-400 text-xs">
-                                <?= CURRENCY_SYMBOL ?>
+                                <?= htmlspecialchars(safeCurrencySymbol()) ?>
                             </span>
                             <input type="number" step="0.01" min="1" id="principal" name="principal" required 
-                                class="w-full pl-9 pr-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs font-semibold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
+                                class="w-full pl-10 pr-3 py-2 bg-white border border-zinc-200 rounded-lg text-xs font-semibold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900"
                                 placeholder="1000.00" value="<?= htmlspecialchars((string)$prefillPrincipal) ?>">
                         </div>
                     </div>
@@ -346,14 +346,14 @@ include __DIR__ . '/../includes/header.php';
                     <div class="grid grid-cols-3 gap-2 pt-1 text-zinc-800 items-end">
                         <div>
                             <span class="text-zinc-400 block text-[10px] uppercase">Interest</span>
-                            <span id="proj-interest" class="font-semibold text-zinc-900">GH₵ 100.00</span>
+                            <span id="proj-interest" class="font-semibold text-zinc-900"><?= htmlspecialchars(safeCurrencySymbol()) ?> 100.00</span>
                         </div>
                         <div>
                             <span class="text-zinc-400 block text-[10px] uppercase">Total Payable</span>
-                            <span id="proj-total" class="font-semibold text-zinc-900">GH₵ 1,100.00</span>
+                            <span id="proj-total" class="font-semibold text-zinc-900"><?= htmlspecialchars(safeCurrencySymbol()) ?> 1,100.00</span>
                         </div>
                         <div>
-                            <label for="custom_installment_input" class="text-zinc-400 block text-[10px] uppercase">Installment (<?= CURRENCY_SYMBOL ?>)</label>
+                            <label for="custom_installment_input" class="text-zinc-400 block text-[10px] uppercase">Installment (<?= htmlspecialchars(safeCurrencySymbol()) ?>)</label>
                             <input type="number" step="0.01" min="0.01" id="custom_installment_input"
                                 oninput="onLoanFormInstallmentEdit()"
                                 value="<?= htmlspecialchars((string)$prefillCustomInstallment) ?>"
@@ -380,6 +380,7 @@ include __DIR__ . '/../includes/header.php';
         </div>
 
         <script>
+            const LOAN_CURRENCY_SYM = <?= json_encode(safeCurrencySymbol()) ?>;
             const custSelect = document.getElementById('cust-select');
             const agentSelect = document.getElementById('agent-select');
             custSelect.addEventListener('change', () => {
@@ -422,8 +423,8 @@ include __DIR__ . '/../includes/header.php';
                     if (customInput) customInput.value = instVal.toFixed(2);
                 }
 
-                document.getElementById('proj-interest').textContent = 'GH₵ ' + interest.toFixed(2);
-                document.getElementById('proj-total').textContent = 'GH₵ ' + total.toFixed(2);
+                document.getElementById('proj-interest').textContent = LOAN_CURRENCY_SYM + ' ' + interest.toFixed(2);
+                document.getElementById('proj-total').textContent = LOAN_CURRENCY_SYM + ' ' + total.toFixed(2);
                 document.getElementById('proj-installment-count').textContent = '× ' + numInstallments + ' installments';
             }
 

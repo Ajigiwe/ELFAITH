@@ -67,11 +67,11 @@ include __DIR__ . '/includes/header.php';
             <!-- Principal Input & Presets -->
             <div class="space-y-2">
                 <label for="calc-principal" class="block text-[11px] font-medium text-zinc-700">
-                    Principal Amount (<?= CURRENCY_SYMBOL ?>) *
+                    Principal Amount (<?= htmlspecialchars(safeCurrencySymbol()) ?>) *
                 </label>
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none font-bold text-zinc-400 text-xs">
-                        <?= CURRENCY_SYMBOL ?>
+                        <?= htmlspecialchars(safeCurrencySymbol()) ?>
                     </span>
                     <input type="number" id="calc-principal" min="1" step="0.01" value="1000" oninput="onParameterInput()"
                         class="w-full pl-11 pr-3 py-2 bg-white border border-zinc-200 rounded-lg text-sm font-bold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition">
@@ -180,25 +180,25 @@ include __DIR__ . '/includes/header.php';
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 items-start">
                     <div>
                         <span class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider block">Principal</span>
-                        <div id="res-principal" class="text-base font-bold text-zinc-900 mt-0.5">GH₵ 1,000.00</div>
+                        <div id="res-principal" class="text-base font-bold text-zinc-900 mt-0.5"><?= htmlspecialchars(safeCurrencySymbol()) ?> 1,000.00</div>
                     </div>
                     <div>
                         <span class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider block">Interest (<span id="res-interest-rate-label"><?= htmlspecialchars($defaultRateShort) ?></span>%)</span>
-                        <div id="res-interest" class="text-base font-bold text-zinc-900 mt-0.5">GH₵ 100.00</div>
+                        <div id="res-interest" class="text-base font-bold text-zinc-900 mt-0.5"><?= htmlspecialchars(safeCurrencySymbol()) ?> 100.00</div>
                     </div>
                     <div>
                         <span class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider block">Total Payable</span>
-                        <div id="res-total" class="text-base font-bold text-zinc-900 mt-0.5">GH₵ 1,100.00</div>
+                        <div id="res-total" class="text-base font-bold text-zinc-900 mt-0.5"><?= htmlspecialchars(safeCurrencySymbol()) ?> 1,100.00</div>
                     </div>
                     <div>
                         <label for="calc-installment" class="text-[10px] font-medium text-zinc-400 uppercase tracking-wider block">Installment</label>
                         <div class="relative mt-0.5">
                             <span class="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none font-bold text-zinc-400 text-[11px]">
-                                <?= CURRENCY_SYMBOL ?>
+                                <?= htmlspecialchars(safeCurrencySymbol()) ?>
                             </span>
                             <input type="number" id="calc-installment" min="0.01" step="0.01" value="50.00"
                                 oninput="onInstallmentInput()"
-                                class="w-full pl-8 pr-1.5 py-0.5 bg-white border border-zinc-200 rounded-lg text-sm font-bold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition">
+                                class="w-full pl-9 pr-1.5 py-0.5 bg-white border border-zinc-200 rounded-lg text-sm font-bold text-zinc-900 focus:outline-none focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 transition">
                         </div>
                         <div class="flex items-center justify-between gap-1 mt-1">
                             <span id="res-freq-label" class="text-[10px] text-zinc-400 leading-tight">per day (Mon–Sat)</span>
@@ -247,7 +247,7 @@ include __DIR__ . '/includes/header.php';
 </div>
 
 <script>
-    const CURRENCY_SYM = <?= json_encode(CURRENCY_SYMBOL) ?>;
+    const CURRENCY_SYM = <?= json_encode(safeCurrencySymbol()) ?>;
     const BASE_APP_URL = <?= json_encode(BASE_URL) ?>;
     let lastCalculationSummary = '';
     let installmentSolveMode = 'term'; // 'term' or 'principal'
