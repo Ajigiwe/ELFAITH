@@ -22,6 +22,7 @@ $sql = "
     FROM customers c
     LEFT JOIN loans l ON c.id = l.customer_id AND l.status IN ('active', 'overdue')
     WHERE (c.assigned_agent_id = ? OR c.created_by = ?)
+      AND c.deleted_at IS NULL
 ";
 
 $params = [$agentId, $agentId];

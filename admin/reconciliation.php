@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Fetch agents list
-$agents = $pdo->query("SELECT id, name, staff_code FROM users WHERE role = 'agent' AND status = 'active' ORDER BY name ASC")->fetchAll();
+$agents = $pdo->query("SELECT id, name, staff_code, deleted_at FROM users WHERE role = 'agent' ORDER BY (deleted_at IS NOT NULL) ASC, (status = 'active') DESC, name ASC")->fetchAll();
 if ($agentId <= 0 && !empty($agents)) {
     $agentId = (int)$agents[0]['id'];
 }
@@ -150,7 +150,7 @@ include __DIR__ . '/../includes/header.php';
                 <select name="agent_id" class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-950 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
                     <?php foreach ($agents as $ag): ?>
                         <option value="<?= $ag['id'] ?>" <?= $agentId === (int)$ag['id'] ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($ag['name']) ?> (<?= htmlspecialchars($ag['staff_code']) ?>)
+                            <?= htmlspecialchars($ag['name']) ?> (<?= htmlspecialchars($ag['staff_code']) ?>)<?= !empty($ag['deleted_at']) ? ' [Archived]' : '' ?>
                         </option>
                     <?php endforeach; ?>
                 </select>

@@ -11,6 +11,57 @@ require_once __DIR__ . '/../includes/auth.php';
 requireAdmin();
 
 $page_title = "Borrowers";
+$currentAdminId = (int)currentUserId();
+
+// Handle Customer Delete & Restore Actions
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!verifyCsrf()) {
+        setFlash('danger', 'Security session expired. Please reload and try again.');
+        header('Location: ' . BASE_URL . '/admin/customers.php');
+        exit;
+    }
+
+    $action = trim($_POST['action'] ?? '');
+    $customerId = (int)($_POST['customer_id'] ?? 0);
+
+    if ($customerId > 0) {
+        $stmtC = $pdo->prepare("SELECT id, full_name, customer_code, deleted_at FROM customers WHERE id = ?");
+        $stmtC->execute([$customerId]);
+        $targetCustomer = $stmtC->fetch();
+
+        if ($targetCustomer) {
+            if ($action === 'delete_customer') {
+                $stmtDel = $pdo->prepare("UPDATE customers SET deleted_at = NOW(), status = 'inactive' WHERE id = ?");
+                $stmtDel->execute([$customerId]);
+
+                logAudit($pdo, $currentAdminId, 'DELETE_CUSTOMER', 'customers', $customerId, [
+                    'status' => 'active'
+                ], [
+                    'status' => 'inactive',
+                    'deleted_at' => date('Y-m-d H:i:s'),
+                    'name' => $targetCustomer['full_name'],
+                    'code' => $targetCustomer['customer_code']
+                ]);
+
+                setFlash('success', "Borrower '{$targetCustomer['full_name']}' ({$targetCustomer['customer_code']}) removed. All historical loans, payments, and financial ledgers remain completely intact.");
+                header('Location: ' . BASE_URL . '/admin/customers.php');
+                exit;
+            } elseif ($action === 'restore_customer') {
+                $stmtRes = $pdo->prepare("UPDATE customers SET deleted_at = NULL, status = 'active' WHERE id = ?");
+                $stmtRes->execute([$customerId]);
+
+                logAudit($pdo, $currentAdminId, 'RESTORE_CUSTOMER', 'customers', $customerId, null, [
+                    'action' => 'restored',
+                    'name' => $targetCustomer['full_name']
+                ]);
+
+                setFlash('success', "Borrower '{$targetCustomer['full_name']}' has been successfully restored to active records.");
+                header('Location: ' . BASE_URL . '/admin/customers.php');
+                exit;
+            }
+        }
+    }
+}
 
 $search = trim($_GET['q'] ?? '');
 $agentFilter = !empty($_GET['agent_id']) ? (int)$_GET['agent_id'] : 0;
@@ -38,19 +89,26 @@ if ($agentFilter > 0) {
     $params[] = $agentFilter;
 }
 
-if (!empty($statusFilter)) {
-    $sql .= " AND c.status = ?";
+if ($statusFilter === 'deleted') {
+    $sql .= " AND c.deleted_at IS NOT NULL";
+} elseif ($statusFilter === 'all') {
+    // Show all records, including deleted
+} elseif (!empty($statusFilter)) {
+    $sql .= " AND c.deleted_at IS NULL AND c.status = ?";
     $params[] = $statusFilter;
+} else {
+    // Default: exclude deleted customers
+    $sql .= " AND c.deleted_at IS NULL";
 }
 
-$sql .= " GROUP BY c.id ORDER BY c.created_at DESC";
+$sql .= " GROUP BY c.id ORDER BY (c.deleted_at IS NOT NULL) ASC, c.created_at DESC";
 
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $customers = $stmt->fetchAll();
 
 // Fetch agents for filter dropdown
-$agents = $pdo->query("SELECT id, name, staff_code FROM users WHERE role = 'agent' AND status = 'active' ORDER BY name ASC")->fetchAll();
+$agents = $pdo->query("SELECT id, name, staff_code FROM users WHERE role = 'agent' AND status = 'active' AND deleted_at IS NULL ORDER BY name ASC")->fetchAll();
 
 include __DIR__ . '/../includes/header.php';
 ?>
@@ -93,10 +151,12 @@ include __DIR__ . '/../includes/header.php';
 
             <div class="flex items-center gap-2">
                 <select name="status" class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-zinc-950 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">
-                    <option value="">All Statuses</option>
-                    <option value="active" <?= $statusFilter === 'active' ? 'selected' : '' ?>>Active</option>
-                    <option value="inactive" <?= $statusFilter === 'inactive' ? 'selected' : '' ?>>Inactive</option>
+                    <option value="" <?= $statusFilter === '' ? 'selected' : '' ?>>Active Records</option>
+                    <option value="active" <?= $statusFilter === 'active' ? 'selected' : '' ?>>Active Status</option>
+                    <option value="inactive" <?= $statusFilter === 'inactive' ? 'selected' : '' ?>>Inactive Status</option>
                     <option value="blacklisted" <?= $statusFilter === 'blacklisted' ? 'selected' : '' ?>>Blacklisted</option>
+                    <option value="deleted" <?= $statusFilter === 'deleted' ? 'selected' : '' ?>>Deleted / Archived</option>
+                    <option value="all" <?= $statusFilter === 'all' ? 'selected' : '' ?>>All (Including Deleted)</option>
                 </select>
                 <button type="submit" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-xs transition">
                     Filter
@@ -132,10 +192,16 @@ include __DIR__ . '/../includes/header.php';
                     </thead>
                     <tbody class="divide-y divide-zinc-100">
                         <?php foreach ($customers as $c): ?>
-                            <tr class="hover:bg-blue-50/30 transition">
+                            <?php $isDeleted = !empty($c['deleted_at']); ?>
+                            <tr class="<?= $isDeleted ? 'bg-zinc-50/60 opacity-80' : 'hover:bg-blue-50/30' ?> transition">
                                 <td class="py-3 px-4">
-                                    <span class="font-mono text-[10px] text-zinc-500 block uppercase"><?= htmlspecialchars($c['customer_code']) ?></span>
-                                    <span class="font-medium text-black text-xs block"><?= htmlspecialchars($c['full_name']) ?></span>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="font-mono text-[10px] text-zinc-500 block uppercase"><?= htmlspecialchars($c['customer_code']) ?></span>
+                                        <?php if ($isDeleted): ?>
+                                            <span class="px-1 py-0.2 text-[9px] font-bold bg-red-100 text-red-700 rounded border border-red-200">DELETED</span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <span class="font-medium <?= $isDeleted ? 'text-zinc-600 line-through' : 'text-black' ?> text-xs block"><?= htmlspecialchars($c['full_name']) ?></span>
                                     <span class="text-zinc-600 font-mono text-[11px]"><?= htmlspecialchars($c['phone']) ?></span>
                                 </td>
                                 <td class="py-3 px-4">
@@ -169,9 +235,26 @@ include __DIR__ . '/../includes/header.php';
                                         <a href="<?= BASE_URL ?>/admin/customer_view.php?id=<?= $c['id'] ?>" class="px-2 py-1 bg-zinc-100 hover:bg-zinc-200 text-zinc-950 rounded text-[11px] font-medium transition">
                                             View
                                         </a>
-                                        <a href="<?= BASE_URL ?>/admin/loans.php?action=new&customer_id=<?= $c['id'] ?>" class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[11px] font-medium transition">
-                                            + Loan
-                                        </a>
+                                        <?php if ($isDeleted): ?>
+                                            <form method="POST" action="customers.php" class="inline" onsubmit="return confirm('Restore borrower <?= htmlspecialchars(addslashes($c['full_name'])) ?> to active records?')">
+                                                <?= csrfField() ?>
+                                                <input type="hidden" name="action" value="restore_customer">
+                                                <input type="hidden" name="customer_id" value="<?= (int)$c['id'] ?>">
+                                                <button type="submit" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[11px] font-medium transition">
+                                                    Restore
+                                                </button>
+                                            </form>
+                                        <?php else: ?>
+                                            <a href="<?= BASE_URL ?>/admin/loans.php?action=new&customer_id=<?= $c['id'] ?>" class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[11px] font-medium transition">
+                                                + Loan
+                                            </a>
+                                            <button type="button" 
+                                                onclick="openDeleteCustomerModal(<?= (int)$c['id'] ?>, '<?= htmlspecialchars(addslashes($c['full_name'])) ?>', '<?= htmlspecialchars(addslashes($c['customer_code'])) ?>', <?= (int)$c['total_balance_pesewas'] ?>)"
+                                                class="px-2 py-1 bg-zinc-100 hover:bg-red-50 text-zinc-500 hover:text-red-700 rounded text-[11px] font-medium border border-zinc-200 transition"
+                                                title="Delete customer record">
+                                                <i data-lucide="trash-2" class="w-3 h-3"></i>
+                                            </button>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>
@@ -182,5 +265,72 @@ include __DIR__ . '/../includes/header.php';
         <?php endif; ?>
     </div>
 </div>
+
+<!-- Modal: Delete Customer Record Confirmation -->
+<div id="deleteCustomerModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-md w-full p-5 space-y-4 shadow-xl border border-zinc-200">
+        <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                <i data-lucide="trash-2" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-bold text-black">Delete Customer Record?</h3>
+                <p class="text-xs text-zinc-500 mt-0.5">Non-destructive removal & archiving</p>
+            </div>
+        </div>
+
+        <div class="bg-zinc-50 border border-zinc-200 rounded-lg p-3 text-xs space-y-1.5 text-zinc-700">
+            <div><strong>Borrower:</strong> <span id="delCustName" class="font-medium text-black"></span> (<span id="delCustCode" class="font-mono"></span>)</div>
+            <div id="delCustBalanceWarning" class="hidden text-amber-700 font-medium">
+                Outstanding Balance: <span id="delCustBalance"></span>
+            </div>
+        </div>
+
+        <div class="bg-blue-50/60 border border-blue-200 rounded-lg p-3 text-[11px] text-blue-900 space-y-1 leading-relaxed">
+            <div class="font-bold flex items-center gap-1.5 text-blue-950">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-blue-600"></i> Financial Records Protected
+            </div>
+            <div>All previous loan history, payment receipts, repayment schedules, and ledger balances are strictly preserved. This borrower will simply be archived and hidden from daily agent route collections.</div>
+        </div>
+
+        <form method="POST" action="customers.php">
+            <?= csrfField() ?>
+            <input type="hidden" name="action" value="delete_customer">
+            <input type="hidden" name="customer_id" id="delCustomerId" value="">
+
+            <div class="flex items-center justify-end gap-2 pt-2 border-t border-zinc-100">
+                <button type="button" onclick="closeDeleteCustomerModal()" class="px-3 py-1.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-lg text-xs font-medium transition">
+                    Cancel
+                </button>
+                <button type="submit" class="px-3.5 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-medium transition">
+                    Confirm Delete
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openDeleteCustomerModal(id, name, code, balancePesewas) {
+    document.getElementById('delCustomerId').value = id;
+    document.getElementById('delCustName').textContent = name;
+    document.getElementById('delCustCode').textContent = code;
+    
+    const balanceWarning = document.getElementById('delCustBalanceWarning');
+    if (balancePesewas > 0) {
+        document.getElementById('delCustBalance').textContent = 'GH₵ ' + (balancePesewas / 100).toFixed(2);
+        balanceWarning.classList.remove('hidden');
+    } else {
+        balanceWarning.classList.add('hidden');
+    }
+    
+    document.getElementById('deleteCustomerModal').classList.remove('hidden');
+    if (window.lucide) lucide.createIcons();
+}
+
+function closeDeleteCustomerModal() {
+    document.getElementById('deleteCustomerModal').classList.add('hidden');
+}
+</script>
 
 <?php include __DIR__ . '/../includes/footer.php'; ?>

@@ -137,7 +137,7 @@ foreach ($payments as $p) {
 }
 
 // Fetch agents for filter dropdown
-$agents = $pdo->query("SELECT id, name, staff_code FROM users WHERE role = 'agent' AND status = 'active' ORDER BY name ASC")->fetchAll();
+$agents = $pdo->query("SELECT id, name, staff_code, deleted_at FROM users WHERE role = 'agent' ORDER BY (deleted_at IS NOT NULL) ASC, name ASC")->fetchAll();
 
 include __DIR__ . '/../includes/header.php';
 ?>
@@ -207,7 +207,7 @@ include __DIR__ . '/../includes/header.php';
                     <option value="">All Agents</option>
                     <?php foreach ($agents as $ag): ?>
                         <option value="<?= $ag['id'] ?>" <?= $agentFilter === (int)$ag['id'] ? 'selected' : '' ?>>
-                            <?= htmlspecialchars($ag['name']) ?>
+                            <?= htmlspecialchars($ag['name']) ?><?= !empty($ag['deleted_at']) ? ' (Archived)' : '' ?>
                         </option>
                     <?php endforeach; ?>
                 </select>

@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Fetch agents list for admin selector
 $agentsList = [];
 if ($role === 'admin') {
-    $agentsList = $pdo->query("SELECT id, name, staff_code FROM users WHERE role = 'agent' AND status = 'active' ORDER BY name ASC")->fetchAll();
+    $agentsList = $pdo->query("SELECT id, name, staff_code FROM users WHERE role = 'agent' AND status = 'active' AND deleted_at IS NULL ORDER BY name ASC")->fetchAll();
 }
 
 include __DIR__ . '/../includes/header.php';

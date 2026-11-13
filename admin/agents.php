@@ -226,6 +226,94 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
             }
+
+        // 4. DELETE (SOFT DELETE) STAFF ACCOUNT
+        } elseif ($action === 'delete') {
+            $userId = (int)($_POST['user_id'] ?? 0);
+
+            $stmtCur = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+            $stmtCur->execute([$userId]);
+            $targetUser = $stmtCur->fetch();
+
+            if (!$targetUser) {
+                $error = 'The requested staff member was not found.';
+            } elseif ($userId === $currentAdminId) {
+                $error = 'Security Guard: You cannot delete your own administrative account.';
+            } else {
+                // Check if deleting the last active admin
+                if ($targetUser['role'] === 'admin') {
+                    $activeAdmins = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role = 'admin' AND status = 'active' AND deleted_at IS NULL AND id != {$userId}")->fetchColumn();
+                    if ($activeAdmins < 1) {
+                        $error = 'Security Guard: Operation denied. At least one active administrator must remain in the system.';
+                    }
+                }
+
+                if (empty($error)) {
+                    try {
+                        $pdo->beginTransaction();
+
+                        // Soft-delete user
+                        $stmtDel = $pdo->prepare("UPDATE users SET deleted_at = NOW(), status = 'inactive' WHERE id = ?");
+                        $stmtDel->execute([$userId]);
+
+                        // Safely unassign customers assigned to this agent so they are not left trapped
+                        $stmtUnassign = $pdo->prepare("UPDATE customers SET assigned_agent_id = NULL WHERE assigned_agent_id = ?");
+                        $stmtUnassign->execute([$userId]);
+
+                        // Deactivate any active agent routes / assignments
+                        $stmtAa = $pdo->prepare("UPDATE agent_assignments SET is_active = 0 WHERE agent_id = ?");
+                        $stmtAa->execute([$userId]);
+
+                        logAudit($pdo, $currentAdminId, 'DELETE_STAFF_USER', 'users', $userId, [
+                            'name' => $targetUser['name'],
+                            'username' => $targetUser['username'],
+                            'role' => $targetUser['role']
+                        ], [
+                            'action' => 'soft_deleted',
+                            'deleted_at' => date('Y-m-d H:i:s')
+                        ]);
+
+                        $pdo->commit();
+
+                        setFlash('success', "Staff account '{$targetUser['name']}' ({$targetUser['staff_code']}) removed. All historical collections, issued loans, and audit trails remain completely preserved.");
+                        header('Location: ' . BASE_URL . '/admin/agents.php');
+                        exit;
+                    } catch (Exception $e) {
+                        if ($pdo->inTransaction()) {
+                            $pdo->rollBack();
+                        }
+                        $error = 'Database error: ' . $e->getMessage();
+                    }
+                }
+            }
+
+        // 5. RESTORE STAFF ACCOUNT
+        } elseif ($action === 'restore') {
+            $userId = (int)($_POST['user_id'] ?? 0);
+
+            $stmtCur = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+            $stmtCur->execute([$userId]);
+            $targetUser = $stmtCur->fetch();
+
+            if (!$targetUser) {
+                $error = 'The requested staff member was not found.';
+            } else {
+                try {
+                    $stmtRes = $pdo->prepare("UPDATE users SET deleted_at = NULL, status = 'active' WHERE id = ?");
+                    $stmtRes->execute([$userId]);
+
+                    logAudit($pdo, $currentAdminId, 'RESTORE_STAFF_USER', 'users', $userId, null, [
+                        'action' => 'restored',
+                        'name' => $targetUser['name']
+                    ]);
+
+                    setFlash('success', "Staff account '{$targetUser['name']}' ({$targetUser['staff_code']}) has been restored to active status.");
+                    header('Location: ' . BASE_URL . '/admin/agents.php');
+                    exit;
+                } catch (Exception $e) {
+                    $error = 'Database error: ' . $e->getMessage();
+                }
+            }
         }
     }
 }
@@ -237,20 +325,26 @@ $staffList = $pdo->query("
            COUNT(DISTINCT l.id) AS active_loans_count,
            COALESCE(SUM(DISTINCT CASE WHEN l.status IN ('active', 'overdue') THEN l.remaining_balance_pesewas ELSE 0 END), 0) AS portfolio_pesewas
     FROM users u
-    LEFT JOIN customers c ON u.id = c.assigned_agent_id
+    LEFT JOIN customers c ON u.id = c.assigned_agent_id AND c.deleted_at IS NULL
     LEFT JOIN loans l ON u.id = l.agent_id AND l.status IN ('active', 'overdue')
     GROUP BY u.id
-    ORDER BY u.role ASC, (u.status = 'active') DESC, u.name ASC
+    ORDER BY (u.deleted_at IS NOT NULL) ASC, u.role ASC, (u.status = 'active') DESC, u.name ASC
 ")->fetchAll();
 
 // Calculate summary stats
-$totalUsers = count($staffList);
+$totalUsers = 0;
 $activeCount = 0;
 $inactiveCount = 0;
+$deletedCount = 0;
 $agentCount = 0;
 $adminCount = 0;
 
 foreach ($staffList as $st) {
+    if (!empty($st['deleted_at'])) {
+        $deletedCount++;
+        continue;
+    }
+    $totalUsers++;
     if ($st['status'] === 'active') {
         $activeCount++;
     } else {
@@ -334,9 +428,10 @@ include __DIR__ . '/../includes/header.php';
             </select>
             <select id="status-filter" onchange="filterStaffCards()" 
                 class="px-2.5 py-1.5 bg-zinc-50 border border-zinc-200 rounded-lg text-xs text-zinc-800 focus:outline-none focus:border-blue-600 focus:bg-white transition">
-                <option value="all">All Statuses</option>
+                <option value="all">All Personnel</option>
                 <option value="active">Active Only</option>
                 <option value="inactive">Deactivated Only</option>
+                <option value="deleted">Deleted / Archived</option>
             </select>
         </div>
     </div>
@@ -346,7 +441,8 @@ include __DIR__ . '/../includes/header.php';
         <?php foreach ($staffList as $st): ?>
             <?php 
                 $isSelf = ((int)$st['id'] === $currentAdminId);
-                $isActive = ($st['status'] === 'active');
+                $isDeleted = !empty($st['deleted_at']);
+                $isActive = ($st['status'] === 'active' && !$isDeleted);
                 $userJson = htmlspecialchars(json_encode([
                     'id' => (int)$st['id'],
                     'staff_code' => $st['staff_code'],
@@ -359,13 +455,13 @@ include __DIR__ . '/../includes/header.php';
                     'is_self' => $isSelf
                 ]), ENT_QUOTES, 'UTF-8');
             ?>
-            <div class="staff-card bg-white rounded-xl border <?= $isActive ? 'border-zinc-200' : 'border-zinc-200 bg-zinc-100/70' ?> p-4 space-y-3 transition flex flex-col justify-between"
+            <div class="staff-card bg-white rounded-xl border <?= $isDeleted ? 'border-red-200 bg-red-50/20 opacity-80' : ($isActive ? 'border-zinc-200' : 'border-zinc-200 bg-zinc-100/70') ?> p-4 space-y-3 transition flex flex-col justify-between"
                 data-name="<?= htmlspecialchars(strtolower($st['name'])) ?>"
                 data-username="<?= htmlspecialchars(strtolower($st['username'])) ?>"
                 data-code="<?= htmlspecialchars(strtolower($st['staff_code'])) ?>"
                 data-email="<?= htmlspecialchars(strtolower($st['email'])) ?>"
                 data-role="<?= htmlspecialchars($st['role']) ?>"
-                data-status="<?= htmlspecialchars($st['status']) ?>">
+                data-status="<?= $isDeleted ? 'deleted' : htmlspecialchars($st['status']) ?>">
                 
                 <div class="space-y-3">
                     <!-- Top Row: Staff Code, Badges & Role -->
@@ -377,7 +473,7 @@ include __DIR__ . '/../includes/header.php';
                                     <span class="px-1 py-0.2 text-[9px] font-semibold bg-zinc-100 text-zinc-700 rounded">YOU</span>
                                 <?php endif; ?>
                             </div>
-                            <h2 class="text-sm font-bold text-black mt-0.5 <?= !$isActive ? 'text-zinc-600' : '' ?>">
+                            <h2 class="text-sm font-bold text-black mt-0.5 <?= $isDeleted ? 'text-zinc-600 line-through' : (!$isActive ? 'text-zinc-600' : '') ?>">
                                 <?= htmlspecialchars($st['name']) ?>
                             </h2>
                             <span class="text-xs text-zinc-500 font-mono">@<?= htmlspecialchars($st['username']) ?></span>
@@ -389,7 +485,11 @@ include __DIR__ . '/../includes/header.php';
                             </span>
 
                             <!-- Status Badge -->
-                            <?php if ($isActive): ?>
+                            <?php if ($isDeleted): ?>
+                                <span class="inline-flex items-center gap-1 text-[10px] font-bold text-red-700 bg-red-100 px-1.5 py-0.5 rounded border border-red-200">
+                                    DELETED
+                                </span>
+                            <?php elseif ($isActive): ?>
                                 <span class="inline-flex items-center gap-1 text-[10px] font-medium text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
                                 </span>
@@ -430,43 +530,66 @@ include __DIR__ . '/../includes/header.php';
                     </div>
                 </div>
 
-                <!-- Action Toolbar: Edit & Deactivate / Activate -->
+                <!-- Action Toolbar: Edit & Deactivate / Activate / Delete -->
                 <div class="pt-2.5 border-t border-zinc-100 flex items-center justify-between gap-1 text-xs">
-                    <div class="flex items-center gap-1.5">
-                        <!-- Edit Button -->
-                        <button type="button" 
-                            onclick='openEditModal(<?= $userJson ?>)' 
-                            class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-zinc-800 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-100 hover:text-black transition">
-                            <i data-lucide="edit-2" class="w-3 h-3 text-zinc-500"></i> Edit
-                        </button>
+                    <?php if ($isDeleted): ?>
+                        <div class="flex items-center gap-1.5">
+                            <form method="POST" action="agents.php" class="inline" onsubmit="return confirm('Restore account for <?= htmlspecialchars(addslashes($st['name'])) ?>?')">
+                                <?= csrfField() ?>
+                                <input type="hidden" name="action" value="restore">
+                                <input type="hidden" name="user_id" value="<?= (int)$st['id'] ?>">
+                                <button type="submit" 
+                                    class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition shadow-sm">
+                                    <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Restore Account
+                                </button>
+                            </form>
+                        </div>
+                    <?php else: ?>
+                        <div class="flex items-center gap-1.5">
+                            <!-- Edit Button -->
+                            <button type="button" 
+                                onclick='openEditModal(<?= $userJson ?>)' 
+                                class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-zinc-800 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-100 hover:text-black transition">
+                                <i data-lucide="edit-2" class="w-3 h-3 text-zinc-500"></i> Edit
+                            </button>
 
-                        <!-- Deactivate / Activate Action Button -->
-                        <?php if ($isSelf): ?>
-                            <span class="text-[11px] text-zinc-500 italic px-1" title="You cannot deactivate your own account">Current User</span>
-                        <?php elseif ($isActive): ?>
-                            <form method="POST" action="agents.php" class="inline" onsubmit="return confirm('Deactivate account for <?= htmlspecialchars(addslashes($st['name'])) ?>? They will immediately lose login and collection privileges.')">
-                                <?= csrfField() ?>
-                                <input type="hidden" name="action" value="toggle_status">
-                                <input type="hidden" name="user_id" value="<?= (int)$st['id'] ?>">
-                                <input type="hidden" name="target_status" value="inactive">
-                                <button type="submit" 
-                                    class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-zinc-700 bg-zinc-50 border border-zinc-200 rounded-lg hover:bg-zinc-100 hover:text-red-700 transition">
-                                    <i data-lucide="user-x" class="w-3 h-3 text-zinc-500"></i> Deactivate
+                            <!-- Deactivate / Activate Action Button -->
+                            <?php if ($isSelf): ?>
+                                <span class="text-[11px] text-zinc-500 italic px-1" title="You cannot deactivate your own account">Current User</span>
+                            <?php elseif ($isActive): ?>
+                                <form method="POST" action="agents.php" class="inline" onsubmit="return confirm('Deactivate account for <?= htmlspecialchars(addslashes($st['name'])) ?>? They will immediately lose login and collection privileges.')">
+                                    <?= csrfField() ?>
+                                    <input type="hidden" name="action" value="toggle_status">
+                                    <input type="hidden" name="user_id" value="<?= (int)$st['id'] ?>">
+                                    <input type="hidden" name="target_status" value="inactive">
+                                    <button type="submit" 
+                                        class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-zinc-700 bg-zinc-50 border border-zinc-200 rounded-lg hover:bg-zinc-100 hover:text-red-700 transition">
+                                        <i data-lucide="user-x" class="w-3 h-3 text-zinc-500"></i> Deactivate
+                                    </button>
+                                </form>
+                            <?php else: ?>
+                                <form method="POST" action="agents.php" class="inline" onsubmit="return confirm('Re-activate account for <?= htmlspecialchars(addslashes($st['name'])) ?>? They will be able to sign in again.')">
+                                    <?= csrfField() ?>
+                                    <input type="hidden" name="action" value="toggle_status">
+                                    <input type="hidden" name="user_id" value="<?= (int)$st['id'] ?>">
+                                    <input type="hidden" name="target_status" value="active">
+                                    <button type="submit" 
+                                        class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-zinc-950 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-100 transition">
+                                        <i data-lucide="user-check" class="w-3 h-3 text-emerald-600"></i> Activate
+                                    </button>
+                                </form>
+                            <?php endif; ?>
+
+                            <?php if (!$isSelf): ?>
+                                <button type="button" 
+                                    onclick="openDeleteStaffModal(<?= (int)$st['id'] ?>, '<?= htmlspecialchars(addslashes($st['name'])) ?>', '<?= htmlspecialchars(addslashes($st['staff_code'])) ?>', '<?= htmlspecialchars(addslashes($st['role'])) ?>', <?= (int)$st['assigned_customers_count'] ?>)"
+                                    class="inline-flex items-center gap-1 px-2 py-1 text-[11px] font-medium text-zinc-500 hover:text-red-700 bg-zinc-50 hover:bg-red-50 border border-zinc-200 rounded-lg transition"
+                                    title="Delete staff account">
+                                    <i data-lucide="trash-2" class="w-3 h-3"></i>
                                 </button>
-                            </form>
-                        <?php else: ?>
-                            <form method="POST" action="agents.php" class="inline" onsubmit="return confirm('Re-activate account for <?= htmlspecialchars(addslashes($st['name'])) ?>? They will be able to sign in again.')">
-                                <?= csrfField() ?>
-                                <input type="hidden" name="action" value="toggle_status">
-                                <input type="hidden" name="user_id" value="<?= (int)$st['id'] ?>">
-                                <input type="hidden" name="target_status" value="active">
-                                <button type="submit" 
-                                    class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-zinc-950 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-100 transition">
-                                    <i data-lucide="user-check" class="w-3 h-3 text-emerald-600"></i> Activate
-                                </button>
-                            </form>
-                        <?php endif; ?>
-                    </div>
+                            <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
 
                     <?php if ($st['role'] === 'agent'): ?>
                         <a href="<?= BASE_URL ?>/admin/reconciliation.php?agent_id=<?= $st['id'] ?>" 
@@ -715,9 +838,10 @@ include __DIR__ . '/../includes/header.php';
                 email.includes(query);
 
             const matchesRole = (role === 'all') || (cardRole === role);
-            const matchesStatus = (status === 'all') || 
-                (status === 'active' && cardStatus === 'active') || 
-                (status === 'inactive' && cardStatus !== 'active');
+            const matchesStatus = (status === 'all') ? (cardStatus !== 'deleted') :
+                (status === 'deleted' ? (cardStatus === 'deleted') :
+                (status === 'active' ? (cardStatus === 'active') :
+                (status === 'inactive' ? (cardStatus === 'inactive') : true)));
 
             if (matchesQuery && matchesRole && matchesStatus) {
                 card.style.display = '';
@@ -727,13 +851,84 @@ include __DIR__ . '/../includes/header.php';
         });
     }
 
+    // Delete Staff Modal Management
+    function openDeleteStaffModal(id, name, code, role, borrowerCount) {
+        document.getElementById('del-staff-id').value = id;
+        document.getElementById('del-staff-name').textContent = name;
+        document.getElementById('del-staff-code').textContent = code;
+        document.getElementById('del-staff-role').textContent = role.toUpperCase();
+
+        const warnDiv = document.getElementById('del-staff-borrowers-warn');
+        if (borrowerCount > 0) {
+            document.getElementById('del-staff-borrower-count').textContent = borrowerCount;
+            warnDiv.classList.remove('hidden');
+        } else {
+            warnDiv.classList.add('hidden');
+        }
+
+        document.getElementById('delete-staff-modal').classList.remove('hidden');
+        if (window.lucide) lucide.createIcons();
+    }
+
+    function closeDeleteStaffModal() {
+        document.getElementById('delete-staff-modal').classList.add('hidden');
+    }
+
     // Close modals on Escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeEditModal();
             closeAddModal();
+            closeDeleteStaffModal();
         }
     });
 </script>
+
+<!-- ===================================================================== -->
+<!-- DELETE STAFF CONFIRMATION MODAL                                       -->
+<!-- ===================================================================== -->
+<div id="delete-staff-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl max-w-md w-full p-5 space-y-4 shadow-xl border border-zinc-200">
+        <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                <i data-lucide="trash-2" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-bold text-black">Delete Staff Account?</h3>
+                <p class="text-xs text-zinc-500 mt-0.5">Non-destructive removal & archiving</p>
+            </div>
+        </div>
+
+        <div class="bg-zinc-50 border border-zinc-200 rounded-lg p-3 text-xs space-y-1.5 text-zinc-700">
+            <div><strong>Staff Member:</strong> <span id="del-staff-name" class="font-medium text-black"></span> (<span id="del-staff-code" class="font-mono"></span>)</div>
+            <div><strong>System Role:</strong> <span id="del-staff-role" class="font-mono text-zinc-900"></span></div>
+            <div id="del-staff-borrowers-warn" class="hidden text-amber-700 font-medium">
+                Note: <span id="del-staff-borrower-count"></span> assigned borrower(s) will be unassigned so they can be reassigned to other field agents.
+            </div>
+        </div>
+
+        <div class="bg-blue-50/60 border border-blue-200 rounded-lg p-3 text-[11px] text-blue-900 space-y-1 leading-relaxed">
+            <div class="font-bold flex items-center gap-1.5 text-blue-950">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5 text-blue-600"></i> Financial Records Protected
+            </div>
+            <div>All previous payments collected by this user, issued loans, audit trails, and reconciliation statements remain completely preserved and attributed in the ledger. The user will be immediately logged out and unable to sign in.</div>
+        </div>
+
+        <form method="POST" action="agents.php">
+            <?= csrfField() ?>
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="user_id" id="del-staff-id" value="">
+
+            <div class="flex items-center justify-end gap-2 pt-2 border-t border-zinc-100">
+                <button type="button" onclick="closeDeleteStaffModal()" class="px-3 py-1.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-lg text-xs font-medium transition">
+                    Cancel
+                </button>
+                <button type="submit" class="px-3.5 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-medium transition shadow-sm">
+                    Confirm Delete
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <?php include __DIR__ . '/../includes/footer.php'; ?>

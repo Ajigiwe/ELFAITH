@@ -35,10 +35,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   `role` ENUM('admin', 'agent') NOT NULL DEFAULT 'agent',
   `status` ENUM('active', 'inactive', 'suspended') NOT NULL DEFAULT 'active',
   `last_login_at` DATETIME NULL,
+  `deleted_at` DATETIME NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX `idx_users_role` (`role`),
-  INDEX `idx_users_status` (`status`)
+  INDEX `idx_users_status` (`status`),
+  INDEX `idx_users_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
@@ -66,6 +68,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
   `created_by` INT NOT NULL,
   `status` ENUM('active', 'inactive', 'blacklisted') NOT NULL DEFAULT 'active',
   `notes` TEXT NULL,
+  `deleted_at` DATETIME NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT `fk_customers_assigned_agent` FOREIGN KEY (`assigned_agent_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
@@ -73,7 +76,8 @@ CREATE TABLE IF NOT EXISTS `customers` (
   INDEX `idx_customers_assigned_agent` (`assigned_agent_id`),
   INDEX `idx_customers_phone` (`phone`),
   INDEX `idx_customers_id_number` (`id_number`),
-  INDEX `idx_customers_status` (`status`)
+  INDEX `idx_customers_status` (`status`),
+  INDEX `idx_customers_deleted_at` (`deleted_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------

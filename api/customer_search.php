@@ -31,6 +31,7 @@ $sql = "
     FROM customers c
     LEFT JOIN loans l ON c.id = l.customer_id AND l.status IN ('active', 'overdue')
     WHERE (c.full_name LIKE ? OR c.phone LIKE ? OR c.customer_code LIKE ? OR c.id_number LIKE ?)
+      AND c.deleted_at IS NULL
 ";
 
 $params = ["%{$q}%", "%{$q}%", "%{$q}%", "%{$q}%"];

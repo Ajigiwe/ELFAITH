@@ -163,8 +163,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'new') {
 }
 
 // Fetch Customers & Agents for the loan origination form
-$customers = $pdo->query("SELECT id, full_name, customer_code, phone, assigned_agent_id FROM customers WHERE status = 'active' ORDER BY full_name ASC")->fetchAll();
-$agents = $pdo->query("SELECT id, name, staff_code FROM users WHERE role = 'agent' AND status = 'active' ORDER BY name ASC")->fetchAll();
+$customers = $pdo->query("SELECT id, full_name, customer_code, phone, assigned_agent_id FROM customers WHERE status = 'active' AND deleted_at IS NULL ORDER BY full_name ASC")->fetchAll();
+$agents = $pdo->query("SELECT id, name, staff_code FROM users WHERE role = 'agent' AND status = 'active' AND deleted_at IS NULL ORDER BY name ASC")->fetchAll();
 
 // List view data
 $search = trim($_GET['q'] ?? '');

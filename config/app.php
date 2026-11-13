@@ -44,7 +44,7 @@ $app_root = rtrim($app_root, '/');
 
 define('BASE_URL', $protocol . $host . $app_root);
 define('APP_NAME', 'EL-FAITH MICROFINANCE');
-define('APP_VERSION', '2.10.1-PROD');
+define('APP_VERSION', '2.11.0-PROD');
 
 // Load dynamic system settings from database
 $system_settings = [];
@@ -52,6 +52,20 @@ try {
     $stmt = $pdo->query("SELECT setting_key, setting_value FROM system_settings");
     while ($row = $stmt->fetch()) {
         $system_settings[$row['setting_key']] = $row['setting_value'];
+    }
+
+    // Auto-ensure deleted_at schema columns exist (runs once per install/environment)
+    if (empty($system_settings['schema_v2_11'])) {
+        $colCheckC = $pdo->query("SHOW COLUMNS FROM customers LIKE 'deleted_at'")->fetch();
+        if (!$colCheckC) {
+            $pdo->exec("ALTER TABLE customers ADD COLUMN deleted_at DATETIME NULL AFTER notes, ADD INDEX idx_customers_deleted_at (deleted_at)");
+        }
+        $colCheckU = $pdo->query("SHOW COLUMNS FROM users LIKE 'deleted_at'")->fetch();
+        if (!$colCheckU) {
+            $pdo->exec("ALTER TABLE users ADD COLUMN deleted_at DATETIME NULL AFTER status, ADD INDEX idx_users_deleted_at (deleted_at)");
+        }
+        $pdo->prepare("INSERT INTO system_settings (setting_key, setting_value) VALUES ('schema_v2_11', '1') ON DUPLICATE KEY UPDATE setting_value = '1'")->execute();
+        $system_settings['schema_v2_11'] = '1';
     }
 } catch (Exception $e) {
     // Fallback if settings table query fails

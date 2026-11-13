@@ -68,6 +68,7 @@ try {
         JOIN customers c ON l.customer_id = c.id
         WHERE (l.agent_id = ? OR c.assigned_agent_id = ?)
           AND l.status IN ('active', 'overdue')
+          AND c.deleted_at IS NULL
         ORDER BY c.full_name ASC
     ");
     $stmtLoans->execute([$agentId, $agentId]);

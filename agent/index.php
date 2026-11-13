@@ -42,6 +42,7 @@ $stmtOverdue = $pdo->prepare("
       AND rs.due_date < CURDATE()
       AND rs.status IN ('pending', 'partially_paid', 'overdue')
       AND l.status IN ('active', 'overdue')
+      AND c.deleted_at IS NULL
     ORDER BY rs.due_date ASC, c.full_name ASC
 ");
 $stmtOverdue->execute([$agentId, $agentId]);
@@ -62,6 +63,7 @@ $stmtDueToday = $pdo->prepare("
       AND rs.due_date = CURDATE()
       AND rs.status IN ('pending', 'partially_paid')
       AND l.status IN ('active', 'overdue')
+      AND c.deleted_at IS NULL
     ORDER BY c.full_name ASC
 ");
 $stmtDueToday->execute([$agentId, $agentId]);

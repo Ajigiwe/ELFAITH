@@ -43,12 +43,12 @@ function requireLogin(): void {
     // Verify session user is still active in database
     if (isset($pdo) && !empty($_SESSION['user_id'])) {
         try {
-            $stmt = $pdo->prepare("SELECT status FROM users WHERE id = ? LIMIT 1");
+            $stmt = $pdo->prepare("SELECT status, deleted_at FROM users WHERE id = ? LIMIT 1");
             $stmt->execute([$_SESSION['user_id']]);
-            $status = $stmt->fetchColumn();
-            if ($status && $status !== 'active') {
+            $uRow = $stmt->fetch();
+            if (!$uRow || ($uRow['status'] ?? '') !== 'active' || !empty($uRow['deleted_at'])) {
                 logoutUser();
-                setFlash('danger', 'Your account has been deactivated. Please contact an administrator.');
+                setFlash('danger', 'Your account has been deactivated or removed. Please contact an administrator.');
                 header('Location: ' . BASE_URL . '/login.php');
                 exit;
             }
@@ -73,12 +73,12 @@ function requireAgent(): void {
 }
 
 function attemptLogin(PDO $pdo, string $username, string $password): bool {
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ? OR email = ? LIMIT 1");
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE (username = ? OR email = ?) AND deleted_at IS NULL LIMIT 1");
     $stmt->execute([$username, $username]);
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user['password_hash'])) {
-        if ($user['status'] !== 'active') {
+        if ($user['status'] !== 'active' || !empty($user['deleted_at'])) {
             $_SESSION['login_error'] = 'This account has been deactivated. Please contact an administrator.';
             return false;
         }
