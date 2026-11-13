@@ -209,30 +209,50 @@ include __DIR__ . '/../includes/header.php';
         </div>
     <?php endif; ?>
 
-    <!-- Summary Metrics Bar -->
+    <!-- Modern Fintech Summary Metrics Bar -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-4 space-y-1 shadow-sm">
-            <span class="text-[11px] font-semibold text-blue-100 uppercase tracking-wider block">Database Size</span>
-            <div class="text-2xl font-bold text-white tracking-tight"><?= $dbStats['size_formatted'] ?></div>
-            <span class="text-[11px] text-blue-100 block"><?= htmlspecialchars(DB_NAME) ?></span>
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Database Size</span>
+                <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center ring-1 ring-blue-600/10">
+                    <i data-lucide="database" class="w-4 h-4"></i>
+                </div>
+            </div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight tabular-nums"><?= $dbStats['size_formatted'] ?></div>
+            <span class="text-[11px] text-slate-500 block font-mono"><?= htmlspecialchars(DB_NAME) ?></span>
         </div>
 
-        <div class="bg-gradient-to-br from-zinc-900 via-zinc-950 to-black text-white rounded-xl p-4 space-y-1 shadow-sm border border-zinc-800">
-            <span class="text-[11px] font-semibold text-zinc-300 uppercase tracking-wider block">Total Ledger Records</span>
-            <div class="text-2xl font-bold text-white tracking-tight"><?= number_format($dbStats['total_records']) ?></div>
-            <span class="text-[11px] text-blue-400 block">Across 10 relational tables</span>
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Ledger Records</span>
+                <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center ring-1 ring-indigo-600/10">
+                    <i data-lucide="layers" class="w-4 h-4"></i>
+                </div>
+            </div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight tabular-nums"><?= number_format($dbStats['total_records']) ?></div>
+            <span class="text-[11px] text-slate-500 block">Across 10 relational tables</span>
         </div>
 
-        <div class="bg-gradient-to-br from-blue-700 to-blue-900 text-white rounded-xl p-4 space-y-1 shadow-sm">
-            <span class="text-[11px] font-semibold text-blue-100 uppercase tracking-wider block">Server Snapshots</span>
-            <div class="text-2xl font-bold text-white tracking-tight"><?= count($backupFiles) ?></div>
-            <span class="text-[11px] text-blue-100 block">Saved in /backups</span>
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Server Snapshots</span>
+                <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center ring-1 ring-emerald-600/10">
+                    <i data-lucide="archive" class="w-4 h-4"></i>
+                </div>
+            </div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight tabular-nums"><?= count($backupFiles) ?></div>
+            <span class="text-[11px] text-slate-500 block">Encrypted /backups</span>
         </div>
 
-        <div class="bg-gradient-to-br from-neutral-900 via-zinc-950 to-black text-white rounded-xl p-4 space-y-1 shadow-sm border border-zinc-800">
-            <span class="text-[11px] font-semibold text-zinc-300 uppercase tracking-wider block">Protection</span>
-            <div class="text-2xl font-bold text-white tracking-tight">Active</div>
-            <span class="text-[11px] text-blue-400 block">Auto safety snapshot on wipe/restore</span>
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Protection Lock</span>
+                <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center ring-1 ring-emerald-600/10">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i>
+                </div>
+            </div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600 tracking-tight">Active</div>
+            <span class="text-[11px] text-emerald-700 font-medium block">Pre-wipe auto-snapshots</span>
         </div>
     </div>
 

@@ -52,23 +52,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="theme-color" content="#000000">
     <link rel="icon" type="image/png" href="<?= htmlspecialchars(getFaviconUrl()) ?>">
     <link rel="apple-touch-icon" href="<?= htmlspecialchars(getCompanyLogoUrl() ?: (BASE_URL . '/assets/icons/apple-touch-icon.png')) ?>">
+    
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="h-full flex items-center justify-center p-4 antialiased text-black bg-zinc-50 font-sans">
-    <div class="max-w-sm w-full bg-white rounded-xl border border-zinc-200 shadow-sm overflow-hidden my-auto">
-        <div class="h-1.5 bg-gradient-to-r from-black via-blue-600 to-black"></div>
-        <div class="p-6 sm:p-7">
+<body class="h-full flex items-center justify-center p-4 antialiased text-slate-900 bg-slate-50 font-sans">
+    <div class="max-w-sm w-full bg-white rounded-2xl border border-slate-200/90 shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-hidden my-auto">
+        <div class="p-7 sm:p-8">
         <!-- Brand Header -->
         <div class="text-center mb-6">
-            <?= renderCompanyLogo('auth') ?>
-            <h1 class="text-sm font-bold tracking-tight uppercase text-black"><?= htmlspecialchars(COMPANY_NAME) ?></h1>
-            <p class="text-[11px] text-blue-600 font-medium mt-0.5"><?= htmlspecialchars(BRANCH_NAME) ?> &bull; <?= htmlspecialchars(BRANCH_REGION) ?></p>
+            <div class="inline-flex p-2.5 rounded-2xl bg-slate-50 border border-slate-200/70 shadow-xs mb-3">
+                <?= renderCompanyLogo('auth') ?>
+            </div>
+            <h1 class="text-base font-extrabold tracking-tight uppercase text-slate-950"><?= htmlspecialchars(COMPANY_NAME) ?></h1>
+            <p class="text-[11px] text-blue-600 font-bold uppercase tracking-wider mt-1"><?= htmlspecialchars(BRANCH_NAME) ?> &bull; <?= htmlspecialchars(BRANCH_REGION) ?></p>
         </div>
 
         <?php if (!empty($error)): ?>
-            <div class="mb-4 p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-900 text-[11px] font-medium flex items-center gap-2">
-                <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0 text-rose-600"></i>
+            <div class="mb-5 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-900 text-xs font-medium flex items-center gap-2.5">
+                <i data-lucide="alert-circle" class="w-4 h-4 shrink-0 text-rose-600"></i>
                 <span><?= htmlspecialchars($error) ?></span>
             </div>
         <?php endif; ?>
@@ -77,26 +96,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?= csrfField() ?>
 
             <div>
-                <label for="username" class="block text-[11px] font-medium text-zinc-800 mb-1">
-                    Username / Staff Code
+                <label for="username" class="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Username / Staff Email
                 </label>
                 <input type="text" id="username" name="username" required autofocus 
-                    class="w-full px-3 py-2 bg-white border border-zinc-300 rounded-lg text-xs text-black placeholder-zinc-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition"
+                    class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-950 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10 shadow-xs transition"
                     placeholder="Enter username or staff email">
             </div>
 
             <div>
-                <label for="password" class="block text-[11px] font-medium text-zinc-800 mb-1">
-                    Password
-                </label>
+                <div class="flex items-center justify-between mb-1.5">
+                    <label for="password" class="block text-xs font-semibold text-slate-700">
+                        Password
+                    </label>
+                </div>
                 <input type="password" id="password" name="password" required 
-                    class="w-full px-3 py-2 bg-white border border-zinc-300 rounded-lg text-xs text-black placeholder-zinc-400 focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition"
-                    placeholder="Enter password">
+                    class="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-950 placeholder-slate-400 focus:outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-600/10 shadow-xs transition"
+                    placeholder="Enter account password">
             </div>
 
             <button type="submit" 
-                class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition active:scale-[0.99] flex items-center justify-center gap-1.5 mt-2 shadow-sm">
-                Sign In
+                class="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold text-xs rounded-xl transition shadow-xs flex items-center justify-center gap-1.5 mt-2">
+                <span>Sign In to Portal</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
             </button>
         </form>
         </div>

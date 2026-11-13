@@ -5,7 +5,7 @@
  * Provides offline navigation, app shell caching, and offline fallback
  */
 
-const CACHE_NAME = 'elfaith-pwa-v2.11.0';
+const CACHE_NAME = 'elfaith-pwa-v2.12.0';
 
 // Base path detection
 const BASE_PATH = self.registration.scope;

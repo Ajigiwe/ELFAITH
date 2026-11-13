@@ -70,49 +70,56 @@ include __DIR__ . '/../includes/header.php';
         </div>
     </div>
 
-    <!-- Aging Analysis Cards -->
+    <!-- Modern Fintech Aging Analysis Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <!-- 1 - 7 Days -->
-        <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-4 space-y-2 shadow-sm">
-            <div class="flex items-center justify-between text-[11px] font-semibold text-blue-100 uppercase tracking-wider">
-                <span>1 — 7 Days</span>
-                <span class="text-white font-medium"><?= (int)$aging['count_1_7'] ?> items</span>
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 space-y-2.5 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-amber-700 uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-amber-500"></span> 1 — 7 Days Late
+                </span>
+                <span class="text-xs font-mono font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full"><?= (int)$aging['count_1_7'] ?> loans</span>
             </div>
-            <div class="text-2xl font-bold text-white tracking-tight">
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight tabular-nums">
                 <?= formatMoney((int)$aging['bucket_1_7']) ?>
             </div>
-            <div class="text-[11px] text-blue-100 pt-2 border-t border-white/15">
-                Early warning bucket
+            <div class="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+                Early warning arrears bucket
             </div>
         </div>
 
         <!-- 8 - 30 Days -->
-        <div class="bg-gradient-to-br from-zinc-900 via-zinc-950 to-black text-white rounded-xl p-4 space-y-2 shadow-sm border border-zinc-800">
-            <div class="flex items-center justify-between text-[11px] font-semibold text-zinc-300 uppercase tracking-wider">
-                <span>8 — 30 Days</span>
-                <span class="text-blue-400 font-medium"><?= (int)$aging['count_8_30'] ?> items</span>
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 space-y-2.5 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-orange-700 uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-orange-500"></span> 8 — 30 Days Late
+                </span>
+                <span class="text-xs font-mono font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-full"><?= (int)$aging['count_8_30'] ?> loans</span>
             </div>
-            <div class="text-2xl font-bold text-white tracking-tight">
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight tabular-nums">
                 <?= formatMoney((int)$aging['bucket_8_30']) ?>
             </div>
-            <div class="text-[11px] text-zinc-300 pt-2 border-t border-white/10">
-                Moderate risk exposure
+            <div class="text-[11px] text-slate-500 pt-2 border-t border-slate-100">
+                Moderate risk overdue bucket
             </div>
         </div>
 
         <!-- 30+ Days (PAR) -->
-        <div class="bg-gradient-to-br from-blue-700 to-blue-900 text-white rounded-xl p-4 space-y-2 shadow-sm">
-            <div class="flex items-center justify-between text-[11px] font-semibold text-blue-100 uppercase tracking-wider">
-                <span>30+ Days (PAR 30+)</span>
-                <span class="text-white font-semibold"><?= (int)$aging['count_30_plus'] ?> items</span>
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 space-y-2.5 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-rose-700 uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> 30+ Days (PAR 30+)
+                </span>
+                <span class="text-xs font-mono font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200/60"><?= (int)$aging['count_30_plus'] ?> loans</span>
             </div>
-            <div class="text-2xl font-bold text-white tracking-tight">
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight tabular-nums">
                 <?= formatMoney((int)$aging['bucket_30_plus']) ?>
             </div>
-            <div class="text-[11px] text-blue-100 pt-2 border-t border-white/15">
-                High default risk
+            <div class="text-[11px] text-rose-600 font-medium pt-2 border-t border-slate-100">
+                Critical portfolio at risk (PAR)
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Overdue Installments Detail List -->

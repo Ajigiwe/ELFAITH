@@ -167,22 +167,39 @@ include __DIR__ . '/../includes/header.php';
         </div>
     <?php endif; ?>
 
-    <!-- Summary Statistics Cards -->
+    <!-- Modern Fintech Summary Statistics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-4 space-y-1 shadow-sm">
-            <span class="text-[11px] font-semibold text-blue-100 uppercase tracking-wider block">Filtered Collections</span>
-            <div class="text-2xl font-bold text-white tracking-tight"><?= formatMoney($totalSum) ?></div>
-            <span class="text-[11px] text-blue-100 block"><?= count($payments) ?> transactions in view</span>
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Filtered Collections</span>
+                <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center ring-1 ring-blue-600/10">
+                    <i data-lucide="wallet" class="w-4 h-4"></i>
+                </div>
+            </div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight tabular-nums"><?= formatMoney($totalSum) ?></div>
+            <span class="text-[11px] text-slate-500 block"><?= count($payments) ?> transactions in view</span>
         </div>
-        <div class="bg-gradient-to-br from-zinc-900 via-zinc-950 to-black text-white rounded-xl p-4 space-y-1 shadow-sm border border-zinc-800">
-            <span class="text-[11px] font-semibold text-zinc-300 uppercase tracking-wider block">Physical Cash</span>
-            <div class="text-2xl font-bold text-white tracking-tight"><?= formatMoney($cashSum) ?></div>
-            <span class="text-[11px] text-blue-400 block">Handed in at office</span>
+
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Physical Cash</span>
+                <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center ring-1 ring-emerald-600/10">
+                    <i data-lucide="banknote" class="w-4 h-4"></i>
+                </div>
+            </div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight tabular-nums"><?= formatMoney($cashSum) ?></div>
+            <span class="text-[11px] text-emerald-700 font-medium block">Office cash vault</span>
         </div>
-        <div class="bg-gradient-to-br from-blue-700 to-blue-900 text-white rounded-xl p-4 space-y-1 shadow-sm">
-            <span class="text-[11px] font-semibold text-blue-100 uppercase tracking-wider block">Mobile Money</span>
-            <div class="text-2xl font-bold text-white tracking-tight"><?= formatMoney($momoSum) ?></div>
-            <span class="text-[11px] text-blue-100 block">Electronic MoMo</span>
+
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-5 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">Mobile Money</span>
+                <div class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center ring-1 ring-indigo-600/10">
+                    <i data-lucide="smartphone" class="w-4 h-4"></i>
+                </div>
+            </div>
+            <div class="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight tabular-nums"><?= formatMoney($momoSum) ?></div>
+            <span class="text-[11px] text-indigo-700 font-medium block">Electronic MoMo transfer</span>
         </div>
     </div>
 

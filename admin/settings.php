@@ -230,29 +230,29 @@ include __DIR__ . '/../includes/header.php';
         </div>
 
         <!-- Current Live Status Metrics -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-3.5 shadow-sm">
-                <span class="text-[10px] uppercase font-semibold text-blue-100 tracking-wider block">Running Release</span>
-                <div class="text-sm font-bold text-white mt-0.5 font-mono"><?= htmlspecialchars(APP_VERSION) ?></div>
-                <span class="text-[10px] text-blue-100 block mt-0.5">
-                    <?= $deployEnv['last_sha'] ? 'SHA: ' . htmlspecialchars(substr($deployEnv['last_sha'], 0, 7)) : 'Synced via cPanel / Manual' ?>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs">
+            <div class="bg-white rounded-2xl border border-slate-200/90 p-4 space-y-1.5 shadow-xs">
+                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider block">Running Release</span>
+                <div class="text-base font-extrabold text-slate-950 font-mono"><?= htmlspecialchars(APP_VERSION) ?></div>
+                <span class="text-[11px] text-blue-600 font-mono block">
+                    <?= $deployEnv['last_sha'] ? 'SHA: ' . htmlspecialchars(substr($deployEnv['last_sha'], 0, 7)) : 'Synced via cPanel / Git' ?>
                 </span>
             </div>
-            <div class="bg-gradient-to-br from-zinc-900 via-zinc-950 to-black text-white rounded-xl p-3.5 shadow-sm border border-zinc-800">
-                <span class="text-[10px] uppercase font-semibold text-zinc-300 tracking-wider block">Last Engine Deploy</span>
-                <div class="text-xs font-bold text-white mt-1 truncate">
+            <div class="bg-white rounded-2xl border border-slate-200/90 p-4 space-y-1.5 shadow-xs">
+                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider block">Last Engine Deploy</span>
+                <div class="text-xs font-bold text-slate-950 truncate">
                     <?= $deployEnv['last_at'] ? htmlspecialchars(date('d M Y, h:i A', strtotime($deployEnv['last_at']))) : 'Not deployed via engine yet' ?>
                 </div>
-                <span class="text-[10px] text-blue-400 block mt-0.5 truncate">
+                <span class="text-[11px] text-slate-500 block truncate">
                     <?= $deployEnv['last_message'] ? htmlspecialchars($deployEnv['last_message']) : 'First pull records commit SHA' ?>
                 </span>
             </div>
-            <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-3.5">
-                <span class="text-[10px] uppercase font-semibold text-zinc-600 tracking-wider block">Protected Server Data</span>
-                <div class="text-xs font-bold text-black mt-1">
+            <div class="bg-white rounded-2xl border border-slate-200/90 p-4 space-y-1.5 shadow-xs">
+                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider block">Protected Server Data</span>
+                <div class="text-xs font-bold text-slate-950">
                     <?= $deployEnv['has_prod_db_file'] ? 'Prod DB Config Preserved' : 'Safe Selective Overlay' ?>
                 </div>
-                <span class="text-[10px] text-zinc-500 block mt-0.5">Never touches <code class="font-mono">database.prod.php</code>, <code class="font-mono">backups/</code> &amp; <code class="font-mono">uploads/</code></span>
+                <span class="text-[11px] text-slate-500 block">Preserves <code class="font-mono text-slate-700">database.prod.php</code> &amp; <code class="font-mono text-slate-700">uploads/</code></span>
             </div>
         </div>
 

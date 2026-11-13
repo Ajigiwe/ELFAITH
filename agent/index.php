@@ -80,84 +80,103 @@ include __DIR__ . '/../includes/header.php';
 
 <div class="space-y-6">
     <!-- Header Card -->
-    <div class="bg-white rounded-xl border border-zinc-200 border-t-2 border-t-black p-5 space-y-4 shadow-sm">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <div class="bg-white rounded-2xl border border-slate-200/90 p-5 space-y-4 shadow-xs">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h1 class="text-lg font-bold text-black tracking-tight">Today's Route</h1>
-                <p class="text-xs text-blue-600 font-medium mt-0.5"><?= htmlspecialchars(currentUser()['name']) ?> &bull; <?= date('l, d F Y') ?></p>
+                <div class="flex items-center gap-2">
+                    <h1 class="text-xl font-extrabold text-slate-950 tracking-tight">Today's Field Route</h1>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Active Route
+                    </span>
+                </div>
+                <p class="text-xs text-slate-500 font-medium mt-1"><?= htmlspecialchars(currentUser()['name']) ?> &bull; <?= date('l, d F Y') ?></p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
-                <a href="<?= BASE_URL ?>/calculator.php" class="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-white border border-zinc-300 hover:bg-zinc-100 text-black font-medium text-xs rounded-lg transition">
-                    <i data-lucide="calculator" class="w-3.5 h-3.5 text-zinc-700"></i> Loan Calculator
+                <a href="<?= BASE_URL ?>/calculator.php" class="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-800 font-semibold text-xs rounded-xl shadow-xs transition">
+                    <i data-lucide="calculator" class="w-3.5 h-3.5 text-slate-500"></i> Loan Calculator
                 </a>
-                <a href="<?= BASE_URL ?>/agent/collect.php" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition shadow-sm">
+                <a href="<?= BASE_URL ?>/agent/collect.php" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold text-xs rounded-xl shadow-xs transition">
                     <i data-lucide="plus" class="w-3.5 h-3.5"></i> Record Collection
                 </a>
             </div>
         </div>
 
         <!-- Metric Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-zinc-200 text-xs">
-            <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-3.5 shadow-sm">
-                <span class="text-[10px] font-semibold text-blue-100 uppercase tracking-wider block">Collected Today</span>
-                <span class="text-lg font-bold text-white mt-0.5 block"><?= formatMoney((int)$todayStats['total_today']) ?></span>
-                <span class="text-[10px] text-blue-100"><?= (int)$todayStats['count_today'] ?> receipts</span>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-slate-100 text-xs">
+            <div class="bg-slate-50/70 border border-slate-200/70 rounded-xl p-3.5 space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Collected Today</span>
+                    <i data-lucide="wallet" class="w-3.5 h-3.5 text-blue-600"></i>
+                </div>
+                <span class="text-lg font-extrabold text-slate-950 block tabular-nums"><?= formatMoney((int)$todayStats['total_today']) ?></span>
+                <span class="text-[10px] text-slate-500"><?= (int)$todayStats['count_today'] ?> receipts</span>
             </div>
-            <div class="bg-gradient-to-br from-zinc-900 via-zinc-950 to-black text-white rounded-xl p-3.5 shadow-sm border border-zinc-800">
-                <span class="text-[10px] font-semibold text-zinc-300 uppercase tracking-wider block">Cash in Hand</span>
-                <span class="text-lg font-bold text-white mt-0.5 block"><?= formatMoney((int)$todayStats['cash_today']) ?></span>
-                <span class="text-[10px] text-blue-400">Office Hand-in</span>
+            <div class="bg-slate-50/70 border border-slate-200/70 rounded-xl p-3.5 space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Cash in Hand</span>
+                    <i data-lucide="banknote" class="w-3.5 h-3.5 text-emerald-600"></i>
+                </div>
+                <span class="text-lg font-extrabold text-slate-950 block tabular-nums"><?= formatMoney((int)$todayStats['cash_today']) ?></span>
+                <span class="text-[10px] text-emerald-700 font-medium">Office Hand-in</span>
             </div>
-            <div class="bg-gradient-to-br from-blue-700 to-blue-900 text-white rounded-xl p-3.5 shadow-sm">
-                <span class="text-[10px] font-semibold text-blue-100 uppercase tracking-wider block">Mobile Money</span>
-                <span class="text-lg font-bold text-white mt-0.5 block"><?= formatMoney((int)$todayStats['momo_today']) ?></span>
-                <span class="text-[10px] text-blue-100">Electronic MoMo</span>
+            <div class="bg-slate-50/70 border border-slate-200/70 rounded-xl p-3.5 space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Mobile Money</span>
+                    <i data-lucide="smartphone" class="w-3.5 h-3.5 text-indigo-600"></i>
+                </div>
+                <span class="text-lg font-extrabold text-slate-950 block tabular-nums"><?= formatMoney((int)$todayStats['momo_today']) ?></span>
+                <span class="text-[10px] text-indigo-700 font-medium">Electronic MoMo</span>
             </div>
-            <div class="bg-gradient-to-br from-neutral-900 via-zinc-950 to-black text-white rounded-xl p-3.5 shadow-sm border border-zinc-800">
-                <span class="text-[10px] font-semibold text-zinc-300 uppercase tracking-wider block">Overdue</span>
-                <span class="text-lg font-bold text-white mt-0.5 block"><?= count($overdueList) ?></span>
-                <span class="text-[10px] text-blue-400">Pending recovery</span>
+            <div class="bg-slate-50/70 border border-slate-200/70 rounded-xl p-3.5 space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Overdue Items</span>
+                    <i data-lucide="alert-circle" class="w-3.5 h-3.5 text-rose-600"></i>
+                </div>
+                <span class="text-lg font-extrabold text-slate-950 block tabular-nums"><?= count($overdueList) ?></span>
+                <span class="text-[10px] text-rose-600 font-medium">Pending recovery</span>
             </div>
         </div>
     </div>
 
     <!-- OVERDUE LIST -->
     <?php if (!empty($overdueList)): ?>
-        <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm">
-            <div class="px-5 py-3 border-b border-zinc-200 bg-zinc-50 flex items-center justify-between">
-                <span class="text-xs font-bold text-black uppercase tracking-wider">Overdue (<?= count($overdueList) ?>)</span>
-                <span class="text-[11px] text-blue-600 font-semibold">Priority</span>
+        <div class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs">
+            <div class="px-5 py-4 border-b border-slate-100 bg-slate-50/60 flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                    <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i> Overdue Installments (<?= count($overdueList) ?>)
+                </span>
+                <span class="text-[11px] font-bold text-rose-700 bg-rose-50 border border-rose-200/60 px-2 py-0.5 rounded-full">High Priority</span>
             </div>
 
-            <div class="divide-y divide-zinc-100">
+            <div class="divide-y divide-slate-100">
                 <?php foreach ($overdueList as $item): ?>
-                    <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:bg-blue-50/30 transition">
-                        <div class="space-y-0.5">
+                    <div class="p-4 px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:bg-slate-50/70 transition-colors">
+                        <div class="space-y-1">
                             <div class="flex items-center gap-2">
-                                <h3 class="font-semibold text-black"><?= htmlspecialchars($item['full_name']) ?></h3>
-                                <span class="px-1.5 py-0.5 rounded text-[10px] bg-black text-white font-mono">
+                                <h3 class="font-bold text-slate-950 text-xs"><?= htmlspecialchars($item['full_name']) ?></h3>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] bg-rose-100 text-rose-800 font-mono font-bold">
                                     <?= $item['days_overdue'] ?>d late
                                 </span>
                             </div>
-                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-zinc-500 text-[11px]">
-                                <span class="font-mono text-zinc-800"><?= htmlspecialchars($item['loan_code']) ?></span>
+                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-500 text-[11px]">
+                                <span class="font-mono text-slate-700 font-semibold"><?= htmlspecialchars($item['loan_code']) ?></span>
                                 <span>&bull;</span>
                                 <span><?= htmlspecialchars($item['location_landmark']) ?></span>
                                 <span>&bull;</span>
-                                <a href="tel:<?= htmlspecialchars($item['phone']) ?>" class="font-mono text-blue-600 hover:text-blue-700">
+                                <a href="tel:<?= htmlspecialchars($item['phone']) ?>" class="font-mono text-blue-600 hover:text-blue-700 font-semibold">
                                     <?= htmlspecialchars($item['phone']) ?>
                                 </a>
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-zinc-100">
+                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
                             <div class="text-left sm:text-right">
-                                <span class="text-sm font-bold text-black"><?= formatMoney((int)$item['balance_due_pesewas']) ?></span>
-                                <span class="text-[10px] text-zinc-500 block">Bal: <?= formatMoney((int)$item['remaining_balance_pesewas']) ?></span>
+                                <span class="text-sm font-bold text-slate-950 block tabular-nums"><?= formatMoney((int)$item['balance_due_pesewas']) ?></span>
+                                <span class="text-[10px] text-slate-400 block tabular-nums">Bal: <?= formatMoney((int)$item['remaining_balance_pesewas']) ?></span>
                             </div>
                             <a href="<?= BASE_URL ?>/agent/collect.php?loan_id=<?= $item['loan_id'] ?>&customer_id=<?= $item['customer_id'] ?>&amount=<?= pesewasToGHS($item['balance_due_pesewas']) ?>" 
-                               class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition shadow-sm">
-                                Collect
+                               class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold text-xs transition shadow-xs">
+                                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Collect
                             </a>
                         </div>
                     </div>
@@ -167,48 +186,50 @@ include __DIR__ . '/../includes/header.php';
     <?php endif; ?>
 
     <!-- DUE TODAY LIST -->
-    <div class="bg-white rounded-xl border border-zinc-200 overflow-hidden shadow-sm">
-        <div class="px-5 py-3 border-b border-zinc-200 bg-zinc-50 flex items-center justify-between">
-            <span class="text-xs font-bold text-black uppercase tracking-wider">Due Today (<?= count($dueTodayList) ?>)</span>
-            <span class="text-xs text-zinc-700">
-                Target: <strong class="text-blue-700"><?= formatMoney($totalExpectedToday) ?></strong>
+    <div class="bg-white rounded-2xl border border-slate-200/90 overflow-hidden shadow-xs">
+        <div class="px-5 py-4 border-b border-slate-100 bg-slate-50/60 flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                <i data-lucide="calendar" class="w-4 h-4 text-blue-600"></i> Scheduled Today (<?= count($dueTodayList) ?>)
+            </span>
+            <span class="text-xs text-slate-600">
+                Target: <strong class="text-blue-700 font-bold tabular-nums"><?= formatMoney($totalExpectedToday) ?></strong>
             </span>
         </div>
 
         <?php if (empty($dueTodayList)): ?>
-            <div class="p-8 text-center text-zinc-500 text-xs">
-                All scheduled route collections completed.
+            <div class="p-8 text-center text-slate-400 text-xs font-medium">
+                All scheduled route collections completed for today.
             </div>
         <?php else: ?>
-            <div class="divide-y divide-zinc-100">
+            <div class="divide-y divide-slate-100">
                 <?php foreach ($dueTodayList as $item): ?>
-                    <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:bg-blue-50/30 transition">
-                        <div class="space-y-0.5">
+                    <div class="p-4 px-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs hover:bg-slate-50/70 transition-colors">
+                        <div class="space-y-1">
                             <div class="flex items-center gap-2">
-                                <h3 class="font-semibold text-black"><?= htmlspecialchars($item['full_name']) ?></h3>
-                                <span class="px-1.5 py-0.5 rounded text-[10px] bg-blue-50 text-blue-700 font-mono">
+                                <h3 class="font-bold text-slate-950 text-xs"><?= htmlspecialchars($item['full_name']) ?></h3>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] bg-blue-50 text-blue-700 border border-blue-200/60 font-mono font-semibold">
                                     Inst #<?= $item['installment_number'] ?>
                                 </span>
                             </div>
-                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-zinc-500 text-[11px]">
-                                <span class="font-mono text-zinc-800"><?= htmlspecialchars($item['loan_code']) ?></span>
+                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-500 text-[11px]">
+                                <span class="font-mono text-slate-700 font-semibold"><?= htmlspecialchars($item['loan_code']) ?></span>
                                 <span>&bull;</span>
                                 <span><?= htmlspecialchars($item['location_landmark']) ?></span>
                                 <span>&bull;</span>
-                                <a href="tel:<?= htmlspecialchars($item['phone']) ?>" class="font-mono text-blue-600 hover:text-blue-700">
+                                <a href="tel:<?= htmlspecialchars($item['phone']) ?>" class="font-mono text-blue-600 hover:text-blue-700 font-semibold">
                                     <?= htmlspecialchars($item['phone']) ?>
                                 </a>
                             </div>
                         </div>
 
-                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-zinc-100">
+                        <div class="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
                             <div class="text-left sm:text-right">
-                                <span class="text-sm font-bold text-black"><?= formatMoney((int)$item['balance_due_pesewas']) ?></span>
-                                <span class="text-[10px] text-zinc-500 block">Bal: <?= formatMoney((int)$item['remaining_balance_pesewas']) ?></span>
+                                <span class="text-sm font-bold text-slate-950 block tabular-nums"><?= formatMoney((int)$item['balance_due_pesewas']) ?></span>
+                                <span class="text-[10px] text-slate-400 block tabular-nums">Bal: <?= formatMoney((int)$item['remaining_balance_pesewas']) ?></span>
                             </div>
                             <a href="<?= BASE_URL ?>/agent/collect.php?loan_id=<?= $item['loan_id'] ?>&customer_id=<?= $item['customer_id'] ?>&amount=<?= pesewasToGHS($item['balance_due_pesewas']) ?>" 
-                               class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition shadow-sm">
-                                Collect
+                               class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white font-semibold text-xs transition shadow-xs">
+                                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Collect
                             </a>
                         </div>
                     </div>

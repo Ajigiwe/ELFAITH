@@ -381,33 +381,53 @@ include __DIR__ . '/../includes/header.php';
         </div>
     <?php endif; ?>
 
-    <!-- Summary Statistics Bar -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-xl p-3.5 shadow-sm">
-            <span class="text-[10px] uppercase font-semibold text-blue-100 tracking-wider block">Total Personnel</span>
-            <div class="text-xl font-bold text-white mt-1"><?= $totalUsers ?></div>
-            <span class="text-[10px] text-blue-100 mt-0.5 block"><?= $adminCount ?> Admin &bull; <?= $agentCount ?> Agents</span>
+    <!-- Modern Fintech Summary Statistics Bar -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-4 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Total Personnel</span>
+                <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center ring-1 ring-blue-600/10">
+                    <i data-lucide="users" class="w-4 h-4"></i>
+                </div>
+            </div>
+            <div class="text-2xl font-extrabold text-slate-950 tracking-tight tabular-nums"><?= $totalUsers ?></div>
+            <span class="text-[11px] text-slate-500 block"><?= $adminCount ?> Admin &bull; <?= $agentCount ?> Field Agents</span>
         </div>
-        <div class="bg-gradient-to-br from-zinc-900 via-zinc-950 to-black text-white rounded-xl p-3.5 shadow-sm border border-zinc-800">
-            <span class="text-[10px] uppercase font-semibold text-zinc-300 tracking-wider block">Active Users</span>
-            <div class="text-xl font-bold text-white mt-1 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-emerald-300"></span>
+
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-4 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Active Staff</span>
+                <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center ring-1 ring-emerald-600/10">
+                    <i data-lucide="user-check" class="w-4 h-4"></i>
+                </div>
+            </div>
+            <div class="text-2xl font-extrabold text-slate-950 tracking-tight tabular-nums flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                 <?= $activeCount ?>
             </div>
-            <span class="text-[10px] text-blue-400 mt-0.5 block">Can sign in & collect</span>
+            <span class="text-[11px] text-emerald-700 font-medium block">Authorized to collect</span>
         </div>
-        <div class="bg-gradient-to-br from-blue-700 to-blue-900 text-white rounded-xl p-3.5 shadow-sm">
-            <span class="text-[10px] uppercase font-semibold text-blue-100 tracking-wider block">Deactivated</span>
-            <div class="text-xl font-bold text-white mt-1 flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-white/60"></span>
-                <?= $inactiveCount ?>
+
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-4 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Deactivated</span>
+                <div class="w-8 h-8 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center ring-1 ring-amber-600/10">
+                    <i data-lucide="user-x" class="w-4 h-4"></i>
+                </div>
             </div>
-            <span class="text-[10px] text-blue-100 mt-0.5 block">Sign in blocked</span>
+            <div class="text-2xl font-extrabold text-slate-950 tracking-tight tabular-nums"><?= $inactiveCount ?></div>
+            <span class="text-[11px] text-slate-500 block">Login suspended</span>
         </div>
-        <div class="bg-gradient-to-br from-neutral-900 via-zinc-950 to-black text-white rounded-xl p-3.5 shadow-sm border border-zinc-800">
-            <span class="text-[10px] uppercase font-semibold text-zinc-300 tracking-wider block">Security Rule</span>
-            <div class="text-xs font-semibold text-white mt-1 leading-snug">Strict Self-Guard & Single Admin Lock</div>
-            <span class="text-[10px] text-blue-400 mt-0.5 block">Tamper-evident audit</span>
+
+        <div class="bg-white rounded-2xl border border-slate-200/90 p-4 space-y-2 shadow-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Archived / Deleted</span>
+                <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center ring-1 ring-rose-600/10">
+                    <i data-lucide="archive" class="w-4 h-4"></i>
+                </div>
+            </div>
+            <div class="text-2xl font-extrabold text-slate-950 tracking-tight tabular-nums"><?= $deletedCount ?></div>
+            <span class="text-[11px] text-slate-500 block">Records preserved</span>
         </div>
     </div>
 
