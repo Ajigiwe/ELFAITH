@@ -91,7 +91,13 @@ $waUrl = "https://api.whatsapp.com/send?phone={$cleanPhone}&text={$waMsg}";
     </div>
 
     <!-- Official Receipt Container -->
-    <div class="receipt-card max-w-sm w-full bg-white rounded-xl border border-zinc-200 border-t-4 border-t-black p-6 sm:p-7 space-y-4 shadow-sm">
+    <div class="receipt-card max-w-sm w-full bg-white rounded-xl border border-zinc-200 border-t-4 border-t-black p-6 sm:p-7 shadow-sm relative overflow-hidden">
+        <?php $uiBgLogoUrl = getUiBackgroundLogoUrl(); ?>
+        <!-- Authentic Microfinance Receipt Watermark -->
+        <div class="absolute inset-0 pointer-events-none z-0 flex items-center justify-center opacity-[0.04] select-none" aria-hidden="true">
+            <img src="<?= htmlspecialchars($uiBgLogoUrl) ?>" alt="" class="w-64 max-w-[80%] max-h-[80%] object-contain filter contrast-125">
+        </div>
+        <div class="relative z-10 space-y-4">
         <!-- Brand Header -->
         <div class="text-center pb-4 border-b border-zinc-200">
             <?= renderCompanyLogo('receipt') ?>
@@ -172,6 +178,7 @@ $waUrl = "https://api.whatsapp.com/send?phone={$cleanPhone}&text={$waMsg}";
         <!-- Disclaimer -->
         <div class="pt-3 border-t border-zinc-200 text-center text-[10px] text-zinc-500">
             Thank you for your repayment. All transactions are logged into an append-only ledger.
+        </div>
         </div>
     </div>
 

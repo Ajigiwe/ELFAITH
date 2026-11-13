@@ -620,6 +620,19 @@ function getFaviconUrl(): string {
 }
 
 /**
+ * Get public URL of logo for ambient UI background watermark.
+ * Prioritizes the uploaded company logo, falling back to brand high-res emblem.
+ */
+function getUiBackgroundLogoUrl(): string {
+    $logoUrl = getCompanyLogoUrl();
+    if ($logoUrl !== null) {
+        return $logoUrl;
+    }
+    $base = defined('BASE_URL') ? rtrim(BASE_URL, '/') : '';
+    return $base . '/assets/icons/icon-512.png';
+}
+
+/**
  * Render the company logo image (when uploaded) or clean minimalist EF fallback mark.
  * Variants: 'navbar', 'receipt', 'auth', 'report', 'compact', 'print'
  */

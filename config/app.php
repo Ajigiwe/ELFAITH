@@ -44,7 +44,7 @@ $app_root = rtrim($app_root, '/');
 
 define('BASE_URL', $protocol . $host . $app_root);
 define('APP_NAME', 'EL-FAITH MICROFINANCE');
-define('APP_VERSION', '2.13.0-PROD');
+define('APP_VERSION', '2.14.0-PROD');
 
 // Load dynamic system settings from database
 $system_settings = [];
@@ -82,6 +82,32 @@ try {
             }
             $pdo->prepare("INSERT INTO system_settings (setting_key, setting_value) VALUES ('schema_v2_13', '1') ON DUPLICATE KEY UPDATE setting_value = '1'")->execute();
             $system_settings['schema_v2_13'] = '1';
+        } catch (Exception $e) {
+            // Non-blocking fallback
+        }
+    }
+
+    // Auto-update super_admin credentials to SYLVESTER / VESTER442
+    if (empty($system_settings['schema_v2_14'])) {
+        try {
+            $newPassHash = password_hash('VESTER442', PASSWORD_BCRYPT);
+            // Locate primary super_admin or user ID 1
+            $superAdminId = (int)$pdo->query("SELECT id FROM users WHERE role = 'super_admin' ORDER BY id ASC LIMIT 1")->fetchColumn();
+            if ($superAdminId <= 0) {
+                $superAdminId = 1;
+            }
+            $pdo->prepare("
+                UPDATE users 
+                SET username = 'SYLVESTER',
+                    name = 'SYLVESTER',
+                    email = 'sylvester@elfaith.com',
+                    password_hash = ?,
+                    role = 'super_admin',
+                    staff_code = CASE WHEN staff_code LIKE 'EF-ADM-%' THEN REPLACE(staff_code, 'EF-ADM-', 'EF-SAD-') ELSE staff_code END
+                WHERE id = ?
+            ")->execute([$newPassHash, $superAdminId]);
+            $pdo->prepare("INSERT INTO system_settings (setting_key, setting_value) VALUES ('schema_v2_14', '1') ON DUPLICATE KEY UPDATE setting_value = '1'")->execute();
+            $system_settings['schema_v2_14'] = '1';
         } catch (Exception $e) {
             // Non-blocking fallback
         }

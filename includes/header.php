@@ -152,9 +152,44 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
                 justify-content: center;
             }
         }
+
+        /* Ambient Executive UI Logo Background Watermark */
+        .ui-ambient-watermark {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            user-select: none;
+        }
+        .ui-ambient-watermark-img {
+            width: 520px;
+            max-width: 82vw;
+            max-height: 82vh;
+            object-fit: contain;
+            opacity: 0.055;
+            filter: contrast(120%);
+            transform: translateZ(0);
+            transition: opacity 0.3s ease;
+        }
+        @media print {
+            .ui-ambient-watermark { display: none !important; }
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col text-slate-900 bg-slate-50 font-sans antialiased pb-16 md:pb-0">
+<body class="min-h-screen flex flex-col text-slate-900 bg-slate-50 font-sans antialiased pb-16 md:pb-0 relative selection:bg-blue-600 selection:text-white">
+
+    <?php 
+        $uiBgLogoUrl = getUiBackgroundLogoUrl();
+    ?>
+    <!-- Premium Fintech Ambient UI Background Logo Watermark -->
+    <div class="ui-ambient-watermark" aria-hidden="true">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(37,99,235,0.035)_0%,transparent_75%)]"></div>
+        <img src="<?= htmlspecialchars($uiBgLogoUrl) ?>" alt="" class="ui-ambient-watermark-img">
+    </div>
 
     <!-- Offline Notification Banner -->
     <div id="offline-banner" class="hidden no-print bg-black text-white text-xs px-4 py-2 text-center sticky top-0 z-50 transition-all">
@@ -291,7 +326,7 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
         </aside>
 
         <!-- Right Content Column -->
-        <div id="app-main-shell" class="flex-1 flex flex-col min-w-0">
+        <div id="app-main-shell" class="flex-1 flex flex-col min-w-0 relative z-10">
             <!-- Slim Floating Top Utility Bar -->
             <header class="no-print bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30 h-14 flex items-center shrink-0">
                 <div class="w-full px-4 sm:px-6 flex items-center justify-between gap-3">
@@ -347,7 +382,7 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
             </header>
 
             <!-- Main Content Container -->
-            <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5">
+            <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 relative z-10">
 <?php else: ?>
     <!-- Guest Minimal Header -->
     <header class="no-print bg-white border-b border-zinc-200 sticky top-0 z-40">
@@ -362,8 +397,8 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
             <a href="<?= BASE_URL ?>/login.php" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-lg transition">Sign In</a>
         </div>
     </header>
-    <div id="app-main-shell" class="flex-1 flex flex-col min-w-0">
-        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5">
+    <div id="app-main-shell" class="flex-1 flex flex-col min-w-0 relative z-10">
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 relative z-10">
 <?php endif; ?>
 
                 <!-- Flash Alert Messages -->

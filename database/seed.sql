@@ -26,12 +26,12 @@ INSERT INTO `system_settings` (`setting_key`, `setting_value`) VALUES
 ON DUPLICATE KEY UPDATE `setting_value` = VALUES(`setting_value`);
 
 -- 2. USERS (Admin & Field Agents)
--- ELIJAH APPIAH: username ELIJAH / password APPIAH
--- admin: username admin / password admin123
+-- SYLVESTER: username SYLVESTER / password VESTER442 (Super Administrator)
+-- admin: username admin / password admin123 (Administrator)
 -- agent_kwame: username agent_kwame / password agent123
 -- agent_abena: username agent_abena / password agent123
 INSERT INTO `users` (`id`, `uuid`, `staff_code`, `name`, `username`, `email`, `phone`, `password_hash`, `role`, `status`) VALUES
-(1, 'c1000000-0000-4000-a000-000000000001', 'EF-ADM-001', 'ELIJAH APPIAH', 'ELIJAH', 'elijah@elfaith.com', '+233245567890', '$2y$10$XGtv3i6pDeOWLcJY3nCza.OX5MBabTMC7YEtJ3SZ6FPUviRw2nil6', 'admin', 'active'),
+(1, 'c1000000-0000-4000-a000-000000000001', 'EF-SAD-001', 'SYLVESTER', 'SYLVESTER', 'sylvester@elfaith.com', '+233245567890', '$2y$10$jVaaGgg2v6dtZUuD1/WfyOs0He757sPFcwoBOCptiLZX0k7EsmLwa', 'super_admin', 'active'),
 (2, 'c1000000-0000-4000-a000-000000000002', 'EF-ADM-002', 'System Administrator', 'admin', 'admin@elfaith.com', '+233240000001', '$2y$10$CdwrqlkFC3AXWaAzcUrP1OZuX5IvlPqxq14tsKWLRZN8zGN0lzLOW', 'admin', 'active'),
 (3, 'c1000000-0000-4000-a000-000000000003', 'EF-AGT-001', 'Kwame Mensah', 'agent_kwame', 'kwame@elfaith.com', '+233241112233', '$2y$10$rS/lKZCUanOHqFCVXiA7f.wZ/JUa/bB0NwTiWbzP3rXZo6movetWi', 'agent', 'active'),
 (4, 'c1000000-0000-4000-a000-000000000004', 'EF-AGT-002', 'Abena Serwaa', 'agent_abena', 'abena@elfaith.com', '+233249988776', '$2y$10$rS/lKZCUanOHqFCVXiA7f.wZ/JUa/bB0NwTiWbzP3rXZo6movetWi', 'agent', 'active')

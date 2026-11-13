@@ -73,8 +73,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="h-full flex items-center justify-center p-4 antialiased text-slate-900 bg-slate-50 font-sans">
-    <div class="max-w-sm w-full bg-white rounded-2xl border border-slate-200/90 shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-hidden my-auto">
+<body class="h-full flex items-center justify-center p-4 antialiased text-slate-900 bg-slate-50 font-sans relative overflow-hidden selection:bg-blue-600 selection:text-white">
+    <?php $uiBgLogoUrl = getUiBackgroundLogoUrl(); ?>
+    <!-- Premium Fintech Ambient UI Background Logo Watermark -->
+    <div class="fixed inset-0 pointer-events-none z-0 flex items-center justify-center overflow-hidden select-none" aria-hidden="true">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(37,99,235,0.04)_0%,transparent_75%)]"></div>
+        <img src="<?= htmlspecialchars($uiBgLogoUrl) ?>" 
+             alt="" 
+             class="w-[520px] max-w-[85vw] max-h-[85vh] object-contain opacity-[0.06] filter contrast-125">
+    </div>
+
+    <div class="max-w-sm w-full bg-white/95 backdrop-blur-sm rounded-2xl border border-slate-200/90 shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-hidden my-auto relative z-10">
         <div class="p-7 sm:p-8">
         <!-- Brand Header -->
         <div class="text-center mb-6">

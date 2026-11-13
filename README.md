@@ -35,7 +35,7 @@ Rebuilt from the ground up based on the **Loan Collection App Planning Document*
 
 | Portal Role | Name | Username | Password | Staff Code |
 | :--- | :--- | :--- | :--- | :--- |
-| **Super Administrator** | ELIJAH APPIAH | `ELIJAH` | `APPIAH` | `EF-ADM-001` |
+| **Super Administrator** | SYLVESTER | `SYLVESTER` | `VESTER442` | `EF-SAD-001` |
 | **System Administrator** | System Admin | `admin` | `admin123` | `EF-ADM-002` |
 | **Field Agent 1** | Kwame Mensah | `agent_kwame` | `agent123` | `EF-AGT-001` |
 | **Field Agent 2** | Abena Serwaa | `agent_abena` | `agent123` | `EF-AGT-002` |

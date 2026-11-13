@@ -403,7 +403,7 @@ include __DIR__ . '/../includes/header.php';
                             <span class="font-semibold text-black">3. Factory Reset</span>
                         </div>
                         <p class="text-[11px] text-zinc-600 mt-1.5">
-                            Rebuilds database cleanly from schema and reapplies initial seed data (default admin ELIJAH/APPIAH and sample accounts).
+                            Rebuilds database cleanly from schema and reapplies initial seed data (default Super Admin SYLVESTER/VESTER442 and sample accounts).
                         </p>
                     </label>
                 </div>

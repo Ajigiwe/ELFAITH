@@ -117,9 +117,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmtUpd->execute([$relPath]);
 
                 cleanupOldCompanyLogos($relPath);
+                if (function_exists('opcache_invalidate')) {
+                    @opcache_invalidate(__DIR__ . '/../config/app.php', true);
+                }
                 logAudit($pdo, currentUserId(), 'UPLOAD_COMPANY_LOGO', 'system_settings', null, null, ['company_logo' => $relPath]);
 
-                setFlash('success', 'Company logo uploaded and applied across the portal and receipts!');
+                setFlash('success', 'Company logo uploaded and applied across portal navigation, UI background, and receipts!');
                 header('Location: ' . BASE_URL . '/admin/settings.php');
                 exit;
             } catch (Exception $e) {
@@ -403,7 +406,7 @@ include __DIR__ . '/../includes/header.php';
         <div class="flex items-center justify-between pb-3 border-b border-zinc-100">
             <div>
                 <h2 class="text-xs font-semibold uppercase tracking-wider text-black">Company Logo & Branding</h2>
-                <p class="text-[11px] text-zinc-500 mt-0.5">Displays across header navigation, sign-in screen, payment receipts, offline receipts & printouts</p>
+                <p class="text-[11px] text-zinc-500 mt-0.5">Displays across header navigation, ambient UI background watermark, sign-in screen, payment receipts & printouts</p>
             </div>
             <?php if ($currentLogoUrl): ?>
                 <form method="POST" action="settings.php" onsubmit="return confirm('Remove custom company logo and revert to the default EF badge?');">
