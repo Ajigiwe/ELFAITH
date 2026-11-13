@@ -32,6 +32,14 @@ function currentUserRole(): ?string {
     return $_SESSION['user_role'] ?? null;
 }
 
+function isSuperAdmin(): bool {
+    return currentUserRole() === 'super_admin';
+}
+
+function isAdmin(): bool {
+    return in_array(currentUserRole(), ['admin', 'super_admin']);
+}
+
 function requireLogin(): void {
     global $pdo;
     if (!isLoggedIn()) {
@@ -40,10 +48,10 @@ function requireLogin(): void {
         exit;
     }
 
-    // Verify session user is still active in database
+    // Verify session user is still active in database & sync role
     if (isset($pdo) && !empty($_SESSION['user_id'])) {
         try {
-            $stmt = $pdo->prepare("SELECT status, deleted_at FROM users WHERE id = ? LIMIT 1");
+            $stmt = $pdo->prepare("SELECT role, status, deleted_at FROM users WHERE id = ? LIMIT 1");
             $stmt->execute([$_SESSION['user_id']]);
             $uRow = $stmt->fetch();
             if (!$uRow || ($uRow['status'] ?? '') !== 'active' || !empty($uRow['deleted_at'])) {
@@ -51,6 +59,9 @@ function requireLogin(): void {
                 setFlash('danger', 'Your account has been deactivated or removed. Please contact an administrator.');
                 header('Location: ' . BASE_URL . '/login.php');
                 exit;
+            }
+            if (!empty($uRow['role']) && ($_SESSION['user_role'] ?? '') !== $uRow['role']) {
+                $_SESSION['user_role'] = $uRow['role'];
             }
         } catch (Exception $e) {
             // Non-blocking fallback
@@ -60,9 +71,18 @@ function requireLogin(): void {
 
 function requireAdmin(): void {
     requireLogin();
-    if (currentUserRole() !== 'admin') {
+    if (!isAdmin()) {
         setFlash('danger', 'Access denied. Administrative privileges required.');
         header('Location: ' . BASE_URL . '/agent/index.php');
+        exit;
+    }
+}
+
+function requireSuperAdmin(): void {
+    requireLogin();
+    if (!isSuperAdmin()) {
+        setFlash('danger', 'Access restricted: Technical settings, system backups, and infrastructure configurations require Super Administrator privileges.');
+        header('Location: ' . BASE_URL . '/admin/index.php');
         exit;
     }
 }

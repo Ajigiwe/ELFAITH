@@ -44,7 +44,7 @@ $app_root = rtrim($app_root, '/');
 
 define('BASE_URL', $protocol . $host . $app_root);
 define('APP_NAME', 'EL-FAITH MICROFINANCE');
-define('APP_VERSION', '2.12.0-PROD');
+define('APP_VERSION', '2.13.0-PROD');
 
 // Load dynamic system settings from database
 $system_settings = [];
@@ -66,6 +66,25 @@ try {
         }
         $pdo->prepare("INSERT INTO system_settings (setting_key, setting_value) VALUES ('schema_v2_11', '1') ON DUPLICATE KEY UPDATE setting_value = '1'")->execute();
         $system_settings['schema_v2_11'] = '1';
+    }
+
+    // Auto-ensure super_admin role exists in users.role enum & promote primary administrator
+    if (empty($system_settings['schema_v2_13'])) {
+        try {
+            $pdo->exec("ALTER TABLE users MODIFY COLUMN role ENUM('super_admin', 'admin', 'agent') NOT NULL DEFAULT 'agent'");
+            // Promote user ID 1 or the first active admin to super_admin if none exists yet
+            $hasSuperAdmin = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role = 'super_admin'")->fetchColumn();
+            if ($hasSuperAdmin === 0) {
+                $firstAdminId = (int)$pdo->query("SELECT id FROM users WHERE role = 'admin' ORDER BY id ASC LIMIT 1")->fetchColumn();
+                if ($firstAdminId > 0) {
+                    $pdo->prepare("UPDATE users SET role = 'super_admin' WHERE id = ?")->execute([$firstAdminId]);
+                }
+            }
+            $pdo->prepare("INSERT INTO system_settings (setting_key, setting_value) VALUES ('schema_v2_13', '1') ON DUPLICATE KEY UPDATE setting_value = '1'")->execute();
+            $system_settings['schema_v2_13'] = '1';
+        } catch (Exception $e) {
+            // Non-blocking fallback
+        }
     }
 } catch (Exception $e) {
     // Fallback if settings table query fails

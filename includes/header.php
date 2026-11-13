@@ -168,7 +168,7 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
 
 <?php if ($user): ?>
 <?php
-    if ($role === 'admin') {
+    if ($role === 'super_admin' || $role === 'admin') {
         $navSections = [
             'Overview' => [
                 ['label' => 'Dashboard', 'url' => BASE_URL . '/admin/index.php', 'icon' => 'layout-dashboard', 'active' => strpos($currSelf, 'admin/index.php') !== false],
@@ -186,12 +186,16 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
                 ['label' => 'Reports', 'url' => BASE_URL . '/admin/reports.php', 'icon' => 'bar-chart-3', 'active' => strpos($currSelf, 'admin/reports.php') !== false],
                 ['label' => 'SMS Logs', 'url' => BASE_URL . '/admin/notifications.php', 'icon' => 'message-square', 'active' => strpos($currSelf, 'admin/notifications.php') !== false],
             ],
-            'System' => [
+        ];
+
+        // Restrict Technical infrastructure & deploy engine strictly to Super Admin
+        if ($role === 'super_admin') {
+            $navSections['Technical'] = [
                 ['label' => 'Audit Trail', 'url' => BASE_URL . '/admin/audit_logs.php', 'icon' => 'shield-check', 'active' => strpos($currSelf, 'admin/audit') !== false],
                 ['label' => 'Backup & Wipe', 'url' => BASE_URL . '/admin/backup.php', 'icon' => 'database', 'active' => strpos($currSelf, 'admin/backup') !== false],
-                ['label' => 'Settings', 'url' => BASE_URL . '/admin/settings.php', 'icon' => 'settings', 'active' => strpos($currSelf, 'admin/settings.php') !== false],
-            ],
-        ];
+                ['label' => 'Settings & Deploy', 'url' => BASE_URL . '/admin/settings.php', 'icon' => 'settings', 'active' => strpos($currSelf, 'admin/settings.php') !== false],
+            ];
+        }
     } else {
         $navSections = [
             'Field Work' => [
@@ -270,7 +274,13 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
                         </div>
                         <div class="sidebar-user-meta min-w-0 leading-tight">
                             <span class="block text-xs font-bold text-slate-950 truncate"><?= htmlspecialchars($user['name']) ?></span>
-                            <span class="block text-[9px] text-blue-600 font-mono font-bold uppercase tracking-wider"><?= htmlspecialchars(strtoupper($user['role'])) ?></span>
+                            <?php if ($role === 'super_admin'): ?>
+                                <span class="block text-[9px] text-indigo-600 font-mono font-extrabold uppercase tracking-wider">SUPER ADMIN</span>
+                            <?php elseif ($role === 'admin'): ?>
+                                <span class="block text-[9px] text-blue-600 font-mono font-bold uppercase tracking-wider">ADMIN</span>
+                            <?php else: ?>
+                                <span class="block text-[9px] text-slate-500 font-mono font-medium uppercase tracking-wider">FIELD AGENT</span>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <a href="<?= BASE_URL ?>/logout.php" title="Sign Out" class="sidebar-label p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition shrink-0">
@@ -321,7 +331,13 @@ $isCalculator = strpos($currSelf, 'calculator.php') !== false;
 
                         <div class="text-right hidden sm:block leading-tight pl-2.5 border-l border-slate-200">
                             <span class="block text-xs font-bold text-slate-900"><?= htmlspecialchars($user['name']) ?></span>
-                            <span class="inline-block text-[9px] text-blue-700 bg-blue-50 border border-blue-200/60 px-1.5 py-0.2 rounded-md font-mono uppercase font-bold"><?= htmlspecialchars(strtoupper($user['role'])) ?></span>
+                            <?php if ($role === 'super_admin'): ?>
+                                <span class="inline-block text-[9px] text-indigo-700 bg-indigo-50 border border-indigo-200 px-1.5 py-0.2 rounded-md font-mono uppercase font-bold tracking-wider">SUPER ADMIN</span>
+                            <?php elseif ($role === 'admin'): ?>
+                                <span class="inline-block text-[9px] text-blue-700 bg-blue-50 border border-blue-200/60 px-1.5 py-0.2 rounded-md font-mono uppercase font-bold">ADMIN</span>
+                            <?php else: ?>
+                                <span class="inline-block text-[9px] text-slate-600 bg-slate-100 border border-slate-200 px-1.5 py-0.2 rounded-md font-mono uppercase font-medium">FIELD AGENT</span>
+                            <?php endif; ?>
                         </div>
                         <a href="<?= BASE_URL ?>/logout.php" title="Sign Out" class="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition">
                             <i data-lucide="log-out" class="w-4 h-4"></i>

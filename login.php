@@ -10,7 +10,7 @@ require_once __DIR__ . '/includes/auth.php';
 
 // Redirect if already logged in
 if (isLoggedIn()) {
-    if (currentUserRole() === 'admin') {
+    if (isAdmin()) {
         header('Location: ' . BASE_URL . '/admin/index.php');
     } else {
         header('Location: ' . BASE_URL . '/agent/index.php');
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (empty($username) || empty($password)) {
             $error = 'Please enter both username and password.';
         } elseif (attemptLogin($pdo, $username, $password)) {
-            if (currentUserRole() === 'admin') {
+            if (isAdmin()) {
                 header('Location: ' . BASE_URL . '/admin/index.php');
             } else {
                 header('Location: ' . BASE_URL . '/agent/index.php');

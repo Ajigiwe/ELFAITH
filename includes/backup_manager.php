@@ -285,7 +285,7 @@ function wipeDatabaseData(PDO $pdo, string $mode, int $adminUserId): array {
             TRUNCATE TABLE `notifications_log`;
             TRUNCATE TABLE `agent_assignments`;
             TRUNCATE TABLE `customers`;
-            DELETE FROM `users` WHERE `role` != 'admin';
+            DELETE FROM `users` WHERE `role` NOT IN ('admin', 'super_admin');
             SET FOREIGN_KEY_CHECKS = 1;
         ";
         $pdoMulti->exec($sql);

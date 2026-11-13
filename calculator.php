@@ -13,7 +13,7 @@ requireLogin();
 
 $page_title = "Loan Calculator";
 $role = currentUserRole();
-$backUrl = ($role === 'admin') ? BASE_URL . '/admin/loans.php' : BASE_URL . '/agent/index.php';
+$backUrl = isAdmin() ? BASE_URL . '/admin/loans.php' : BASE_URL . '/agent/index.php';
 $defaultRateFormatted = number_format(DEFAULT_INTEREST_RATE, 2, '.', '');
 $defaultRateShort = rtrim(rtrim($defaultRateFormatted, '0'), '.');
 

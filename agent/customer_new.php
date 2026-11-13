@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $gpsLng = !empty($_POST['gps_lng']) ? (float)$_POST['gps_lng'] : null;
 
         // If admin, can specify assigned agent; if agent, assign to self
-        $assignedAgentId = ($role === 'admin' && !empty($_POST['assigned_agent_id'])) ? (int)$_POST['assigned_agent_id'] : $agentId;
+        $assignedAgentId = (isAdmin() && !empty($_POST['assigned_agent_id'])) ? (int)$_POST['assigned_agent_id'] : $agentId;
 
         if (empty($fullName) || empty($phone) || empty($idNumber) || empty($address) || empty($guarantorName) || empty($guarantorPhone)) {
             $error = 'Please fill in all required fields (Name, Phone, ID, Address, Guarantor).';
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 logAudit($pdo, $agentId, 'CREATE_CUSTOMER', 'customers', $newCustomerId, null, ['code' => $customerCode, 'name' => $fullName]);
 
                 setFlash('success', "Customer {$fullName} ({$customerCode}) registered successfully!");
-                if ($role === 'admin') {
+                if (isAdmin()) {
                     header("Location: " . BASE_URL . "/admin/customer_view.php?id={$newCustomerId}");
                 } else {
                     header("Location: " . BASE_URL . "/agent/my_customers.php");
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Fetch agents list for admin selector
 $agentsList = [];
-if ($role === 'admin') {
+if (isAdmin()) {
     $agentsList = $pdo->query("SELECT id, name, staff_code FROM users WHERE role = 'agent' AND status = 'active' AND deleted_at IS NULL ORDER BY name ASC")->fetchAll();
 }
 
@@ -110,7 +110,7 @@ include __DIR__ . '/../includes/header.php';
             <h1 class="text-lg font-bold text-black tracking-tight">Register Borrower</h1>
             <p class="text-xs text-zinc-500 mt-0.5">Customer KYC, location landmark & guarantor registration</p>
         </div>
-        <a href="<?= $role === 'admin' ? BASE_URL . '/admin/customers.php' : BASE_URL . '/agent/my_customers.php' ?>" 
+        <a href="<?= isAdmin() ? BASE_URL . '/admin/customers.php' : BASE_URL . '/agent/my_customers.php' ?>" 
            class="inline-flex items-center gap-1 text-xs text-zinc-700 bg-white border border-zinc-200 px-2.5 py-1.5 rounded-lg hover:bg-zinc-100">
             <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back
         </a>
@@ -243,7 +243,7 @@ include __DIR__ . '/../includes/header.php';
             </div>
 
             <!-- Admin Only: Assign to Agent -->
-            <?php if ($role === 'admin' && !empty($agentsList)): ?>
+            <?php if (isAdmin() && !empty($agentsList)): ?>
                 <div class="pt-3 border-t border-zinc-100">
                     <label class="block text-[11px] font-medium text-zinc-800 mb-1">Assign Field Agent</label>
                     <select name="assigned_agent_id" class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600">

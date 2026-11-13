@@ -1,11 +1,11 @@
 /**
  * EL-FAITH MICROFINANCE - Progressive Web App Service Worker
- * Version: 2.10.1-PROD
+ * Version: 2.13.0-PROD
  * Scope: Auto-detected from registration scope (portable across root domains & subfolders)
  * Provides offline navigation, app shell caching, and offline fallback
  */
 
-const CACHE_NAME = 'elfaith-pwa-v2.12.0';
+const CACHE_NAME = 'elfaith-pwa-v2.13.0';
 
 // Base path detection
 const BASE_PATH = self.registration.scope;

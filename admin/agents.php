@@ -14,6 +14,7 @@ $page_title = "Staff & User Management";
 
 $error = '';
 $currentAdminId = (int)currentUserId();
+$isSuperAdmin = isSuperAdmin();
 
 // Handle Staff Form Submissions (Create, Edit, Toggle Status)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -29,11 +30,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = trim($_POST['email'] ?? '');
             $phone = trim($_POST['phone'] ?? '');
             $password = $_POST['password'] ?? '';
-            $role = in_array($_POST['role'] ?? '', ['admin', 'agent']) ? $_POST['role'] : 'agent';
+            $submittedRole = trim($_POST['role'] ?? 'agent');
 
-            if (empty($name) || empty($username) || empty($email) || empty($password)) {
-                $error = 'Please fill in all required fields to create a staff user.';
+            if ($submittedRole === 'super_admin' && !$isSuperAdmin) {
+                $error = 'Security Guard: Only a Super Administrator can assign the Super Administrator role.';
             } else {
+                $role = in_array($submittedRole, ['super_admin', 'admin', 'agent']) ? $submittedRole : 'agent';
+            }
+
+            if (empty($error) && (empty($name) || empty($username) || empty($email) || empty($password))) {
+                $error = 'Please fill in all required fields to create a staff user.';
+            } elseif (empty($error)) {
                 try {
                     // Check duplicate username or email
                     $stmtCheck = $pdo->prepare("SELECT id FROM users WHERE username = ? OR email = ? LIMIT 1");
@@ -41,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($stmtCheck->fetch()) {
                         $error = 'A staff user with this username or email already exists.';
                     } else {
-                        $prefix = ($role === 'admin') ? 'EF-ADM-' : 'EF-AGT-';
+                        $prefix = ($role === 'super_admin') ? 'EF-SAD-' : (($role === 'admin') ? 'EF-ADM-' : 'EF-AGT-');
                         $stmtCount = $pdo->query("SELECT COUNT(id) FROM users");
                         $count = (int)$stmtCount->fetchColumn() + 1;
                         $staffCode = $prefix . str_pad((string)$count, 3, '0', STR_PAD_LEFT);
@@ -78,8 +85,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = trim($_POST['username'] ?? '');
             $email = trim($_POST['email'] ?? '');
             $phone = trim($_POST['phone'] ?? '');
-            $role = in_array($_POST['role'] ?? '', ['admin', 'agent']) ? $_POST['role'] : 'agent';
-            $status = in_array($_POST['status'] ?? '', ['active', 'inactive', 'suspended']) ? $_POST['status'] : 'active';
             $password = trim($_POST['password'] ?? '');
 
             if ($userId <= 0 || empty($name) || empty($username) || empty($email) || empty($phone)) {
@@ -92,14 +97,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if (!$targetUser) {
                     $error = 'The requested staff member was not found.';
-                } elseif ($userId === $currentAdminId && $status !== 'active') {
-                    $error = 'Security Guard: You cannot deactivate your own administrative account.';
-                } elseif ($userId === $currentAdminId && $role !== 'admin') {
-                    $error = 'Security Guard: You cannot revoke your own administrator privileges.';
                 } else {
+                    $submittedRole = trim($_POST['role'] ?? $targetUser['role']);
+                    $status = in_array($_POST['status'] ?? '', ['active', 'inactive', 'suspended']) ? $_POST['status'] : $targetUser['status'];
+
+                    if ($submittedRole === 'super_admin' && !$isSuperAdmin && $targetUser['role'] !== 'super_admin') {
+                        $error = 'Security Guard: Only a Super Administrator can assign the Super Administrator role.';
+                    } else {
+                        $role = in_array($submittedRole, ['super_admin', 'admin', 'agent']) ? $submittedRole : 'agent';
+                    }
+
+                    if (empty($error)) {
+                        if ($targetUser['role'] === 'super_admin' && !$isSuperAdmin) {
+                            $error = 'Security Guard: Standard administrators cannot modify a Super Administrator account.';
+                        } elseif ($userId === $currentAdminId && $status !== 'active') {
+                            $error = 'Security Guard: You cannot deactivate your own administrative account.';
+                        } elseif ($userId === $currentAdminId && $targetUser['role'] === 'super_admin' && $role !== 'super_admin') {
+                            $error = 'Security Guard: You cannot revoke your own Super Administrator privileges.';
+                        } elseif ($userId === $currentAdminId && $targetUser['role'] === 'admin' && !in_array($role, ['admin', 'super_admin'])) {
+                            $error = 'Security Guard: You cannot revoke your own administrator privileges.';
+                        } else {
+                    // Check if demoting or deactivating the last active super_admin
+                    if ($targetUser['role'] === 'super_admin' && ($role !== 'super_admin' || $status !== 'active')) {
+                        $activeSuperAdmins = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role = 'super_admin' AND status = 'active' AND deleted_at IS NULL AND id != {$userId}")->fetchColumn();
+                        if ($activeSuperAdmins < 1) {
+                            $error = 'Security Guard: Operation denied. At least one active Super Administrator must remain in the system.';
+                        }
+                    }
+
                     // Check if demoting or deactivating the last active administrator
-                    if ($targetUser['role'] === 'admin' && ($role !== 'admin' || $status !== 'active')) {
-                        $activeAdmins = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role = 'admin' AND status = 'active' AND id != {$userId}")->fetchColumn();
+                    if (empty($error) && in_array($targetUser['role'], ['admin', 'super_admin']) && (!in_array($role, ['admin', 'super_admin']) || $status !== 'active')) {
+                        $activeAdmins = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role IN ('admin', 'super_admin') AND status = 'active' AND deleted_at IS NULL AND id != {$userId}")->fetchColumn();
                         if ($activeAdmins < 1) {
                             $error = 'Security Guard: Operation denied. At least one active administrator must remain in the system.';
                         }
@@ -153,6 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     $_SESSION['user_name'] = $name;
                                     $_SESSION['user_username'] = $username;
                                     $_SESSION['user_email'] = $email;
+                                    $_SESSION['user_role'] = $role;
                                 }
 
                                 logAudit($pdo, $currentAdminId, 'EDIT_STAFF_USER', 'users', $userId, [
@@ -182,6 +211,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
             }
+        }
+    }
 
         // 3. TOGGLE USER STATUS (ACTIVATE / DEACTIVATE)
         } elseif ($action === 'toggle_status') {
@@ -194,12 +225,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (!$targetUser) {
                 $error = 'The requested staff member was not found.';
+            } elseif ($targetUser['role'] === 'super_admin' && !$isSuperAdmin) {
+                $error = 'Security Guard: Standard administrators cannot deactivate a Super Administrator account.';
             } elseif ($userId === $currentAdminId) {
                 $error = 'Security Guard: You cannot deactivate your own administrative account.';
             } else {
+                // Check last active super admin protection
+                if ($targetUser['role'] === 'super_admin' && $targetStatus !== 'active') {
+                    $activeSuperAdmins = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role = 'super_admin' AND status = 'active' AND deleted_at IS NULL AND id != {$userId}")->fetchColumn();
+                    if ($activeSuperAdmins < 1) {
+                        $error = 'Security Guard: Cannot deactivate the only active Super Administrator in the system.';
+                    }
+                }
+
                 // Check last active admin protection
-                if ($targetUser['role'] === 'admin' && $targetStatus !== 'active') {
-                    $activeAdmins = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role = 'admin' AND status = 'active' AND id != {$userId}")->fetchColumn();
+                if (empty($error) && in_array($targetUser['role'], ['admin', 'super_admin']) && $targetStatus !== 'active') {
+                    $activeAdmins = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role IN ('admin', 'super_admin') AND status = 'active' AND deleted_at IS NULL AND id != {$userId}")->fetchColumn();
                     if ($activeAdmins < 1) {
                         $error = 'Security Guard: Cannot deactivate the only active administrator in the system.';
                     }
@@ -237,12 +278,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (!$targetUser) {
                 $error = 'The requested staff member was not found.';
+            } elseif ($targetUser['role'] === 'super_admin' && !$isSuperAdmin) {
+                $error = 'Security Guard: Standard administrators cannot delete a Super Administrator account.';
             } elseif ($userId === $currentAdminId) {
                 $error = 'Security Guard: You cannot delete your own administrative account.';
             } else {
+                // Check if deleting the last active super admin
+                if ($targetUser['role'] === 'super_admin') {
+                    $activeSuperAdmins = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role = 'super_admin' AND status = 'active' AND deleted_at IS NULL AND id != {$userId}")->fetchColumn();
+                    if ($activeSuperAdmins < 1) {
+                        $error = 'Security Guard: Operation denied. At least one active Super Administrator must remain in the system.';
+                    }
+                }
+
                 // Check if deleting the last active admin
-                if ($targetUser['role'] === 'admin') {
-                    $activeAdmins = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role = 'admin' AND status = 'active' AND deleted_at IS NULL AND id != {$userId}")->fetchColumn();
+                if (empty($error) && in_array($targetUser['role'], ['admin', 'super_admin'])) {
+                    $activeAdmins = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role IN ('admin', 'super_admin') AND status = 'active' AND deleted_at IS NULL AND id != {$userId}")->fetchColumn();
                     if ($activeAdmins < 1) {
                         $error = 'Security Guard: Operation denied. At least one active administrator must remain in the system.';
                     }
@@ -297,6 +348,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (!$targetUser) {
                 $error = 'The requested staff member was not found.';
+            } elseif ($targetUser['role'] === 'super_admin' && !$isSuperAdmin) {
+                $error = 'Security Guard: Standard administrators cannot restore a Super Administrator account.';
             } else {
                 try {
                     $stmtRes = $pdo->prepare("UPDATE users SET deleted_at = NULL, status = 'active' WHERE id = ?");
@@ -338,6 +391,7 @@ $inactiveCount = 0;
 $deletedCount = 0;
 $agentCount = 0;
 $adminCount = 0;
+$superAdminCount = 0;
 
 foreach ($staffList as $st) {
     if (!empty($st['deleted_at'])) {
@@ -350,7 +404,9 @@ foreach ($staffList as $st) {
     } else {
         $inactiveCount++;
     }
-    if ($st['role'] === 'admin') {
+    if ($st['role'] === 'super_admin') {
+        $superAdminCount++;
+    } elseif ($st['role'] === 'admin') {
         $adminCount++;
     } else {
         $agentCount++;
@@ -391,7 +447,7 @@ include __DIR__ . '/../includes/header.php';
                 </div>
             </div>
             <div class="text-2xl font-extrabold text-slate-950 tracking-tight tabular-nums"><?= $totalUsers ?></div>
-            <span class="text-[11px] text-slate-500 block"><?= $adminCount ?> Admin &bull; <?= $agentCount ?> Field Agents</span>
+            <span class="text-[11px] text-slate-500 block truncate"><?= $superAdminCount ?> Super &bull; <?= $adminCount ?> Admin &bull; <?= $agentCount ?> Agents</span>
         </div>
 
         <div class="bg-white rounded-2xl border border-slate-200/90 p-4 space-y-2 shadow-xs">
@@ -443,6 +499,7 @@ include __DIR__ . '/../includes/header.php';
             <select id="role-filter" onchange="filterStaffCards()" 
                 class="px-2.5 py-1.5 bg-zinc-50 border border-zinc-200 rounded-lg text-xs text-zinc-800 focus:outline-none focus:border-blue-600 focus:bg-white transition">
                 <option value="all">All Roles</option>
+                <option value="super_admin">Super Admins</option>
                 <option value="admin">Administrators</option>
                 <option value="agent">Field Agents</option>
             </select>
@@ -500,9 +557,19 @@ include __DIR__ . '/../includes/header.php';
                         </div>
 
                         <div class="flex flex-col items-end gap-1">
-                            <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider <?= $st['role'] === 'admin' ? 'bg-black text-white' : 'bg-blue-50 text-blue-700 border border-blue-200' ?>">
-                                <?= htmlspecialchars($st['role']) ?>
-                            </span>
+                            <?php if ($st['role'] === 'super_admin'): ?>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-extrabold uppercase tracking-wider bg-slate-950 text-white border border-slate-800 shadow-xs">
+                                    SUPER ADMIN
+                                </span>
+                            <?php elseif ($st['role'] === 'admin'): ?>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider bg-blue-600 text-white">
+                                    ADMIN
+                                </span>
+                            <?php else: ?>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200">
+                                    FIELD AGENT
+                                </span>
+                            <?php endif; ?>
 
                             <!-- Status Badge -->
                             <?php if ($isDeleted): ?>
@@ -552,17 +619,30 @@ include __DIR__ . '/../includes/header.php';
 
                 <!-- Action Toolbar: Edit & Deactivate / Activate / Delete -->
                 <div class="pt-2.5 border-t border-zinc-100 flex items-center justify-between gap-1 text-xs">
+                    <?php 
+                        $targetIsSuperAdmin = ($st['role'] === 'super_admin');
+                        $canManageTarget = ($isSuperAdmin || !$targetIsSuperAdmin);
+                    ?>
                     <?php if ($isDeleted): ?>
                         <div class="flex items-center gap-1.5">
-                            <form method="POST" action="agents.php" class="inline" onsubmit="return confirm('Restore account for <?= htmlspecialchars(addslashes($st['name'])) ?>?')">
-                                <?= csrfField() ?>
-                                <input type="hidden" name="action" value="restore">
-                                <input type="hidden" name="user_id" value="<?= (int)$st['id'] ?>">
-                                <button type="submit" 
-                                    class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition shadow-sm">
-                                    <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Restore Account
-                                </button>
-                            </form>
+                            <?php if ($canManageTarget): ?>
+                                <form method="POST" action="agents.php" class="inline" onsubmit="return confirm('Restore account for <?= htmlspecialchars(addslashes($st['name'])) ?>?')">
+                                    <?= csrfField() ?>
+                                    <input type="hidden" name="action" value="restore">
+                                    <input type="hidden" name="user_id" value="<?= (int)$st['id'] ?>">
+                                    <button type="submit" 
+                                        class="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition shadow-sm">
+                                        <i data-lucide="rotate-ccw" class="w-3 h-3"></i> Restore Account
+                                    </button>
+                                </form>
+                            <?php else: ?>
+                                <span class="text-[11px] text-zinc-400 italic">Super Admin Restricted</span>
+                            <?php endif; ?>
+                        </div>
+                    <?php elseif (!$canManageTarget): ?>
+                        <div class="flex items-center gap-1 text-slate-400 italic text-[11px] py-1">
+                            <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-400"></i>
+                            <span>Super Admin Protected</span>
                         </div>
                     <?php else: ?>
                         <div class="flex items-center gap-1.5">
@@ -664,6 +744,9 @@ include __DIR__ . '/../includes/header.php';
                         class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
                         <option value="agent">Field Agent</option>
                         <option value="admin">Administrator</option>
+                        <?php if ($isSuperAdmin): ?>
+                            <option value="super_admin">Super Administrator</option>
+                        <?php endif; ?>
                     </select>
                 </div>
             </div>
@@ -753,6 +836,9 @@ include __DIR__ . '/../includes/header.php';
                         class="w-full px-3 py-1.5 bg-white border border-zinc-200 rounded-lg text-xs text-black focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition">
                         <option value="agent" selected>Field Agent</option>
                         <option value="admin">Administrator</option>
+                        <?php if ($isSuperAdmin): ?>
+                            <option value="super_admin">Super Administrator</option>
+                        <?php endif; ?>
                     </select>
                 </div>
             </div>

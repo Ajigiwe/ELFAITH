@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` VARCHAR(100) NOT NULL UNIQUE,
   `phone` VARCHAR(20) NOT NULL,
   `password_hash` VARCHAR(255) NOT NULL,
-  `role` ENUM('admin', 'agent') NOT NULL DEFAULT 'agent',
+  `role` ENUM('super_admin', 'admin', 'agent') NOT NULL DEFAULT 'agent',
   `status` ENUM('active', 'inactive', 'suspended') NOT NULL DEFAULT 'active',
   `last_login_at` DATETIME NULL,
   `deleted_at` DATETIME NULL,

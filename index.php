@@ -12,7 +12,7 @@ if (!isLoggedIn()) {
     exit;
 }
 
-if (currentUserRole() === 'admin') {
+if (isAdmin()) {
     header('Location: ' . BASE_URL . '/admin/index.php');
 } else {
     header('Location: ' . BASE_URL . '/agent/index.php');

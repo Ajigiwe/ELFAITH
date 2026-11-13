@@ -9,7 +9,7 @@ require_once __DIR__ . '/../includes/functions.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/backup_manager.php';
 
-requireAdmin();
+requireSuperAdmin();
 
 $page_title = "Backup & Data Wipe";
 $adminUser = currentUser();
